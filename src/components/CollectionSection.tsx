@@ -64,13 +64,20 @@ const CollectionSlideComponent = ({
       transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full md:w-[52%] flex-shrink-0 group"
     >
-      <div className="relative overflow-hidden rounded-lg shadow-xl shadow-black/[0.06] w-full h-full">
+      <div
+        className="relative overflow-hidden rounded-lg w-full h-full"
+        style={{
+          boxShadow: slide.imageRight
+            ? '-30px 30px 50px -10px rgba(0,0,0,0.4)'
+            : '30px 30px 50px -10px rgba(0,0,0,0.4)'
+        }}
+      >
         <img
           src={slide.image}
           alt={slide.title}
           className="w-full h-[80vh] object-cover group-hover:scale-[1.03] transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 pointer-events-none z-20" />
       </div>
 
       {/* Decorative accent line */}
