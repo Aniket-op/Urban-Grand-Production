@@ -85,7 +85,7 @@ const HeroSection = () => {
       </motion.button>
 
       {/* Bottom gradient fade for smooth section transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/40 to-background/0 pointer-events-none" />
     </section >
   );
 };
