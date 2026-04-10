@@ -61,7 +61,7 @@ const CollectionSlideComponent = ({
     <motion.div
       initial={{ opacity: 0, x: slide.imageRight ? 60 : -80 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 3, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full md:w-[52%] flex-shrink-0 group"
     >
       <div
@@ -75,18 +75,18 @@ const CollectionSlideComponent = ({
         <img
           src={slide.image}
           alt={slide.title}
-          className="w-full h-[80vh] object-cover group-hover:scale-[1.03] transition-transform duration-700"
+          className="w-full h-[80vh] object-cover group-hover:scale-[1.03] transition-transform duration-3000"
         />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 pointer-events-none z-20" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-3000 pointer-events-none z-20" />
       </div>
 
       {/* Decorative accent line */}
-      <motion.div
+      {/* <motion.div
         initial={{ scaleY: 0 }}
         animate={inView ? { scaleY: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.4 }}
         className={`absolute ${slide.imageRight ? "-right-3 sm:-right-4" : "-left-3 sm:-left-4"} top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] origin-top rounded-full hidden md:block`}
-      />
+      /> */}
     </motion.div>
   );
 
@@ -117,7 +117,7 @@ const CollectionSlideComponent = ({
           className="group inline-flex items-center gap-2 sm:gap-3 bg-foreground text-background px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase hover:opacity-85 transition-elegant rounded-md"
         >
           Explore
-          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          <span className="transition-transform duration-3000 group-hover:translate-x-1">→</span>
         </a>
       </div>
     </motion.div>
@@ -154,7 +154,7 @@ const CollectionSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 1.5 }}
           className="text-center"
         >
           <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
