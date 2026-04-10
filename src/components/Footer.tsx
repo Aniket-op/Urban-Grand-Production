@@ -27,7 +27,7 @@ const Footer = () => {
           {/* Brand & Info Column */}
           <div className="flex flex-col gap-5 lg:w-1/4">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img src={logoUrl} alt="UrbanGrand Logo" className="h-14 w-auto rounded-md" />
+              <img src={logoUrl} alt="UrbanGrand Logo" className="h-[72px] w-[72px] rounded-sm mix-blend-multiply" />
               <p className="font-heading text-xl font-bold text-zinc-900  tracking-wide">URBAN GRAND</p>
             </Link>
             <div className="space-y-1">
