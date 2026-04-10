@@ -58,8 +58,9 @@ const OurCommitment = () => {
               key={index}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="corporate-card rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start text-center"
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="corporate-card rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start text-center !bg-gray-100 !shadow-2xl hover:!shadow-3xl"
             >
               <div className="h-20 md:h-24 w-full max-w-[120px] flex items-center justify-center mb-5 bg-white dark:bg-zinc-800 rounded-lg p-2 border border-border/40">
                 <img

@@ -10,14 +10,14 @@ const companyLinks = [
 ];
 
 const platformLinks = [
-  { label: "Men", to: "/contact?category=men" },
-  { label: "Women", to: "/contact?category=women" },
-  { label: "Kids", to: "/contact?category=kids" },
+  { label: "Men", to: "/category/men" },
+  { label: "Women", to: "/category/women" },
+  { label: "Kids", to: "/category/kids" },
 ];
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#FAF9F6] text-zinc-800 font-sans">
+    <footer className="w-full bg-[#f7eac3] text-zinc-800 font-sans">
       {/* Decorative gold accent line */}
       <div className="h-[3px] bg-gradient-to-r from-transparent via-[hsl(38,60%,50%)] to-transparent" />
 
@@ -36,7 +36,7 @@ const Footer = () => {
             {/* Social Icons */}
             <div className="flex gap-3 mt-2">
               {[Linkedin, Facebook, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="flex items-center justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 ">
+                <a key={i} href="#" className="flex items-center bg-[#f7eac3] justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 ">
                   <Icon size={16} />
                 </a>
               ))}
