@@ -46,32 +46,16 @@ const HeroSection = () => {
       {/* Text content */}
       <div className="absolute inset-0 flex items-center">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 md:px-12 md:max-w-[55%] md:ml-[4%] md:mr-auto">
-          {/* Established badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mb-5 sm:mb-6"
-          >
-            <span className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-white font-medium border border-white/15 px-3 sm:px-4 py-1.5 rounded-sm backdrop-blur-sm bg-white/[.1]">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              Established 1978
-            </span>
-          </motion.div>
-
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
-            <h1 className="font-display text-[2rem] sm:text-4xl md:text-5xl lg:text-[5.5rem] font-bold leading-[1] sm:leading-[0.95] tracking-[-0.02em] text-white">
-              Premium Line by
+            <h1 className="font-display sm:text-4xl md:text-5xl lg:text-[4rem] font-bold leading-[1] sm:leading-[0.95] tracking-[-0.02em] text-white">
+              Driven by Quality,
               <br />
-              <span className="italic font-normal">Panchsheel Knitwears</span>
+              Defined by Precision
             </h1>
-            <p className="mt-4 sm:mt-8 max-w-md font-body text-2xl sm:text-lg md:text-3xl font-light tracking-wide text-white/70 leading-relaxed">
-              Driven by Quality, Defined by Precision
-            </p>
           </motion.div>
 
           <motion.div
@@ -80,19 +64,6 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.9 }}
             className="mt-7 sm:mt-10 flex items-center gap-4"
           >
-            <Link
-              to="/about/category/mission-vision"
-              className="group bg-white text-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-md text-[11px] sm:text-[12px] font-bold tracking-[0.15em] uppercase hover:bg-white/90 transition-elegant text-center inline-flex items-center gap-2"
-            >
-              Our Vision
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
-            <Link
-              to="/contact"
-              className="group px-6 sm:px-8 py-3.5 sm:py-4 rounded-md text-[11px] sm:text-[12px] font-semibold tracking-[0.15em] uppercase text-white border border-white/25 hover:bg-white/10 hover:border-white/40 transition-elegant text-center inline-flex items-center gap-2 backdrop-blur-sm"
-            >
-              Contact Us
-            </Link>
           </motion.div>
         </div>
       </div>
@@ -118,7 +89,7 @@ const HeroSection = () => {
 
       {/* Bottom gradient fade for smooth section transition */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-    </section>
+    </section >
   );
 };
 
