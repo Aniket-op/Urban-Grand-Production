@@ -66,20 +66,20 @@ const Navbar = () => {
   }, []);
 
   // Theme
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") return localStorage.getItem("theme") || "light";
-    return "light";
-  });
+  // const [theme, setTheme] = useState(() => {
+  //   if (typeof window !== "undefined") return localStorage.getItem("theme") || "light";
+  //   return "light";
+  // });
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   const root = window.document.documentElement;
+  //   root.classList.remove("light", "dark");
+  //   root.classList.add(theme);
+  //   localStorage.setItem("theme", theme);
+  // }, [theme]);
 
-  const toggleTheme = () =>
-    setTheme((p) => (p === "light" ? "dark" : "light"));
+  // const toggleTheme = () =>
+  //   setTheme((p) => (p === "light" ? "dark" : "light"));
 
   // Language
   const [langOpen, setLangOpen] = useState(false);
@@ -242,14 +242,14 @@ const Navbar = () => {
 
           <div className="w-px h-4 bg-foreground/15 mx-1" />
 
-          <button
+          {/* <button
             onClick={toggleTheme}
             className="p-2 rounded-md hover:bg-muted/50 transition-elegant text-foreground/70 hover:text-foreground"
             aria-label="Toggle theme"
             title={`Theme: ${theme}`}
           >
             {theme === "light" ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+          </button> */}
 
           {/* Login Button */}
           <button
@@ -379,7 +379,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <button
+              {/* <button
                 onClick={toggleTheme}
                 className="flex items-center gap-2 p-2 rounded-md hover:bg-muted/50 transition-elegant text-foreground/80 hover:text-foreground font-semibold text-sm"
               >
@@ -388,7 +388,7 @@ const Navbar = () => {
                 ) : (
                   <><Sun size={18} /> Light Mode</>
                 )}
-              </button>
+              </button> */}
 
               <button
                 onClick={() => { setLoginOpen(true); setMobileOpen(false); }}
