@@ -21,8 +21,8 @@ const Footer = () => {
       {/* Decorative gold accent line */}
       <div className="h-[3px] bg-gradient-to-r from-transparent via-[hsl(38,60%,50%)] to-transparent" />
 
-      <div className="px-5 sm:px-8 lg:px-16 pt-12 sm:pt-16 pb-8">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-10 lg:gap-8 mb-12 sm:mb-16">
+      <div className="px-2 sm:px-4 lg:px-8 pt-4 sm:pt-6 lg:pt-8 pb-4">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-10 lg:gap-8 mb-4 sm:mb-4">
 
           {/* Brand & Info Column */}
           <div className="flex flex-col gap-5 lg:w-1/4">

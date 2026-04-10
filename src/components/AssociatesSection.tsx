@@ -25,7 +25,7 @@ const AssociatesSection = () => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="w-full py-8 sm:py-12 lg:py-16 bg-[#FAF9F6] overflow-hidden">
+    <section ref={ref} className="w-full py-4 sm:py-6 lg:py-8 bg-[#FAF9F6] overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
         {/* Header */}
         <motion.div

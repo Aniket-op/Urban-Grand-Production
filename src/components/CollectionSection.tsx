@@ -99,7 +99,7 @@ const CollectionSlideComponent = ({
               />
 
               {/* ── Content Container (Moves from bottom corner to top corner on hover) ── */}
-              <div 
+              <div
                 className={`absolute z-30 left-8 right-8 flex flex-col 
                            top-[calc(100%-100px)] group-hover:top-8
                            transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
