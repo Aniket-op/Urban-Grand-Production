@@ -55,12 +55,12 @@ import kidsThermal3 from "@/assets/kids/thermal3.webp";
 
 
 // ── Single collection slide ────
-type Subcategory = {
+export type Subcategory = {
     label: string;
     images: string[];
 };
 
-type CollectionSlide = {
+export type CollectionSlide = {
     id: string;
     title: string;
     tag: string;
@@ -70,7 +70,7 @@ type CollectionSlide = {
     accent: string; // tailwind bg color for accent dot
 };
 
-const collections: CollectionSlide[] = [
+export const collections: CollectionSlide[] = [
     {
         id: "men",
         title: "Men Collection",
