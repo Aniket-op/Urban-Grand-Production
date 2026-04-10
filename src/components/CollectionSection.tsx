@@ -29,9 +29,8 @@ const CollectionSlideComponent = ({
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col ${
-            slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
-          } gap-16 items-center`}
+          className={`flex flex-col ${slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
+            } gap-16 items-center`}
         >
           {/* ── Content Column ───────────────────────────────────────── */}
           <motion.div
@@ -85,8 +84,8 @@ const CollectionSlideComponent = ({
               />
 
               {/* Hover Dark Overlay (full image cover so top list is readable) */}
-              <div 
-                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10" 
+              <div
+                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
               />
 
               {/* Default Bottom Gradient (for resting state text readability) */}
@@ -100,37 +99,34 @@ const CollectionSlideComponent = ({
               />
 
               {/* ── Content Container (Moves from bottom corner to top corner on hover) ── */}
-              <div 
-                className={`absolute z-30 flex flex-col 
+              <div
+                className="absolute left-8 right-8 z-30 flex flex-col 
                            top-[calc(100%-100px)] group-hover:top-8
-                           transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
-                           ${slide.imageRight ? "left-8 items-start text-left" : "right-8 items-end text-right"}`}
+                           transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
               >
                 {/* Title Block */}
-                <div className={`flex flex-col ${slide.imageRight ? "items-start" : "items-end"}`}>
+                <div>
                   <p className="text-white/80 text-[10px] tracking-[0.35em] uppercase font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                     Urban Grand
                   </p>
                   <h3 className="text-white text-3xl font-bold tracking-tight drop-shadow-md">
                     {slide.title}
                   </h3>
-                  {/* Line Animation below heading */}
-                  <div className={`h-[2px] bg-[hsl(38,60%,55%)] mt-3 rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] w-0 group-hover:w-24`} />
+                  <div className="h-[2px] w-10 bg-[hsl(38,60%,55%)] mt-3 rounded-full transition-all duration-500 group-hover:w-16" />
                 </div>
 
                 {/* Subcategories Vertical List */}
                 <div
-                  className={`mt-6 flex flex-col gap-3
+                  className="mt-6 flex flex-col gap-3
                              opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto
-                             transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100
-                             ${slide.imageRight ? "items-start" : "items-end"}`}
+                             transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100"
                 >
                   {slide.subcategories.map((sub, i) => (
                     <a
                       key={sub.label}
                       href={`/category/${slide.id}/${sub.label.toLowerCase()}`}
                       style={{ transitionDelay: `${i * 40 + 100}ms` }}
-                      className={`group/item flex items-center gap-3 text-white/75 hover:text-white transition-colors duration-300 w-fit ${slide.imageRight ? "flex-row" : "flex-row-reverse"}`}
+                      className="group/item flex items-center gap-3 text-white/75 hover:text-white transition-colors duration-300 w-fit"
                     >
                       <span className="w-4 h-[1px] bg-[hsl(38,60%,55%)]/60 group-hover/item:bg-[hsl(38,60%,55%)] group-hover/item:w-8 transition-all duration-300" />
                       <span className="text-sm font-semibold tracking-[0.15em] uppercase">
