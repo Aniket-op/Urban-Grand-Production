@@ -20,20 +20,11 @@ const Index = () => {
       {/* Who We Are */}
       <WhoWeAre />
 
-      {/* Section divider */}
-      <div className="section-divider" />
-
       {/* Zig-Zag Collection Section */}
       <CollectionSection />
 
-      {/* Section divider */}
-      <div className="section-divider" />
-
       {/* Associates + Commitment */}
       <AssociatesSection />
-
-      {/* Section divider */}
-      <div className="section-divider" />
 
       <OurCommitment />
 

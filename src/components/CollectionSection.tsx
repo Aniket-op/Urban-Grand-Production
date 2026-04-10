@@ -25,12 +25,12 @@ const CollectionSlideComponent = ({
   return (
     <div
       ref={ref}
-      className={`w-full py-16 ${isAlt ? "bg-[#FAF9F6]" : "bg-white"}`}
+      className={`w-full py-8 ${isAlt ? "bg-[#FAF9F6]" : "bg-white"}`}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
           className={`flex flex-col ${slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-16 items-center`}
+            } gap-8 items-center`}
         >
           {/* ── Content Column ───────────────────────────────────────── */}
           <motion.div
@@ -153,16 +153,16 @@ const CollectionSection = () => {
   return (
     <section className="w-full">
       {/* Header */}
-      <div className="text-center py-12 bg-[#FAF9F6]">
-        <p className="text-xs tracking-widest uppercase mb-4 text-muted-foreground">
+      <div className="text-center py-6 bg-[#FAF9F6]">
+        <p className="text-xs tracking-widest uppercase mb-2 text-muted-foreground">
           Our Range
         </p>
 
         <h2 className="text-5xl font-bold">Our Collection</h2>
 
-        <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-5" />
+        <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-3" />
 
-        <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
+        <p className="mt-3 max-w-2xl mx-auto text-lg text-muted-foreground">
           Explore our premium range of knitwear designed for men, women, and
           children.
         </p>

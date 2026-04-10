@@ -32,22 +32,22 @@ const AssociatesSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-6"
+          className="text-center mb-3"
         >
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-2">
             Trusted Partners
           </p>
           <h2 className="text-center font-display text-4xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground">
             Our Associates
           </h2>
-          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-5 mx-auto" />
+          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-3 mx-auto" />
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center max-w-3xl mx-auto mb-14"
+          className="text-center max-w-3xl mx-auto mb-6"
         >
           <p className="text-base text-muted-medium leading-relaxed text-justify">
             We partner with brands that value quality, consistency, and growth. We go beyond manufacturing —
