@@ -1,51 +1,16 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { collections } from "@/data/ourCollection";
+import type { CollectionSlide } from "@/data/ourCollection";
 
-// ── Only the images actually used (first image per collection) ──
+// ── Hero images (one per collection) ─────────────────────────────────────────
 import men from "@/assets/men/homePage.jpg";
 import women from "@/assets/women/homePage.jpg";
 import kids from "@/assets/kids/homepage.jpg";
 
-type CollectionSlide = {
-  id: string;
-  title: string;
-  tag: string;
-  description: string;
-  imageRight: boolean;
-  image: string;
-};
+const heroImages: Record<string, string> = { men, women, kids };
 
-const collections: CollectionSlide[] = [
-  {
-    id: "men",
-    title: "Men Collection",
-    tag: "Bold & Refined",
-    description:
-      "Built for the contemporary man — structured cuts, premium fabrics, and versatile designs that move seamlessly from casual to formal.",
-    imageRight: true,
-    image: men,
-  },
-  {
-    id: "women",
-    title: "Women Collection",
-    tag: "Feminine Elegance",
-    description:
-      "Crafted for the modern woman — our women's line blends timeless silhouettes with premium knitwear. Designed for warmth without compromising on style.",
-    imageRight: false,
-    image: women,
-  },
-  {
-    id: "kids",
-    title: "Kids Collection",
-    tag: "Playful & Cozy",
-    description:
-      "Soft, durable, and endlessly fun — our kids' collection is engineered for active little lives. Premium yarns, safe dyes, and designs that kids actually love.",
-    imageRight: true,
-    image: kids,
-  },
-];
-
-// ── Single collection slide ────────────────────────────────────────────────
+// ── Slide Component ───────────────────────────────────────────────────────────
 
 const CollectionSlideComponent = ({
   slide,
@@ -57,123 +22,151 @@ const CollectionSlideComponent = ({
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
-  const ImageCol = (
-    <motion.div
-      initial={{ opacity: 0, x: slide.imageRight ? 60 : -80 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 3, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-full md:w-[52%] flex-shrink-0 group"
-    >
-      <div
-        className="relative overflow-hidden rounded-lg w-full h-full"
-        style={{
-          boxShadow: slide.imageRight
-            ? '-15px 15px 25px -5px rgba(0,0,0,2)'
-            : '15px 15px 25px -5px rgba(0,0,0,2)'
-        }}
-      >
-        <img
-          src={slide.image}
-          alt={slide.title}
-          className="w-full h-[80vh] object-cover group-hover:scale-[1.03] transition-transform duration-3000"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-3000 pointer-events-none z-20" />
-      </div>
-
-      {/* Decorative accent line */}
-      {/* <motion.div
-        initial={{ scaleY: 0 }}
-        animate={inView ? { scaleY: 1 } : {}}
-        transition={{ duration: 1.2, delay: 0.4 }}
-        className={`absolute ${slide.imageRight ? "-right-3 sm:-right-4" : "-left-3 sm:-left-4"} top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] origin-top rounded-full hidden md:block`}
-      /> */}
-    </motion.div>
-  );
-
-  const ContentCol = (
-    <motion.div
-      initial={{ opacity: 0, x: slide.imageRight ? -60 : 60 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 3, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col justify-center gap-7 flex-1 min-w-0"
-    >
-      {/* Content panel */}
-      <div className="p-4 sm:p-6 md:p-8 lg:p-0">
-        <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
-          {slide.tag}
-        </p>
-        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-bold leading-[1.05] tracking-[-0.01em] text-foreground">
-          {slide.title}
-        </h2>
-        <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />
-        <p className="text-base sm:text-lg md:text-xl text-muted-medium leading-relaxed max-w-[480px] text-justify">
-          {slide.description}
-        </p>
-      </div>
-      {/* CTA */}
-      <div className="flex items-center gap-4 sm:gap-5 pt-2 px-4 sm:px-6 md:px-8 lg:px-0">
-        <a
-          href={`/category/${slide.id}`}
-          className="group inline-flex items-center gap-2 sm:gap-3 bg-foreground text-background px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase hover:opacity-85 transition-elegant rounded-md"
-        >
-          Explore
-          <span className="transition-transform duration-3000 group-hover:translate-x-1">→</span>
-        </a>
-      </div>
-    </motion.div>
-  );
-
   return (
-    <div ref={ref} className={`w-full py-8 sm:py-12 md:py-16 ${isAlt ? 'bg-section-alt' : 'bg-background'}`}>
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-10">
+    <div
+      ref={ref}
+      className={`w-full py-16 ${isAlt ? "bg-[#FAF9F6]" : "bg-white"}`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col ${slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-8 sm:gap-12 md:gap-16 lg:gap-24 items-center`}
+          className={`flex flex-col ${
+            slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
+          } gap-16 items-center`}
         >
-          {ContentCol}
-          {ImageCol}
+          {/* ── Content Column ───────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, x: slide.imageRight ? -60 : 60 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: slide.imageRight ? -60 : 60 }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className="flex flex-col justify-center gap-7 flex-1"
+          >
+            <div>
+              <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
+                {slide.tag}
+              </p>
+
+              <h2 className="text-4xl font-bold">{slide.title}</h2>
+
+              <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />
+
+              <p className="text-lg text-muted-medium max-w-[480px]">
+                {slide.description}
+              </p>
+            </div>
+
+            <a
+              href={`/category/${slide.id}`}
+              className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 text-xs uppercase tracking-widest rounded-md hover:opacity-80 w-fit"
+            >
+              Explore →
+            </a>
+          </motion.div>
+
+          {/* ── Image Column ─────────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, x: slide.imageRight ? 60 : -60 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: slide.imageRight ? 60 : -60 }}
+            transition={{ duration: 1.2 }}
+            className="relative w-full md:w-[52%] flex-shrink-0"
+          >
+            {/* IMAGE CARD */}
+            <div
+              className="relative overflow-hidden rounded-lg w-full group cursor-pointer"
+              style={{
+                boxShadow: slide.imageRight
+                  ? "-15px 15px 25px -5px rgba(0,0,0,0.35)"
+                  : "15px 15px 25px -5px rgba(0,0,0,0.35)",
+              }}
+            >
+              <img
+                src={heroImages[slide.id]}
+                alt={slide.title}
+                className="w-full h-[80vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+
+              {/* Hover Dark Overlay (full image cover so top list is readable) */}
+              <div 
+                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10" 
+              />
+
+              {/* Default Bottom Gradient (for resting state text readability) */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-[45%] pointer-events-none z-20
+                           transition-opacity duration-500 group-hover:opacity-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
+                }}
+              />
+
+              {/* ── Content Container (Moves from bottom corner to top corner on hover) ── */}
+              <div 
+                className="absolute left-8 right-8 z-30 flex flex-col 
+                           top-[calc(100%-100px)] group-hover:top-8
+                           transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+              >
+                {/* Title Block */}
+                <div>
+                  <p className="text-white/80 text-[10px] tracking-[0.35em] uppercase font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                    Urban Grand
+                  </p>
+                  <h3 className="text-white text-3xl font-bold tracking-tight drop-shadow-md">
+                    {slide.title}
+                  </h3>
+                  <div className="h-[2px] w-10 bg-[hsl(38,60%,55%)] mt-3 rounded-full transition-all duration-500 group-hover:w-16" />
+                </div>
+
+                {/* Subcategories Vertical List */}
+                <div
+                  className="mt-6 flex flex-col gap-3
+                             opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto
+                             transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100"
+                >
+                  {slide.subcategories.map((sub, i) => (
+                    <a
+                      key={sub.label}
+                      href={`/category/${slide.id}/${sub.label.toLowerCase()}`}
+                      style={{ transitionDelay: `${i * 40 + 100}ms` }}
+                      className="group/item flex items-center gap-3 text-white/75 hover:text-white transition-colors duration-300 w-fit"
+                    >
+                      <span className="w-4 h-[1px] bg-[hsl(38,60%,55%)]/60 group-hover/item:bg-[hsl(38,60%,55%)] group-hover/item:w-8 transition-all duration-300" />
+                      <span className="text-sm font-semibold tracking-[0.15em] uppercase">
+                        {sub.label}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
   );
 };
 
-// ── Main CollectionSection ──────────────────────────────────────────────────
+// ── Main Section ──────────────────────────────────────────────────────────────
 
 const CollectionSection = () => {
-  const sectionRef = useRef(null);
-  const sectionInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   return (
-    <section className="w-full bg-background" id="collections">
-      {/* Section header */}
-      <div
-        ref={sectionRef}
-        className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-10 pt-4 sm:pt-8 md:pt-12 pb-6 sm:pb-10 md:pb-12 bg-[#FAF9F6]"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.5 }}
-          className="text-center"
-        >
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
-            Our Range
-          </p>
+    <section className="w-full">
+      {/* Header */}
+      <div className="text-center py-12 bg-[#FAF9F6]">
+        <p className="text-xs tracking-widest uppercase mb-4 text-muted-foreground">
+          Our Range
+        </p>
 
-          <h2 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-[-0.01em] text-foreground">
-            Our Collection
-          </h2>
+        <h2 className="text-5xl font-bold">Our Collection</h2>
 
-          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-16 mt-5 mx-auto" />
+        <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-5" />
 
-          <p className="mt-6 max-w-2xl mx-auto text-muted-medium text-base sm:text-lg md:text-xl leading-relaxed">
-            Explore our premium range of knitwear designed for men, women, and children — crafted with quality yarns and contemporary styles.
-          </p>
-        </motion.div>
+        <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
+          Explore our premium range of knitwear designed for men, women, and
+          children.
+        </p>
       </div>
 
-      {/* Zig-zag slides with alternating backgrounds */}
+      {/* Slides */}
       {collections.map((slide, idx) => (
         <CollectionSlideComponent
           key={slide.id}
