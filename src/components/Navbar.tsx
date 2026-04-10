@@ -39,13 +39,13 @@ const allMenuItems: MenuItem[] = [
 ];
 
 const languages = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "hi", label: "Hindi", flag: "🇮🇳" },
-  { code: "de", label: "German", flag: "🇩🇪" },
-  { code: "fr", label: "French", flag: "🇫🇷" },
-  { code: "es", label: "Spanish", flag: "🇪🇸" },
-  { code: "ja", label: "Japanese", flag: "🇯🇵" },
-  { code: "ar", label: "Arabic", flag: "🇸🇦" },
+  { code: "en", label: "English", flagUrl: "https://hatscripts.github.io/circle-flags/flags/gb.svg" },
+  { code: "hi", label: "Hindi", flagUrl: "https://hatscripts.github.io/circle-flags/flags/in.svg" },
+  { code: "de", label: "German", flagUrl: "https://hatscripts.github.io/circle-flags/flags/de.svg" },
+  { code: "fr", label: "French", flagUrl: "https://hatscripts.github.io/circle-flags/flags/fr.svg" },
+  { code: "es", label: "Spanish", flagUrl: "https://hatscripts.github.io/circle-flags/flags/es.svg" },
+  { code: "ja", label: "Japanese", flagUrl: "https://hatscripts.github.io/circle-flags/flags/jp.svg" },
+  { code: "ar", label: "Arabic", flagUrl: "https://hatscripts.github.io/circle-flags/flags/sa.svg" },
 ];
 
 const Navbar = () => {
@@ -96,7 +96,7 @@ const Navbar = () => {
       <nav
         ref={navRef}
         className={`force-light h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
-          ? "top-0 bg-[#FAF9F6] shadow-sm"
+          ? "top-0 bg-[#f7eac3] shadow-sm"
           : "top-3 bg-transparent"
           }`}
       >
@@ -215,8 +215,7 @@ const Navbar = () => {
             onMouseLeave={() => setLangOpen(false)}
           >
             <button className="flex items-center gap-1.5 text-[12px] text-foreground/70 hover:text-foreground transition-elegant font-semibold">
-              <span>{currentLang.flag}</span>
-              <span className="hidden lg:inline uppercase tracking-wide">{currentLang.label}</span>
+              <img src={currentLang.flagUrl} alt={currentLang.label} className="w-4 h-4 rounded-full" />
               <ChevronDown
                 size={13}
                 className={`${langOpen ? "rotate-180" : ""} transition-transform duration-300`}
@@ -230,11 +229,11 @@ const Navbar = () => {
                 <button
                   key={lang.code}
                   onClick={() => { setCurrentLang(lang); setLangOpen(false); }}
-                  className={`w-full text-left px-5 py-2.5 text-[13px] flex items-center gap-3 transition-colors ${currentLang.code === lang.code
+                  className={`w-full h-full text-left px-5 py-2.5 text-[13px] flex items-center gap-3 transition-colors ${currentLang.code === lang.code
                     ? "text-foreground font-semibold bg-muted/50"
                     : "text-foreground/70 hover:text-foreground hover:bg-muted/30"}`}
                 >
-                  <span className="text-base">{lang.flag}</span>
+                  <img src={lang.flagUrl} alt={lang.label} className="w-4 h-4 rounded-full" />
                   {lang.label}
                 </button>
               ))}
@@ -372,7 +371,7 @@ const Navbar = () => {
                       : "border-border text-foreground/70 hover:border-foreground/50"
                       }`}
                   >
-                    <span>{lang.flag}</span>
+                    <img src={lang.flagUrl} alt={lang.label} className="w-3.5 h-3.5 rounded-full" />
                     {lang.label}
                   </button>
                 ))}
