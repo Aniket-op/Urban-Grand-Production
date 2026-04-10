@@ -25,21 +25,11 @@ const WhoWeAre = () => {
             <img
               src={legacyImg}
               alt="Urban Grand Heritage"
-              className="w-full h-[80vh] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="w-full h-[80vh] object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
             />
             {/* Accent border */}
             <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg pointer-events-none" />
           </div>
-          {/* Floating accent card — corporate trust badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 md:-right-10 bg-[hsl(220,25%,12%)] dark:bg-[hsl(220,20%,18%)] dark:border dark:border-white/10 text-white px-5 py-4 sm:px-8 sm:py-6 shadow-2xl rounded-lg"
-          >
-            <span className="block text-2xl sm:text-3xl font-heading font-bold">48+</span>
-            <span className="block text-[10px] tracking-[0.25em] uppercase mt-1 opacity-60 font-medium">Years of Craft</span>
-          </motion.div>
 
           {/* Decorative accent line */}
           <motion.div
