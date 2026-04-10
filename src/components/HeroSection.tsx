@@ -39,6 +39,8 @@ const HeroSection = () => {
         preload="auto"
       />
 
+      {/* Dark mode overlay */}
+      <div className="absolute inset-0 bg-black/0 dark:bg-black/40 pointer-events-none transition-colors duration-500" />
 
       {/* Text content */}
       <div className="absolute inset-0 flex items-center">
