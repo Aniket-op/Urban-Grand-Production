@@ -16,8 +16,6 @@ const Index = () => {
       {/* Hero — full screen, starts behind navbar overlay */}
       <HeroSection />
 
-      {/* Section divider */}
-      <div className="section-divider" />
 
       {/* Who We Are */}
       <WhoWeAre />

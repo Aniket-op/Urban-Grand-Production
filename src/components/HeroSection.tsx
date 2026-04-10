@@ -26,7 +26,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-[hsl(220,25%,8%)]">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Background Video */}
       <video
         ref={videoRef}
@@ -39,9 +39,6 @@ const HeroSection = () => {
         preload="auto"
       />
 
-      {/* Gradient overlays for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 via-50% to-black/15 sm:from-black/85 sm:via-black/50 sm:via-45% sm:to-black/10 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 sm:from-black/60 sm:via-transparent to-transparent pointer-events-none" />
 
       {/* Text content */}
       <div className="absolute inset-0 flex items-center">
