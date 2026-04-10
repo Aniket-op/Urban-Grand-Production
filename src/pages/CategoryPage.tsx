@@ -381,8 +381,8 @@ const ImageLightbox = ({
                 key={i}
                 onClick={() => onNavigate(i)}
                 className={`h-12 w-10 sm:h-14 sm:w-11 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${i === currentIndex
-                    ? "border-white/80 scale-105 ring-1 ring-white/30"
-                    : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
+                  ? "border-white/80 scale-105 ring-1 ring-white/30"
+                  : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
                   }`}
               >
                 <img src={img.image} alt="" className="h-full w-full object-cover" />
@@ -417,7 +417,7 @@ const ImageLightbox = ({
           </button>
         </div>
         <div className="flex-1 overflow-y-auto w-full bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-border">
-           <EnquiryForm />
+          <EnquiryForm />
         </div>
       </div>
     </motion.div>
@@ -474,13 +474,31 @@ const ProductCard = ({
 
 // ── Main page
 const CategoryPage = () => {
-  const { gender } = useParams<{ gender: string }>();
+  const { gender, subcategory } = useParams<{ gender: string; subcategory?: string }>();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
 
   useEffect(() => {
-    setSelectedSubcategory("All");
-  }, [gender]);
+    if (!gender || !categoryData[gender]) return;
+
+    // Find matching subcategory if provided in URL
+    if (subcategory) {
+      const data = categoryData[gender];
+      const availableSubs = ["All", ...Array.from(new Set(data.products.map(p => p.subcategory)))];
+
+      const search = subcategory.toLowerCase();
+      // Look for exact match or pluralization match
+      const match = availableSubs.find(s =>
+        s.toLowerCase() === search ||
+        s.toLowerCase() === `${search}s` ||
+        `${s.toLowerCase()}s` === search
+      );
+
+      setSelectedSubcategory(match || "All");
+    } else {
+      setSelectedSubcategory("All");
+    }
+  }, [gender, subcategory]);
 
   if (!gender || !categoryData[gender]) {
     return <Navigate to="/" replace />;
@@ -492,8 +510,8 @@ const CategoryPage = () => {
   const others = Object.keys(categoryData).filter((k) => k !== gender);
 
   const subcategories = ["All", ...Array.from(new Set(data.products.map(p => p.subcategory)))];
-  const filteredProducts = selectedSubcategory === "All" 
-    ? data.products 
+  const filteredProducts = selectedSubcategory === "All"
+    ? data.products
     : data.products.filter(p => p.subcategory === selectedSubcategory);
 
   return (
@@ -544,11 +562,10 @@ const CategoryPage = () => {
               <button
                 key={sub}
                 onClick={() => setSelectedSubcategory(sub)}
-                className={`px-5 py-1.5 text-[11px] font-semibold tracking-[0.15em] uppercase rounded-md transition-all whitespace-nowrap ${
-                  selectedSubcategory === sub
+                className={`px-5 py-1.5 text-[11px] font-semibold tracking-[0.15em] uppercase rounded-md transition-all whitespace-nowrap ${selectedSubcategory === sub
                     ? "bg-foreground text-background"
                     : "text-muted-medium hover:text-foreground"
-                }`}
+                  }`}
               >
                 {sub}
               </button>
