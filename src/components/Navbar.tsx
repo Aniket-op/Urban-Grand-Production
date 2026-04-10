@@ -1,4 +1,4 @@
-import { ChevronDown, Menu, X, Sun, Moon, Globe, LogIn, Mail, Phone } from "lucide-react";
+import { ChevronDown, Menu, X, Sun, Moon, Globe, LogIn, Mail, Phone, User } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logoUrl from "@/assets/logos/logo.png";
@@ -254,10 +254,10 @@ const Navbar = () => {
           {/* Login Button */}
           <button
             onClick={() => setLoginOpen(true)}
-            className="flex items-center gap-2 px-4 lg:px-5 py-2 rounded-md border border-foreground/20 text-[11px] font-semibold tracking-[0.1em] uppercase text-foreground/70 hover:text-foreground hover:border-foreground/40 hover:bg-muted/30 transition-elegant"
+            className=" flex items-center flex-col px-4 lg:px-2 py-2 rounded-md border border-foreground/20 text-[11px] font-semibold tracking-[0.1em] uppercase text-foreground/70 hover:text-foreground hover:border-foreground/40 hover:bg-muted/30 transition-elegant"
           >
-            <LogIn size={13} />
-            <span className="hidden lg:inline">Login</span>
+            <User size={25} />
+            <span>Login</span>
           </button>
         </div>
 
@@ -394,7 +394,7 @@ const Navbar = () => {
                 onClick={() => { setLoginOpen(true); setMobileOpen(false); }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-md bg-foreground text-background text-xs font-semibold tracking-wide hover:opacity-85 transition-elegant"
               >
-                <LogIn size={13} />
+                <User size={13} />
                 Login
               </button>
             </div>
