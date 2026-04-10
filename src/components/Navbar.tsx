@@ -95,7 +95,7 @@ const Navbar = () => {
       {/* ── NAV BAR ──────────────────────────────────────────────────────── */}
       <nav
         ref={navRef}
-        className={`force-light h-[72px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
+        className={`force-light h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
           ? "top-0 bg-[#FAF9F6] shadow-sm"
           : "top-3 bg-transparent"
           }`}
@@ -124,7 +124,8 @@ const Navbar = () => {
           <img
             src={logoUrl}
             alt="Urban Grand Logo"
-            className="h-10 w-10 sm:h-[44px] sm:w-[44px] rounded-sm mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+            className="rounded-sm mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+            style={{ height: '72px', width: '72px' }}
           />
           <span className={`font-heading text-[17px] sm:text-[20px] font-bold tracking-[0.08em] leading-none transition-colors duration-500 text-black`}>
             URBAN GRAND
@@ -283,7 +284,7 @@ const Navbar = () => {
           {/* Mobile header */}
           <div className="flex items-center justify-between px-5 h-[72px] border-b border-border/30 flex-shrink-0">
             <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5">
-              <img src={logoUrl} alt="Urban Grand Logo" className="h-10 w-10 rounded-sm mix-blend-multiply" />
+              <img src={logoUrl} alt="Urban Grand Logo" className="h-[72px] w-[72px] rounded-sm mix-blend-multiply" />
               <span className="font-heading text-[17px] font-bold tracking-[0.08em] text-black">URBAN GRAND</span>
             </Link>
             <button
