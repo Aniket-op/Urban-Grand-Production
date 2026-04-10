@@ -68,8 +68,8 @@ const CollectionSlideComponent = ({
         className="relative overflow-hidden rounded-lg w-full h-full"
         style={{
           boxShadow: slide.imageRight
-            ? '-30px 30px 50px -10px rgba(0,0,0,0.4)'
-            : '30px 30px 50px -10px rgba(0,0,0,0.4)'
+            ? '-15px 15px 25px -5px rgba(0,0,0,2)'
+            : '15px 15px 25px -5px rgba(0,0,0,2)'
         }}
       >
         <img
