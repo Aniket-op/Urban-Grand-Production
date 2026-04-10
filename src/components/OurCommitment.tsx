@@ -40,15 +40,15 @@ const OurCommitment = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-14"
+          className="text-center mb-6"
         >
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-2">
             Why Choose Us
           </p>
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground">
             Our Commitment
           </h2>
-          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-5 mx-auto" />
+          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-3 mx-auto" />
         </motion.div>
 
         {/* Commitment cards */}

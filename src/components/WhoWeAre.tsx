@@ -11,7 +11,7 @@ const WhoWeAre = () => {
     <section
       ref={ref}
       id="who-we-are"
-      className="w-full pt-8 sm:pt-16 md:pt-24 pb-4 sm:pb-8 md:pb-12 bg-background overflow-hidden"
+      className="w-full pt-6 sm:pt-10 md:pt-14 pb-4 sm:pb-6 md:pb-8 bg-background overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto px-2 sm:px-3 md:px-4 lg:px-6 grid grid-cols-1 md:grid-cols-2 sm:gap-16 md:gap-24 items-center">
         {/* Left — Image */}
@@ -69,7 +69,7 @@ const WhoWeAre = () => {
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.55 }}
-            className="h-[2px] bg-[hsl(38,60%,50%)] w-16 origin-left mb-8"
+            className="h-[2px] bg-[hsl(38,60%,50%)] w-16 origin-left mb-5"
           />
 
           <motion.div
@@ -98,7 +98,7 @@ const WhoWeAre = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.65 }}
-            className="mt-10 flex items-center gap-6"
+            className="mt-6 flex items-center gap-6"
           >
             <Link
               to="/about/category/our-legacy"
