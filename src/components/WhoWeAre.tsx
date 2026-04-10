@@ -11,7 +11,7 @@ const WhoWeAre = () => {
     <section
       ref={ref}
       id="who-we-are"
-      className="w-full pt-6 sm:pt-10 md:pt-14 pb-4 sm:pb-6 md:pb-8 bg-background overflow-hidden"
+      className="w-full pt-6 sm:pt-10 md:pt-14 pb-4 sm:pb-6 md:pb-8 bg-background dark:bg-zinc-900 transition-colors duration-500 overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto px-2 sm:px-3 md:px-4 lg:px-6 grid grid-cols-1 md:grid-cols-2 sm:gap-16 md:gap-24 items-center">
         {/* Left — Image */}
@@ -50,7 +50,7 @@ const WhoWeAre = () => {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-5"
+            className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-5"
           >
             Our Story
           </motion.p>
@@ -59,7 +59,7 @@ const WhoWeAre = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.05] tracking-[-0.01em] text-foreground mb-2"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.05] tracking-[-0.01em] text-foreground dark:text-white mb-2"
           >
             Who We Are
           </motion.h2>
@@ -78,17 +78,17 @@ const WhoWeAre = () => {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="space-y-5 text-justify"
           >
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
               Urban Grand is the premium fashion label of{" "}
-              <span className="font-semibold text-foreground">Panchsheel Knitwears</span> — a legacy
+              <span className="font-semibold text-foreground dark:text-white">Panchsheel Knitwears</span> — a legacy
               built over decades of precision craftsmanship and an unwavering commitment to quality.
             </p>
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
               From the looms of Ludhiana to wardrobes across India, we design knitwear that tells a
               story — where tradition meets modern silhouette. Every stitch reflects the care of
               skilled artisans and the vision of a brand that has always put quality first.
             </p>
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
               We cater to men, women, and children — offering timeless cuts, premium yarns, and
               seasonal collections that define contemporary Indian fashion.
             </p>
@@ -102,7 +102,7 @@ const WhoWeAre = () => {
           >
             <Link
               to="/about/category/our-legacy"
-              className="group inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:opacity-85 transition-elegant rounded-md"
+              className="group inline-flex items-center gap-3 bg-foreground dark:bg-white text-background dark:text-black px-8 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:opacity-85 transition-all duration-300 rounded-md"
             >
               Know More
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

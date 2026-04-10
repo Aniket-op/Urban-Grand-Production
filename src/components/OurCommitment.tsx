@@ -33,7 +33,7 @@ const OurCommitment = () => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="w-full py-4 sm:py-6 lg:py-8 bg-background overflow-hidden">
+    <section ref={ref} className="w-full py-4 sm:py-6 lg:py-8 bg-background dark:bg-zinc-900 transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
         {/* Section header */}
         <motion.div
@@ -42,10 +42,10 @@ const OurCommitment = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-6"
         >
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-2">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-2">
             Why Choose Us
           </p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground dark:text-white">
             Our Commitment
           </h2>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-3 mx-auto" />
@@ -60,17 +60,17 @@ const OurCommitment = () => {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.3, delay: index * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="corporate-card rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start text-center !bg-gray-100 !shadow-2xl hover:!shadow-3xl"
+              className="corporate-card rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start text-center !bg-gray-100 dark:!bg-zinc-800 dark:!border-zinc-700 !shadow-2xl hover:!shadow-3xl transition-colors duration-500"
             >
-              <div className="h-20 md:h-24 w-full max-w-[120px] flex items-center justify-center mb-5 bg-white dark:bg-zinc-800 rounded-lg p-2 border border-border/40">
+              <div className="h-20 md:h-24 w-full max-w-[120px] flex items-center justify-center mb-5 bg-white dark:bg-zinc-900 rounded-lg p-2 border border-border/40 dark:border-zinc-700 transition-colors duration-500">
                 <img
                   src={item.logo}
                   alt={item.title}
                   className="max-h-full max-w-full object-contain mix-blend-multiply dark:mix-blend-normal"
                 />
               </div>
-              <h3 className="font-heading font-semibold text-foreground mb-2 text-[15px]" title={item.title}>{item.title}</h3>
-              <p className="text-sm text-muted-medium leading-relaxed">{item.description}</p>
+              <h3 className="font-heading font-semibold text-foreground dark:text-white mb-2 text-[15px]" title={item.title}>{item.title}</h3>
+              <p className="text-sm text-muted-medium dark:text-zinc-300 leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>

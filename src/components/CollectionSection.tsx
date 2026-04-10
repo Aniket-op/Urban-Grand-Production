@@ -25,7 +25,7 @@ const CollectionSlideComponent = ({
   return (
     <div
       ref={ref}
-      className={`w-full py-8 ${isAlt ? "bg-[#FAF9F6]" : "bg-white"}`}
+      className={`w-full py-8 transition-colors duration-500 ${isAlt ? "bg-[#FAF9F6] dark:bg-zinc-800/40" : "bg-white dark:bg-zinc-900"}`}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
@@ -40,22 +40,22 @@ const CollectionSlideComponent = ({
             className="flex flex-col justify-center gap-7 flex-1"
           >
             <div>
-              <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-4">
+              <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-4">
                 {slide.tag}
               </p>
 
-              <h2 className="text-4xl font-bold">{slide.title}</h2>
+              <h2 className="text-4xl font-bold dark:text-white">{slide.title}</h2>
 
               <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />
 
-              <p className="text-lg text-muted-medium max-w-[480px]">
+              <p className="text-lg text-muted-medium dark:text-zinc-300 max-w-[480px]">
                 {slide.description}
               </p>
             </div>
 
             <a
               href={`/category/${slide.id}`}
-              className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 text-xs uppercase tracking-widest rounded-md hover:opacity-80 w-fit"
+              className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-6 py-3 text-xs uppercase tracking-widest rounded-md hover:opacity-80 w-fit transition-colors"
             >
               Explore →
             </a>
@@ -153,16 +153,16 @@ const CollectionSection = () => {
   return (
     <section className="w-full">
       {/* Header */}
-      <div className="text-center py-6 bg-[#FAF9F6]">
-        <p className="text-xs tracking-widest uppercase mb-2 text-muted-foreground">
+      <div className="text-center py-6 bg-[#FAF9F6] dark:bg-zinc-900 transition-colors duration-500">
+        <p className="text-xs tracking-widest uppercase mb-2 text-muted-foreground dark:text-zinc-400">
           Our Range
         </p>
 
-        <h2 className="text-5xl font-bold">Our Collection</h2>
+        <h2 className="text-5xl font-bold dark:text-white">Our Collection</h2>
 
         <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-3" />
 
-        <p className="mt-3 max-w-2xl mx-auto text-lg text-muted-foreground">
+        <p className="mt-3 max-w-2xl mx-auto text-lg text-muted-foreground dark:text-zinc-400">
           Explore our premium range of knitwear designed for men, women, and
           children.
         </p>
