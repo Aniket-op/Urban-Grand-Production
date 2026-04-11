@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ExploreSection from "@/components/explore/ExploreSection";
-import { collections } from "@/data/ourCollection";
+import { collections, getCollectionSlides, genderMetadata } from "@/data/ourCollection";
 
 // Hero background images (one per gender)
 import menHero from "@/assets/men/homePage.jpg";
@@ -29,17 +29,18 @@ const genderOrder = ["men", "women", "kids"];
 const ExplorePage = () => {
   const { gender } = useParams<{ gender: string }>();
 
-  const slide = collections.find((c) => c.id === gender);
-
   // Scroll to top on gender change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [gender]);
 
-  if (!gender || !slide) {
+  const genderData = gender ? genderMetadata[gender] : null;
+
+  if (!gender || !genderData) {
     return <Navigate to="/explore/men" replace />;
   }
 
+  const categorySlides = getCollectionSlides(gender);
   const others = genderOrder.filter((g) => g !== gender);
 
   return (
@@ -53,7 +54,7 @@ const ExplorePage = () => {
           <motion.img
             key={gender}
             src={heroImages[gender]}
-            alt={slide.title}
+            alt={genderData.title}
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
@@ -81,11 +82,11 @@ const ExplorePage = () => {
               Urban Grand — Explore
             </p>
             <h1 className="font-display text-5xl md:text-7xl font-bold text-white leading-tight">
-              {slide.title}
+              {genderData.title}
             </h1>
             <div className="h-[2px] bg-[hsl(38,60%,55%)] w-16 mt-4 mb-4" />
             <p className="text-white/60 text-sm md:text-base max-w-lg leading-relaxed">
-              {slide.tag} — {slide.description}
+              {genderData.tag} — {genderData.description}
             </p>
           </motion.div>
         </div>
@@ -117,7 +118,7 @@ const ExplorePage = () => {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-1">
-              {slide.subcategories.length} Categories
+              {categorySlides.length} Categories
             </p>
             <h2 className="text-2xl font-bold dark:text-white">
               Browse the Collection
@@ -144,11 +145,11 @@ const ExplorePage = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {slide.subcategories.map((sub, idx) => (
+          {categorySlides.map((categorySlide, idx) => (
             <ExploreSection
-              key={`${gender}-${sub.label}`}
-              subcategory={sub}
-              parentSlide={slide}
+              key={`${gender}-${categorySlide.id}`}
+              categorySlide={categorySlide}
+              gender={gender}
               index={idx}
             />
           ))}

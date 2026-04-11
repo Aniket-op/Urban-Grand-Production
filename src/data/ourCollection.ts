@@ -1,60 +1,4 @@
-
-// ── Women images
-import womenCardigans1 from "@/assets/women/cardigans1.jpg";
-import womenCardigans2 from "@/assets/women/cardigans2.jpg";
-import womenCoat1 from "@/assets/women/coat1.png";
-import womenCoat2 from "@/assets/women/coat2.jpg";
-import womenCoat3 from "@/assets/women/coat3.jpg";
-import womenHoodies1 from "@/assets/women/hoodies1.jpg";
-import womenHoodies2 from "@/assets/women/hoodies2.jpg";
-import womenHoodies3 from "@/assets/women/hoodies3.jpg";
-import womenJacket1 from "@/assets/women/jacket_1.png";
-import womenJacket2 from "@/assets/women/jacket_2.png";
-import womenJacket3 from "@/assets/women/jacket_3.jpg";
-import womenSweatshirts1 from "@/assets/women/sweatshirts_1.png";
-import womenSweatshirts2 from "@/assets/women/sweatshirts_2.jpg";
-import womenSweatshirts3 from "@/assets/women/sweatshirts_3.jpg";
-import womenThermal1 from "@/assets/women/thermal1.jpg";
-import womenThermal2 from "@/assets/women/thermal2.jpg";
-
-// ── Men images
-import menCoats1 from "@/assets/men/coats1.png";
-import menCoats2 from "@/assets/men/coats2.jpg";
-import menCoats3 from "@/assets/men/coats3.jpg";
-import menHoodies1 from "@/assets/men/hoodies_1.png";
-import menHoodies2 from "@/assets/men/hoodies_2.png";
-import menHoodies3 from "@/assets/men/hoodies_3.png";
-import menJacket1 from "@/assets/men/jacket_1.png";
-import menJacket2 from "@/assets/men/jacket_2.png";
-import menLower1 from "@/assets/men/lower1.jpg";
-import menLower2 from "@/assets/men/lower2.jpg";
-import menLower3 from "@/assets/men/lower3.webp";
-import menSweatshirts1 from "@/assets/men/sweatshirts_1.png";
-import menSweatshirts2 from "@/assets/men/sweatshirts_2.jpg";
-import menThermal1 from "@/assets/men/thermal1.webp";
-import menThermal2 from "@/assets/men/thermal2.webp";
-import menTshirts1 from "@/assets/men/tshirts1.jpg";
-import menTshirts2 from "@/assets/men/tshirts2.jpg";
-import menTshirts3 from "@/assets/men/tshirts3.jpg";
-
-// ── Kids images
-import kidsCoat1 from "@/assets/kids/coat1.png";
-import kidsCoat2 from "@/assets/kids/coat2.png";
-import kidsCoat3 from "@/assets/kids/coat3.jpeg";
-import kidsHoodies1 from "@/assets/kids/hoodies1.png";
-import kidsHoodies2 from "@/assets/kids/hoodies2.png";
-import kidsJacket1 from "@/assets/kids/jacket_1.png";
-import kidsJacket2 from "@/assets/kids/jacket_2.png";
-import kidsJacket3 from "@/assets/kids/jacket_3.jpg";
-import kidsSweaters1 from "@/assets/kids/sweaters1.jpg";
-import kidsSweaters2 from "@/assets/kids/sweaters2.jpg";
-import kidsSweaters3 from "@/assets/kids/sweaters3.jpg";
-import kidsThermal1 from "@/assets/kids/thermal1.jpg";
-import kidsThermal2 from "@/assets/kids/thermal2.jpg";
-import kidsThermal3 from "@/assets/kids/thermal3.webp";
-
-
-// ── Single collection slide ────
+// ── Core Types ────
 export type Subcategory = {
     label: string;
     images: string[];
@@ -65,61 +9,148 @@ export type CollectionSlide = {
     title: string;
     tag: string;
     description: string;
-    imageRight: boolean; // true = image on right, content on left
+    imageRight: boolean;
     subcategories: Subcategory[];
-    accent: string; // tailwind bg color for accent dot
+    accent: string;
 };
 
-export const collections: CollectionSlide[] = [
-    {
-        id: "men",
+// ── Generic Metadata for Genders (Pages & Homepage) ────
+export const genderMetadata: Record<string, Omit<CollectionSlide, "id" | "subcategories">> = {
+    men: {
         title: "Men Collection",
         tag: "Bold & Refined",
-        description:
-            "Built for the contemporary man — structured cuts, premium fabrics, and versatile designs that move seamlessly from casual to formal.",
+        description: "Built for the contemporary man — structured cuts, premium fabrics, and versatile designs that move seamlessly from casual to formal.",
         imageRight: true,
         accent: "bg-blue-300/60",
-        subcategories: [
-            { label: "Jacket", images: [menJacket1, menJacket2] },
-            { label: "Coats", images: [menCoats1, menCoats2, menCoats3] },
-            { label: "Sweatshirts", images: [menSweatshirts1, menSweatshirts2] },
-            { label: "Hoodies", images: [menHoodies1, menHoodies2, menHoodies3] },
-            { label: "T-Shirts", images: [menTshirts1, menTshirts2, menTshirts3] },
-            { label: "Lowers", images: [menLower1, menLower2, menLower3] },
-            { label: "Thermal", images: [menThermal1, menThermal2] },
-        ],
     },
-    {
-        id: "women",
+    women: {
         title: "Women Collection",
         tag: "Feminine Elegance",
-        description:
-            "Crafted for the modern woman — our women's line blends timeless silhouettes with premium knitwear. Designed for warmth without compromising on style.",
+        description: "Crafted for the modern woman — our women's line blends timeless silhouettes with premium knitwear. Designed for warmth without compromising on style.",
         imageRight: false,
         accent: "bg-rose-300/60",
-        subcategories: [
-            { label: "Jacket", images: [womenJacket1, womenJacket2, womenJacket3] },
-            { label: "Coats", images: [womenCoat1, womenCoat2, womenCoat3] },
-            { label: "Sweatshirts", images: [womenSweatshirts1, womenSweatshirts2, womenSweatshirts3] },
-            { label: "Hoodies", images: [womenHoodies1, womenHoodies2, womenHoodies3] },
-            { label: "Thermal", images: [womenThermal1, womenThermal2] },
-            { label: "Cardigans", images: [womenCardigans1, womenCardigans2] },
-        ],
     },
-    {
-        id: "kids",
+    kids: {
         title: "Kids Collection",
         tag: "Playful & Cozy",
-        description:
-            "Soft, durable, and endlessly fun — our kids' collection is engineered for active little lives. Premium yarns, safe dyes, and designs that kids actually love.",
+        description: "Soft, durable, and endlessly fun — our kids' collection is engineered for active little lives. Premium yarns, safe dyes, and designs that kids actually love.",
         imageRight: true,
         accent: "bg-amber-300/60",
-        subcategories: [
-            { label: "Jacket", images: [kidsJacket1, kidsJacket2, kidsJacket3] },
-            { label: "Coats", images: [kidsCoat1, kidsCoat2, kidsCoat3] },
-            { label: "Sweaters", images: [kidsSweaters1, kidsSweaters2, kidsSweaters3] },
-            { label: "Hoodies", images: [kidsHoodies1, kidsHoodies2] },
-            { label: "Thermal", images: [kidsThermal1, kidsThermal2, kidsThermal3] },
-        ],
-    },
-];
+    }
+};
+
+// ── Category Metadata ────
+const categoryMetadata: Record<string, { tag: string, description: string, accent: string }> = {
+    jacket: { tag: "Layer Up", description: "Premium outerwear designed for shifting seasons and modern layering.", accent: "bg-blue-300/60" },
+    coat: { tag: "Timeless", description: "Structured, sophisticated, and built for ultimate warmth and style.", accent: "bg-rose-300/60" },
+    coats: { tag: "Timeless", description: "Structured, sophisticated, and built for ultimate warmth and style.", accent: "bg-rose-300/60" },
+    hoodies: { tag: "Cozy Essentials", description: "Relaxed fits with unmatched softness for your everyday comfort.", accent: "bg-amber-300/60" },
+    sweatshirts: { tag: "Refined Casual", description: "Classic crewnecks and premium knits perfect for downtime.", accent: "bg-emerald-300/60" },
+    tshirts: { tag: "Everyday Basic", description: "The foundation of any good wardrobe, crafted from ultra-soft fabrics.", accent: "bg-violet-300/60" },
+    lower: { tag: "Active Comfort", description: "Designed for movement and comfort without compromising silhouette.", accent: "bg-orange-300/60" },
+    thermal: { tag: "Base Layers", description: "Essential warmth starting from the layer closest to you.", accent: "bg-cyan-300/60" },
+    cardigans: { tag: "Knit Perfection", description: "Versatile button-ups bringing warmth and texture to any fit.", accent: "bg-fuchsia-300/60" },
+    sweaters: { tag: "Knit Perfection", description: "Versatile knits bringing warmth and texture to any fit.", accent: "bg-fuchsia-300/60" },
+};
+
+// ── Load all image assets dynamically ────
+const allAssets = import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,webp,avif}', { eager: true });
+
+// Helper to pre-parse global asset structure map
+// structure: parsedAssets[gender][category][subcategory] = string[]
+const parsedAssets: Record<string, Record<string, Record<string, string[]>>> = {};
+
+Object.entries(allAssets).forEach(([path, module]) => {
+    // path e.g. /src/assets/men/jacket_bomber.jpg
+    const parts = path.split('/assets/')[1]?.split('/');
+    if (!parts || parts.length < 2) return;
+
+    const gender = parts[0].toLowerCase();
+    const filenameWithExt = parts[parts.length - 1];
+    
+    // Ignore hero/homepage images
+    if (filenameWithExt.toLowerCase().includes('homepage')) return;
+
+    const filename = filenameWithExt.split('.').slice(0, -1).join('.');
+
+    if (!filename.includes('_')) {
+        console.warn(`[Asset Parser] Skipping asset lacking subcategory format: ${path}`);
+        return;
+    }
+
+    const [catRaw, subRaw] = filename.split('_', 2);
+    const category = catRaw.trim().toLowerCase();
+    const subcategoryLabel = subRaw.charAt(0).toUpperCase() + subRaw.slice(1).trim();
+
+    const imageUrl = (module as any).default || module;
+
+    if (!parsedAssets[gender]) parsedAssets[gender] = {};
+    if (!parsedAssets[gender][category]) parsedAssets[gender][category] = {};
+    if (!parsedAssets[gender][category][subcategoryLabel]) parsedAssets[gender][category][subcategoryLabel] = [];
+
+    parsedAssets[gender][category][subcategoryLabel].push(imageUrl);
+});
+
+// ── Export Dynamic Category Slides Generator ────
+export function getCollectionSlides(gender: string): CollectionSlide[] {
+    const categoriesMap = parsedAssets[gender.toLowerCase()] || {};
+    const slides: CollectionSlide[] = [];
+    let isRight = true;
+
+    // Sort categories alphabetically
+    const sortedCategories = Object.keys(categoriesMap).sort();
+
+    for (const catId of sortedCategories) {
+        const subsMap = categoriesMap[catId];
+        
+        // Build subcategories array, sorted alphabetically
+        const subcategories: Subcategory[] = Object.entries(subsMap)
+            .map(([label, images]) => ({ label, images }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+
+        // Format Title
+        const formattedTitle = catId.charAt(0).toUpperCase() + catId.slice(1) + (catId.endsWith('s') ? '' : 's');
+        const meta = categoryMetadata[catId] || {
+            tag: "Premium Quality",
+            description: `Explore our premium collection of ${formattedTitle.toLowerCase()}.`,
+            accent: "bg-indigo-300/60"
+        };
+
+        slides.push({
+            id: catId,
+            title: formattedTitle,
+            tag: meta.tag,
+            description: meta.description,
+            imageRight: isRight,
+            subcategories,
+            accent: meta.accent,
+        });
+
+        isRight = !isRight;
+    }
+
+    return slides;
+}
+
+// ── Export Legacy "collections" map for Homepage / Nav / Root ────
+// This aggregates the top-level Men/Women/Kids data using the generated subcategories map.
+export const collections: CollectionSlide[] = ["men", "women", "kids"].map(genderId => {
+    const meta = genderMetadata[genderId];
+    // Map categories specifically into the format `CollectionSection` expects for the `<a href>` list:
+    // It loops through `slide.subcategories` to show the vertical list of text links.
+    // So for the homepage, our "subcategories" string list is just the top-level Categories (e.g. "Jackets")
+    const categoryKeys = Object.keys(parsedAssets[genderId] || {}).sort();
+    
+    return {
+        id: genderId,
+        title: meta.title,
+        tag: meta.tag,
+        description: meta.description,
+        imageRight: meta.imageRight,
+        accent: meta.accent,
+        subcategories: categoryKeys.map(cat => ({
+            label: cat.charAt(0).toUpperCase() + cat.slice(1) + (cat.endsWith('s') ? '' : 's'),
+            images: [] // images aren't needed by CollectionSection text links
+        }))
+    };
+});

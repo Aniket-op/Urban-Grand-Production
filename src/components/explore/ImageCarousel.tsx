@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SubcategoryOverlay from "./SubcategoryOverlay";
+import type { Subcategory } from "@/data/ourCollection";
 
 type Props = {
-  images: string[];
-  label: string;
+  subcategories: Subcategory[];
   gender: string;
   imageRight: boolean;
 };
@@ -21,7 +21,13 @@ const PAUSE_AFTER_INTERACTION_MS = 10000;
  * - SubcategoryOverlay with the label-slide-up premium hover animation
  * - Scale zoom on hover (same as CollectionSection)
  */
-const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
+const ImageCarousel = ({ subcategories, gender, imageRight }: Props) => {
+  const flatSlides = useMemo(() => {
+    return subcategories.flatMap((sub) =>
+      sub.images.map((img) => ({ src: img, label: sub.label }))
+    );
+  }, [subcategories]);
+
   const [active, setActive] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -29,7 +35,7 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
 
   const goTo = useCallback(
     (idx: number) => {
-      setActive((idx + images.length) % images.length);
+      setActive((idx + flatSlides.length) % flatSlides.length);
       // Pause auto-advance for a bit after manual interaction
       isPausedRef.current = true;
       if (pauseTimer.current) clearTimeout(pauseTimer.current);
@@ -37,7 +43,7 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
         isPausedRef.current = false;
       }, PAUSE_AFTER_INTERACTION_MS);
     },
-    [images.length]
+    [flatSlides.length]
   );
 
   const prev = useCallback(() => goTo(active - 1), [active, goTo]);
@@ -45,14 +51,14 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
 
   // Auto-advance
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (flatSlides.length <= 1) return;
     const interval = setInterval(() => {
       if (!isHovered && !isPausedRef.current) {
-        setActive((a) => (a + 1) % images.length);
+        setActive((a) => (a + 1) % flatSlides.length);
       }
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(interval);
-  }, [images.length, isHovered]);
+  }, [flatSlides.length, isHovered]);
 
   // Cleanup pause timer on unmount
   useEffect(() => {
@@ -74,13 +80,13 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
     >
       {/* ── Images ────────────────────────────────────────────────────── */}
       <div className="relative w-full h-[72vh] md:h-[78vh] overflow-hidden">
-        {images.map((src, i) => (
+        {flatSlides.map((slide, i) => (
           <img
             key={i}
-            src={src}
-            alt={`${label} ${i + 1}`}
+            src={slide.src}
+            alt={`${slide.label} ${i + 1}`}
             className={`absolute inset-0 w-full h-full object-cover
-                        transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+                        transition-all duration-700 ease-elegant
                         group-hover:scale-[1.04]
                         ${i === active ? "opacity-100 z-[1]" : "opacity-0 z-0"}`}
           />
@@ -89,15 +95,15 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
 
       {/* ── Overlay: gradient + label (SubcategoryOverlay) ────────────── */}
       <SubcategoryOverlay
-        label={label}
+        label={flatSlides[active]?.label || ""}
         gender={gender}
         imageIndex={active}
-        total={images.length}
+        total={flatSlides.length}
         imageRight={imageRight}
       />
 
       {/* ── Arrow navigation (visible on hover when >1 image) ─────────── */}
-      {images.length > 1 && (
+      {flatSlides.length > 1 && (
         <>
           <button
             onClick={(e) => {
@@ -131,9 +137,9 @@ const ImageCarousel = ({ images, label, gender, imageRight }: Props) => {
       )}
 
       {/* ── Dot indicators ────────────────────────────────────────────── */}
-      {images.length > 1 && (
+      {flatSlides.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 flex gap-1.5">
-          {images.map((_, i) => (
+          {flatSlides.map((_, i) => (
             <button
               key={i}
               onClick={(e) => {

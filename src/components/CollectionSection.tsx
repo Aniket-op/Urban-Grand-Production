@@ -102,7 +102,7 @@ const CollectionSlideComponent = ({
               <div
                 className={`absolute z-30 left-8 right-8 flex flex-col 
                            top-[calc(100%-100px)] group-hover:top-8
-                           transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+                           transition-all duration-700 ease-elegant
                            ${slide.imageRight ? "items-start text-left" : "items-end text-right"}`}
               >
                 {/* Title Block */}
@@ -114,14 +114,14 @@ const CollectionSlideComponent = ({
                     {slide.title}
                   </h3>
                   {/* Line Animation below heading */}
-                  <div className={`h-[2px] bg-[hsl(38,60%,55%)] mt-3 rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] w-0 group-hover:w-24`} />
+                  <div className={`h-[2px] bg-[hsl(38,60%,55%)] mt-3 rounded-full transition-all duration-700 ease-elegant w-0 group-hover:w-24`} />
                 </div>
 
                 {/* Subcategories Vertical List */}
                 <div
                   className={`mt-6 flex flex-col gap-3
                              opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto
-                             transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100
+                             transition-all duration-700 ease-elegant delay-100
                              ${slide.imageRight ? "items-start" : "items-end"}`}
                 >
                   {slide.subcategories.map((sub, i) => (
