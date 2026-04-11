@@ -82,23 +82,24 @@ const ExploreSection = ({ categorySlide, gender, index }: Props) => {
             </p>
 
             {/* CTA */}
-            <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-4 flex-wrap mt-2">
               <Link
-                to={`/category/${gender}/${categorySlide.id}`}
+                to="/contact"
                 className="inline-flex items-center gap-2 bg-black dark:bg-white
                            text-white dark:text-black px-6 py-3 text-[11px] uppercase
                            tracking-widest rounded-md hover:opacity-75 w-fit
                            transition-all duration-300 ease-elegant"
               >
-                View {categorySlide.title} →
+                Enquiry Now →
               </Link>
               <Link
-                to={`/category/${gender}`}
-                className="text-[11px] uppercase tracking-widest font-semibold
-                           text-muted-medium hover:text-foreground dark:hover:text-white
-                           underline-offset-4 hover:underline transition-colors duration-300"
+                to={`/category/${gender}/${categorySlide.id}`}
+                className="inline-flex items-center gap-2 bg-transparent dark:bg-transparent
+                           text-black dark:text-white px-6 py-3 text-[11px] uppercase
+                           tracking-widest rounded-md hover:bg-black/5 dark:hover:bg-white/10 w-fit
+                           transition-all duration-300 ease-elegant border border-black/20 dark:border-white/30"
               >
-                All {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                Images →
               </Link>
             </div>
           </motion.div>
