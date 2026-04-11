@@ -19,9 +19,9 @@ const heroImages: Record<string, string> = {
 
 // Gradient overlays per gender (luxury dark tones)
 const heroGradients: Record<string, string> = {
-  men: "from-[hsl(220,30%,6%)]/90 via-[hsl(220,25%,10%)]/70 to-transparent",
-  women: "from-[hsl(340,20%,6%)]/90 via-[hsl(340,15%,12%)]/70 to-transparent",
-  kids: "from-[hsl(38,25%,6%)]/90 via-[hsl(38,20%,10%)]/70 to-transparent",
+  men: "from-[hsl(220,30%,6%)]/70 via-[hsl(220,25%,10%)]/50 to-transparent",
+  women: "from-[hsl(340,20%,6%)]/70 via-[hsl(340,15%,12%)]/50 to-transparent",
+  kids: "from-[hsl(38,25%,6%)]/70 via-[hsl(38,20%,10%)]/50 to-transparent",
 };
 
 const genderOrder = ["men", "women", "kids"];
@@ -67,7 +67,7 @@ const ExplorePage = () => {
           className={`absolute inset-0 bg-gradient-to-r ${heroGradients[gender]}`}
         />
         {/* Bottom fade to page background */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        {/* <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-background via-transparent to-transparent" /> */}
 
         {/* Hero Content */}
         <div className="relative z-10 h-full flex flex-col justify-end pb-12 px-8 md:px-16 max-w-7xl mx-auto w-full">
