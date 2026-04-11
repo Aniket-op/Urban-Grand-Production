@@ -33,6 +33,7 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfUse />} />
+          {/* remove contact page */}
           <Route path="/contact" element={<Contact />} />
           <Route path="/vision" element={<OurVision />} />
           <Route path="/story" element={<OurStory />} />
