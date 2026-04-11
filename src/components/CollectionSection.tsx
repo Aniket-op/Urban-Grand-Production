@@ -44,7 +44,7 @@ const CollectionSlideComponent = ({
                 {slide.tag}
               </p>
 
-              <h2 className="text-4xl font-bold dark:text-white">{slide.title}</h2>
+              <h2 className="font-display text-4xl font-bold dark:text-white">{slide.title}</h2>
 
               <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />
 
@@ -110,7 +110,7 @@ const CollectionSlideComponent = ({
                   <p className="text-white/80 text-[10px] tracking-[0.35em] uppercase font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                     Urban Grand
                   </p>
-                  <h3 className="text-white text-3xl font-bold tracking-tight drop-shadow-md">
+                  <h3 className="font-display text-white text-3xl font-bold tracking-tight drop-shadow-md">
                     {slide.title}
                   </h3>
                   {/* Line Animation below heading */}
@@ -158,7 +158,7 @@ const CollectionSection = () => {
           Our Range
         </p>
 
-        <h2 className="text-5xl font-bold dark:text-white">Our Collection</h2>
+        <h2 className="font-display text-5xl font-bold dark:text-white">Our Collection</h2>
 
         <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-3" />
 
