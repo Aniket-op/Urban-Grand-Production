@@ -6,59 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EnquiryForm from "@/components/EnquiryForm";
 
-// ── Women images
-import womenCardigans1 from "@/assets/women/cardigans1.jpg";
-import womenCardigans2 from "@/assets/women/cardigans2.jpg";
-import womenCoat1 from "@/assets/women/coat1.png";
-import womenCoat2 from "@/assets/women/coat2.jpg";
-import womenCoat3 from "@/assets/women/coat3.jpg";
-import womenHoodies1 from "@/assets/women/hoodies1.jpg";
-import womenHoodies2 from "@/assets/women/hoodies2.jpg";
-import womenHoodies3 from "@/assets/women/hoodies3.jpg";
-import womenJacket1 from "@/assets/women/jacket_1.png";
-import womenJacket2 from "@/assets/women/jacket_2.png";
-import womenJacket3 from "@/assets/women/jacket_3.jpg";
-import womenSweatshirts1 from "@/assets/women/sweatshirts_1.png";
-import womenSweatshirts2 from "@/assets/women/sweatshirts_2.jpg";
-import womenSweatshirts3 from "@/assets/women/sweatshirts_3.jpg";
-import womenThermal1 from "@/assets/women/thermal1.jpg";
-import womenThermal2 from "@/assets/women/thermal2.jpg";
-
-// ── Men images
-import menCoats1 from "@/assets/men/coats1.png";
-import menCoats2 from "@/assets/men/coats2.jpg";
-import menCoats3 from "@/assets/men/coats3.jpg";
-import menHoodies1 from "@/assets/men/hoodies_1.png";
-import menHoodies2 from "@/assets/men/hoodies_2.png";
-import menHoodies3 from "@/assets/men/hoodies_3.png";
-import menJacket1 from "@/assets/men/jacket_1.png";
-import menJacket2 from "@/assets/men/jacket_2.png";
-import menLower1 from "@/assets/men/lower1.jpg";
-import menLower2 from "@/assets/men/lower2.jpg";
-import menLower3 from "@/assets/men/lower3.webp";
-import menSweatshirts1 from "@/assets/men/sweatshirts_1.png";
-import menSweatshirts2 from "@/assets/men/sweatshirts_2.jpg";
-import menThermal1 from "@/assets/men/thermal1.webp";
-import menThermal2 from "@/assets/men/thermal2.webp";
-import menTshirts1 from "@/assets/men/tshirts1.jpg";
-import menTshirts2 from "@/assets/men/tshirts2.jpg";
-import menTshirts3 from "@/assets/men/tshirts3.jpg";
-
-// ── Kids images
-import kidsCoat1 from "@/assets/kids/coat1.png";
-import kidsCoat2 from "@/assets/kids/coat2.png";
-import kidsCoat3 from "@/assets/kids/coat3.jpeg";
-import kidsHoodies1 from "@/assets/kids/hoodies1.png";
-import kidsHoodies2 from "@/assets/kids/hoodies2.png";
-import kidsJacket1 from "@/assets/kids/jacket_1.png";
-import kidsJacket2 from "@/assets/kids/jacket_2.png";
-import kidsJacket3 from "@/assets/kids/jacket_3.jpg";
-import kidsSweaters1 from "@/assets/kids/sweaters1.jpg";
-import kidsSweaters2 from "@/assets/kids/sweaters2.jpg";
-import kidsSweaters3 from "@/assets/kids/sweaters3.jpg";
-import kidsThermal1 from "@/assets/kids/thermal1.jpg";
-import kidsThermal2 from "@/assets/kids/thermal2.jpg";
-import kidsThermal3 from "@/assets/kids/thermal3.webp";
+import { genderMetadata, getCollectionSlides } from "@/data/ourCollection";
 
 type Product = {
   image: string;
@@ -72,77 +20,37 @@ type CategoryData = {
   products: Product[];
 };
 
-const categoryData: Record<string, CategoryData> = {
-  men: {
-    title: "Men's Collection",
-    tagline: "Bold & Refined — Premium Knitwear for the Modern Man",
-    accent: "from-[hsl(220,25%,10%)] to-[hsl(220,30%,18%)]",
-    products: [
-      { image: menJacket1, subcategory: "Jackets" },
-      { image: menJacket2, subcategory: "Jackets" },
-      { image: menCoats1, subcategory: "Coats" },
-      { image: menCoats2, subcategory: "Coats" },
-      { image: menCoats3, subcategory: "Coats" },
-      { image: menHoodies1, subcategory: "Hoodies" },
-      { image: menHoodies2, subcategory: "Hoodies" },
-      { image: menHoodies3, subcategory: "Hoodies" },
-      { image: menSweatshirts1, subcategory: "Sweatshirts" },
-      { image: menSweatshirts2, subcategory: "Sweatshirts" },
-      { image: menTshirts1, subcategory: "T-Shirts" },
-      { image: menTshirts2, subcategory: "T-Shirts" },
-      { image: menTshirts3, subcategory: "T-Shirts" },
-      { image: menLower1, subcategory: "Lowers" },
-      { image: menLower2, subcategory: "Lowers" },
-      { image: menLower3, subcategory: "Lowers" },
-      { image: menThermal1, subcategory: "Thermal" },
-      { image: menThermal2, subcategory: "Thermal" },
-    ],
-  },
-  women: {
-    title: "Women's Collection",
-    tagline: "Feminine Elegance — Timeless Silhouettes in Premium Knitwear",
-    accent: "from-[hsl(220,20%,10%)] to-[hsl(340,15%,18%)]",
-    products: [
-      { image: womenJacket1, subcategory: "Jackets" },
-      { image: womenJacket2, subcategory: "Jackets" },
-      { image: womenJacket3, subcategory: "Jackets" },
-      { image: womenCoat1, subcategory: "Coats" },
-      { image: womenCoat2, subcategory: "Coats" },
-      { image: womenCoat3, subcategory: "Coats" },
-      { image: womenHoodies1, subcategory: "Hoodies" },
-      { image: womenHoodies2, subcategory: "Hoodies" },
-      { image: womenHoodies3, subcategory: "Hoodies" },
-      { image: womenSweatshirts1, subcategory: "Sweatshirts" },
-      { image: womenSweatshirts2, subcategory: "Sweatshirts" },
-      { image: womenSweatshirts3, subcategory: "Sweatshirts" },
-      { image: womenThermal1, subcategory: "Thermal" },
-      { image: womenThermal2, subcategory: "Thermal" },
-      { image: womenCardigans1, subcategory: "Cardigans" },
-      { image: womenCardigans2, subcategory: "Cardigans" },
-    ],
-  },
-  kids: {
-    title: "Kids' Collection",
-    tagline: "Playful & Cozy — High-Quality Clothing for Little Adventurers",
-    accent: "from-[hsl(220,20%,10%)] to-[hsl(38,15%,18%)]",
-    products: [
-      { image: kidsJacket1, subcategory: "Jackets" },
-      { image: kidsJacket2, subcategory: "Jackets" },
-      { image: kidsJacket3, subcategory: "Jackets" },
-      { image: kidsCoat1, subcategory: "Coats" },
-      { image: kidsCoat2, subcategory: "Coats" },
-      { image: kidsCoat3, subcategory: "Coats" },
-      { image: kidsHoodies1, subcategory: "Hoodies" },
-      { image: kidsHoodies2, subcategory: "Hoodies" },
-      { image: kidsSweaters1, subcategory: "Sweaters" },
-      { image: kidsSweaters2, subcategory: "Sweaters" },
-      { image: kidsSweaters3, subcategory: "Sweaters" },
-      { image: kidsThermal1, subcategory: "Thermal" },
-      { image: kidsThermal2, subcategory: "Thermal" },
-      { image: kidsThermal3, subcategory: "Thermal" },
-    ],
-  },
+// ── Dynamic Category Data ────────────────────────────────────────────────────────
+const accentMap: Record<string, string> = {
+  men: "from-[hsl(220,25%,10%)] to-[hsl(220,30%,18%)]",
+  women: "from-[hsl(220,20%,10%)] to-[hsl(340,15%,18%)]",
+  kids: "from-[hsl(220,20%,10%)] to-[hsl(38,15%,18%)]"
 };
+
+const categoryData: Record<string, CategoryData> = {};
+
+["men", "women", "kids"].forEach(gender => {
+  const meta = genderMetadata[gender];
+  if (!meta) return;
+
+  const slides = getCollectionSlides(gender);
+  
+  const products: Product[] = slides.flatMap(slide => 
+    slide.subcategories.flatMap(sub => 
+      sub.images.map(img => ({
+        image: img,
+        subcategory: slide.title // Matches old CategoryPage behavior where subcategory = "Jackets", "Coats"
+      }))
+    )
+  );
+
+  categoryData[gender] = {
+    title: meta.title,
+    tagline: meta.description,
+    accent: accentMap[gender] || "from-black to-zinc-800",
+    products
+  };
+});
 
 // ── Image Lightbox with zoom ─────────────────────────────────────────────────
 const ImageLightbox = ({

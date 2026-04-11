@@ -5,47 +5,29 @@ import Footer from "@/components/Footer";
 import EnquiryForm from "@/components/EnquiryForm";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import men1 from "@/assets/men/coats1.png";
-import men2 from "@/assets/men/hoodies_1.png";
-import men3 from "@/assets/men/jacket_1.png";
-import men4 from "@/assets/men/sweatshirts_1.png";
+import { genderMetadata, getCollectionSlides } from "@/data/ourCollection";
 
-import women1 from "@/assets/women/coat1.png";
-import women2 from "@/assets/women/jacket_1.png";
-import women3 from "@/assets/women/jacket_2.png";
-import women4 from "@/assets/women/sweatshirts_1.png";
+const getSlidesForGender = (gender: string) => {
+  const meta = genderMetadata[gender];
+  if (!meta) return [];
+  const validSlides = getCollectionSlides(gender).filter(s => s.subcategories.length > 0);
+  return validSlides.slice(0, 4).map(slide => ({
+    // Grab the first image from the first subcategory
+    image: slide.subcategories[0].images[0],
+    label: meta.title,
+    sub: slide.title
+  }));
+};
 
-import kids1 from "@/assets/kids/coat1.png";
-import kids2 from "@/assets/kids/hoodies1.png";
-import kids3 from "@/assets/kids/hoodies2.png";
-import kids4 from "@/assets/kids/jacket_1.png";
-
-const menSlides = [
-  { image: men1, label: "Men's Collection", sub: "Coats" },
-  { image: men2, label: "Men's Collection", sub: "Hoodies & Sweatshirts" },
-  { image: men3, label: "Men's Collection", sub: "Jackets" },
-  { image: men4, label: "Men's Collection", sub: "Modern Wear" },
-];
-
-const womenSlides = [
-  { image: women1, label: "Women's Collection", sub: "Coats" },
-  { image: women2, label: "Women's Collection", sub: "Jackets" },
-  { image: women3, label: "Women's Collection", sub: "Elegant Jackets" },
-  { image: women4, label: "Women's Collection", sub: "Sweatshirts" },
-];
-
-const kidsSlides = [
-  { image: kids1, label: "Kids Collection", sub: "Coats" },
-  { image: kids2, label: "Kids Collection", sub: "Hoodies" },
-  { image: kids3, label: "Kids Collection", sub: "Playful Hoodies" },
-  { image: kids4, label: "Kids Collection", sub: "Jackets" },
-];
+const menSlides = getSlidesForGender("men");
+const womenSlides = getSlidesForGender("women");
+const kidsSlides = getSlidesForGender("kids");
 
 const defaultSlides = [
-  { image: men4, label: "Men's Collection", sub: "Classic & Modern Wear" },
-  { image: women3, label: "Women's Collection", sub: "Elegant & Comfortable" },
-  { image: kids3, label: "Kids Collection", sub: "Playful & Cozy Everyday" },
-];
+  menSlides[0],
+  womenSlides[0],
+  kidsSlides[0]
+].filter(Boolean);
 
 const Contact = () => {
   const [searchParams] = useSearchParams();

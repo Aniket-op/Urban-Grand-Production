@@ -44,7 +44,7 @@ const SubcategoryOverlay = ({
       <div
         className={`absolute z-30 left-7 right-7 flex flex-col
                     top-[calc(100%-88px)] group-hover:top-8
-                    transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+                    transition-all duration-700 ease-elegant
                     ${align}`}
       >
         {/* Brand micro-tag (visible only on hover) */}
@@ -68,7 +68,7 @@ const SubcategoryOverlay = ({
         {/* Golden underline (expands on hover) */}
         <div
           className={`h-[2px] bg-[hsl(38,60%,55%)] mt-2.5 rounded-full
-                      transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+                      transition-all duration-700 ease-elegant
                       w-0 group-hover:w-20
                       ${imageRight ? "" : "self-end"}`}
         />

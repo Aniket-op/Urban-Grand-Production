@@ -5,8 +5,8 @@ import type { Subcategory, CollectionSlide } from "@/data/ourCollection";
 import ImageCarousel from "./ImageCarousel";
 
 type Props = {
-  subcategory: Subcategory;
-  parentSlide: CollectionSlide;
+  categorySlide: CollectionSlide;
+  gender: string;
   index: number; // determines zig-zag side
 };
 
@@ -18,7 +18,7 @@ type Props = {
  * Odd index   → image left,  text right (mirrors imageRight: false)
  * Mobile      → always stacked (image on top, text below)
  */
-const ExploreSection = ({ subcategory, parentSlide, index }: Props) => {
+const ExploreSection = ({ categorySlide, gender, index }: Props) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -54,52 +54,52 @@ const ExploreSection = ({ subcategory, parentSlide, index }: Props) => {
             {/* Accent dot + tag row */}
             <div className="flex items-center gap-3">
               <span
-                className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${parentSlide.accent}`}
+                className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${categorySlide.accent}`}
               />
               <p className="text-[10px] tracking-[0.42em] uppercase text-muted-foreground font-semibold">
-                {parentSlide.tag}
+                {categorySlide.tag}
               </p>
             </div>
 
-            {/* Subcategory title */}
+            {/* Category title */}
             <div>
               <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight dark:text-white">
-                {subcategory.label}
+                {categorySlide.title}
               </h2>
 
               {/* Gold divider */}
               <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-4" />
             </div>
 
-            {/* Parent collection description */}
+            {/* Category collection description */}
             <p className="text-[15px] text-muted-medium dark:text-zinc-300 max-w-[420px] leading-relaxed">
-              {parentSlide.description}
+              {categorySlide.description}
             </p>
 
             {/* Image count hint */}
             <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
-              {subcategory.images.length}{" "}
-              {subcategory.images.length === 1 ? "Style" : "Styles"}
+              {categorySlide.subcategories.reduce((acc, sub) => acc + sub.images.length, 0)}{" "}
+              {categorySlide.subcategories.reduce((acc, sub) => acc + sub.images.length, 0) === 1 ? "Style" : "Styles"}
             </p>
 
             {/* CTA */}
             <div className="flex items-center gap-4 flex-wrap">
               <Link
-                to={`/category/${parentSlide.id}/${subcategory.label.toLowerCase()}`}
+                to={`/category/${gender}/${categorySlide.id}`}
                 className="inline-flex items-center gap-2 bg-black dark:bg-white
                            text-white dark:text-black px-6 py-3 text-[11px] uppercase
                            tracking-widest rounded-md hover:opacity-75 w-fit
-                           transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                           transition-all duration-300 ease-elegant"
               >
-                View {subcategory.label} →
+                View {categorySlide.title} →
               </Link>
               <Link
-                to={`/category/${parentSlide.id}`}
+                to={`/category/${gender}`}
                 className="text-[11px] uppercase tracking-widest font-semibold
                            text-muted-medium hover:text-foreground dark:hover:text-white
                            underline-offset-4 hover:underline transition-colors duration-300"
               >
-                All {parentSlide.title.split(" ")[0]}
+                All {gender.charAt(0).toUpperCase() + gender.slice(1)}
               </Link>
             </div>
           </motion.div>
@@ -116,9 +116,8 @@ const ExploreSection = ({ subcategory, parentSlide, index }: Props) => {
             className="relative w-full md:w-[52%] flex-shrink-0"
           >
             <ImageCarousel
-              images={subcategory.images}
-              label={subcategory.label}
-              gender={parentSlide.id}
+              subcategories={categorySlide.subcategories}
+              gender={gender}
               imageRight={imageRight}
             />
           </motion.div>
