@@ -23,7 +23,7 @@ const ExploreSection = ({ categorySlide, gender, index }: Props) => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   // Even indices: image on right (text left) — same as imageRight:true in CollectionSection
-  const imageRight = index % 2 === 0;
+  const imageRight = (index + 1) % 2 === 0;
 
   const textSlideX = imageRight ? -55 : 55;
   const imgSlideX = imageRight ? 55 : -55;
@@ -36,9 +36,8 @@ const ExploreSection = ({ categorySlide, gender, index }: Props) => {
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col ${
-            imageRight ? "md:flex-row" : "md:flex-row-reverse"
-          } gap-10 items-center`}
+          className={`flex flex-col ${imageRight ? "md:flex-row" : "md:flex-row-reverse"
+            } gap-20 items-center`}
         >
           {/* ── Text Column ─────────────────────────────────────────── */}
           <motion.div
