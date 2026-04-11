@@ -2,12 +2,17 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Subcategory, CollectionSlide } from "@/data/ourCollection";
+import type { Product } from "@/components/ImageLightbox";
 import ImageCarousel from "./ImageCarousel";
 
 type Props = {
   categorySlide: CollectionSlide;
   gender: string;
   index: number; // determines zig-zag side
+  /** Called when the user clicks “Enquiry Now”. Receives the pre-filtered
+   *  product list for this slide's subcategory so the lightbox only shows
+   *  relevant images. */
+  onEnquiryClick: (products: Product[], startIndex?: number) => void;
 };
 
 /**
@@ -18,9 +23,14 @@ type Props = {
  * Odd index   → image left,  text right (mirrors imageRight: false)
  * Mobile      → always stacked (image on top, text below)
  */
-const ExploreSection = ({ categorySlide, gender, index }: Props) => {
+const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  // Build a Product[] filtered to this slide's subcategory for the lightbox
+  const enquiryProducts: Product[] = categorySlide.subcategories.flatMap((sub) =>
+    sub.images.map((img) => ({ image: img, subcategory: categorySlide.title }))
+  );
 
   // Even indices: image on right (text left) — same as imageRight:true in CollectionSection
   const imageRight = (index + 1) % 2 === 0;
@@ -83,15 +93,15 @@ const ExploreSection = ({ categorySlide, gender, index }: Props) => {
 
             {/* CTA */}
             <div className="flex items-center gap-4 flex-wrap mt-2">
-              <Link
-                to="/contact"
+              <button
+                onClick={() => onEnquiryClick(enquiryProducts, 0)}
                 className="inline-flex items-center gap-2 bg-black dark:bg-white
                            text-white dark:text-black px-6 py-3 text-[11px] uppercase
                            tracking-widest rounded-md hover:opacity-75 w-fit
-                           transition-all duration-300 ease-elegant"
+                           transition-all duration-300 ease-elegant cursor-pointer"
               >
                 Enquiry Now →
-              </Link>
+              </button>
               <Link
                 to={`/category/${gender}/${categorySlide.id}`}
                 className="inline-flex items-center gap-2 bg-transparent dark:bg-transparent

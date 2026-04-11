@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ExploreSection from "@/components/explore/ExploreSection";
+import ImageLightbox from "@/components/ImageLightbox";
+import { useEnquiryLightbox } from "@/hooks/useEnquiryLightbox";
 import { collections, getCollectionSlides, genderMetadata } from "@/data/ourCollection";
 
 // Hero background images (one per gender)
@@ -39,6 +41,9 @@ const ExplorePage = () => {
   if (!gender || !genderData) {
     return <Navigate to="/explore/men" replace />;
   }
+
+  const { products, lightboxIndex, openLightbox, closeLightbox, setLightboxIndex } =
+    useEnquiryLightbox();
 
   const categorySlides = getCollectionSlides(gender);
   const others = genderOrder.filter((g) => g !== gender);
@@ -151,6 +156,7 @@ const ExplorePage = () => {
               categorySlide={categorySlide}
               gender={gender}
               index={idx}
+              onEnquiryClick={openLightbox}
             />
           ))}
         </motion.div>
@@ -190,6 +196,18 @@ const ExplorePage = () => {
       </div>
 
       <Footer />
+
+      {/* ── Enquiry Lightbox (triggered from ExploreSection) ── */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <ImageLightbox
+            images={products}
+            currentIndex={lightboxIndex}
+            onClose={closeLightbox}
+            onNavigate={(i) => setLightboxIndex(i)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
