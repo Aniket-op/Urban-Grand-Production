@@ -26,9 +26,9 @@ const centerMenuItems: MenuItem[] = [
     label: "Our Products",
     slug: "products",
     subcategories: [
-      { label: "Men", to: "/category/men" },
-      { label: "Women", to: "/category/women" },
-      { label: "Kids", to: "/category/kids" },
+      { label: "Men", to: "/explore/men" },
+      { label: "Women", to: "/explore/women" },
+      { label: "Kids", to: "/explore/kids" },
     ],
   },
 ];
