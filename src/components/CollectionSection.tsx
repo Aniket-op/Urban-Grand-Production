@@ -54,7 +54,7 @@ const CollectionSlideComponent = ({
             </div>
 
             <a
-              href={`/category/${slide.id}`}
+              href={`/explore/${slide.id}`}
               className="inline-flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-6 py-3 text-xs uppercase tracking-widest rounded-md hover:opacity-80 w-fit transition-colors"
             >
               Explore →
