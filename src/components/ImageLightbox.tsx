@@ -8,10 +8,11 @@
  * Extracted from CategoryPage.tsx — zero logic changes.
  */
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, User, UserX } from "lucide-react";
 import EnquiryForm from "@/components/EnquiryForm";
+import type { UserData } from "@/components/EnquiryForm";
 
 // ── Shared product type ──────────────────────────────────────────────────────
 export type Product = {
@@ -38,7 +39,22 @@ const ImageLightbox = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [userType, setUserType] = useState<"user" | "guest">("guest");
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Mock current user data — replace with real auth context when available
+  const currentUser: UserData | null = useMemo(() => ({
+    fullName: "Sangita Roy",
+    companyName: "BanavatNest Pvt. Ltd.",
+    emailAddress: "SangitaRoy@banavatNest.com",
+    contactNumber: "+91 99999 99999",
+  }), []);
+
+  const hasUserData = currentUser !== null;
+
+  // Derive form props based on userType
+  const formUserData = userType === "user" && hasUserData ? currentUser : undefined;
+  const formDisabled = userType === "user" && hasUserData;
 
   const resetView = useCallback(() => {
     setScale(1);
@@ -312,8 +328,51 @@ const ImageLightbox = ({
             <X size={20} />
           </button>
         </div>
+
+        {/* User / Guest Toggle */}
+        <div className="px-6 lg:px-8 pt-4 pb-2 flex-shrink-0 bg-background">
+          <div className="flex items-center gap-2 p-1 bg-muted/30 rounded-xl">
+            <button
+              id="user-type-user"
+              onClick={() => hasUserData && setUserType("user")}
+              disabled={!hasUserData}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "user"
+                ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
+                : hasUserData
+                  ? "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  : "text-muted-foreground/40 cursor-not-allowed"
+                }`}
+              aria-label="Continue as registered user"
+            >
+              <User size={14} />
+              User
+            </button>
+            <button
+              id="user-type-guest"
+              onClick={() => setUserType("guest")}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "guest"
+                ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+              aria-label="Continue as guest"
+            >
+              <UserX size={14} />
+              Guest
+            </button>
+          </div>
+          {userType === "user" && hasUserData && (
+            <p className="text-[9px] text-[hsl(38,60%,50%)] tracking-[0.15em] uppercase mt-2 text-center font-medium">
+              Auto-filled with your account details
+            </p>
+          )}
+        </div>
+
         <div className="flex-1 overflow-y-auto w-full bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-border">
-          <EnquiryForm />
+          <EnquiryForm
+            key={userType}
+            userData={formUserData ?? undefined}
+            disabled={formDisabled}
+          />
         </div>
       </div>}
     </motion.div>
