@@ -4,29 +4,49 @@ import { useSearchParams } from "react-router-dom";
 import { categories, WHATSAPP_NUMBER, type Product } from "@/data/products";
 import { MessageCircle, Send } from "lucide-react";
 
-interface EnquiryFormProps {
-    prefilledProduct?: Product;
+export interface UserData {
+    fullName: string;
+    companyName?: string;
+    emailAddress: string;
+    contactNumber: string;
 }
 
-const EnquiryForm = ({ prefilledProduct }: EnquiryFormProps) => {
+interface EnquiryFormProps {
+    prefilledProduct?: Product;
+    userData?: UserData;
+    disabled?: boolean;
+}
+
+const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFormProps) => {
     const [searchParams] = useSearchParams();
     const urlCategory = searchParams.get("category") ?? "";
     const urlSubcategory = searchParams.get("subcategory") ?? "";
 
     const [formData, setFormData] = useState({
-        fullName: "",
-        companyName: "",
+        fullName: userData?.fullName ?? "",
+        companyName: userData?.companyName ?? "",
         category: prefilledProduct
             ? prefilledProduct.category === "sale" || prefilledProduct.category === "new-arrivals"
                 ? "other"
                 : prefilledProduct.category
             : urlCategory,
-        contactNumber: "",
-        emailAddress: "",
+        contactNumber: userData?.contactNumber ?? "",
+        emailAddress: userData?.emailAddress ?? "",
         details: prefilledProduct
             ? `I am interested in the following product:\n\nName: ${prefilledProduct.name}\nPrice: ₹${prefilledProduct.price.toLocaleString("en-IN")}\n\nAdditional Details:\n`
             : "",
     });
+
+    // Sync form data when userData prop changes (User/Guest toggle)
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            fullName: userData?.fullName ?? "",
+            companyName: userData?.companyName ?? "",
+            contactNumber: userData?.contactNumber ?? "",
+            emailAddress: userData?.emailAddress ?? "",
+        }));
+    }, [userData]);
 
     useEffect(() => {
         if (prefilledProduct) {
@@ -104,8 +124,8 @@ const EnquiryForm = ({ prefilledProduct }: EnquiryFormProps) => {
         toast.success("Redirecting to WhatsApp...");
     };
 
-    const inputClass = (field: string) =>
-        `w-full bg-transparent border-0 border-b-2 ${errors[field] ? "border-red-500" : "border-border"} px-1 py-3 text-sm focus:outline-none focus:ring-0 focus:border-[hsl(38,60%,50%)] hover:border-foreground/30 transition-colors rounded-none placeholder:text-muted-foreground/50`;
+    const inputClass = (field: string, isDisabled: boolean = disabled) =>
+        `w-full bg-transparent border-0 border-b-2 ${errors[field] ? "border-red-500" : "border-border"} px-1 py-3 text-sm focus:outline-none focus:ring-0 focus:border-[hsl(38,60%,50%)] hover:border-foreground/30 transition-colors rounded-none placeholder:text-muted-foreground/50 ${isDisabled ? "opacity-60 cursor-not-allowed text-muted-foreground" : ""}`;
 
     return (
         <div className="w-full h-full overflow-y-auto px-6 sm:px-12 lg:px-16 py-10 sm:py-16">
@@ -128,31 +148,31 @@ const EnquiryForm = ({ prefilledProduct }: EnquiryFormProps) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Full Name *</label>
-                        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={inputClass("fullName")} placeholder="John Doe" />
+                        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={inputClass("fullName")} placeholder="John Doe" disabled={disabled} />
                         {errors.fullName && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.fullName}</p>}
                     </div>
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Company / Firm Name</label>
-                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={inputClass("companyName")} placeholder="Optional" />
+                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={inputClass("companyName")} placeholder="Optional" disabled={disabled} />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Email Address *</label>
-                        <input type="email" name="emailAddress" value={formData.emailAddress} onChange={handleChange} className={inputClass("emailAddress")} placeholder="you@example.com" />
+                        <input type="email" name="emailAddress" value={formData.emailAddress} onChange={handleChange} className={inputClass("emailAddress")} placeholder="you@example.com" disabled={disabled} />
                         {errors.emailAddress && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.emailAddress}</p>}
                     </div>
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Contact Number *</label>
-                        <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className={inputClass("contactNumber")} placeholder="+91 98765 43210" />
+                        <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className={inputClass("contactNumber")} placeholder="+91 98765 43210" disabled={disabled} />
                         {errors.contactNumber && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.contactNumber}</p>}
                     </div>
                 </div>
 
                 <div className="relative">
                     <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Details of your Enquiry *</label>
-                    <textarea rows={3} name="details" value={formData.details} onChange={handleChange} className={`${inputClass("details")} resize-none pt-2`} placeholder="Describe your requirements, timeline, quantity, etc." />
+                    <textarea rows={3} name="details" value={formData.details} onChange={handleChange} className={`${inputClass("details", false)} resize-none pt-2`} placeholder="Describe your requirements, timeline, quantity, etc." />
                     {errors.details && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.details}</p>}
                 </div>
 
