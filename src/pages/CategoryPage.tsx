@@ -5,6 +5,7 @@ import { ZoomIn } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ImageLightbox, { type Product } from "@/components/ImageLightbox";
+import { useEnquiryLightbox } from "@/hooks/useEnquiryLightbox";
 
 import { genderMetadata, getCollectionSlides } from "@/data/ourCollection";
 
@@ -103,6 +104,14 @@ const CategoryPage = () => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
 
+  const {
+    products: enquiryProducts,
+    lightboxIndex: enquiryLightboxIndex,
+    openLightbox: openEnquiryLightbox,
+    closeLightbox: closeEnquiryLightbox,
+    setLightboxIndex: setEnquiryLightboxIndex
+  } = useEnquiryLightbox();
+
   useEffect(() => {
     if (!gender || !categoryData[gender]) return;
 
@@ -140,8 +149,26 @@ const CategoryPage = () => {
     : data.products.filter(p => p.category === selectedSubcategory);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col pt-20">
+    <div className="min-h-screen bg-background flex flex-col pt-20 relative">
       <Navbar />
+
+      {/* ── Sticky Enquire Now Button ── */}
+      <motion.button
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.5 }}
+        onClick={() => openEnquiryLightbox(filteredProducts, 0)}
+        className="fixed right-0 top-1/3 -translate-y-1/2 z-[80] 
+                   bg-black dark:bg-white text-white dark:text-black 
+                   py-16 px-3 rounded-l-xl shadow-2xl transition-all duration-300
+                   hover:pr-4 group border border-white/10 dark:border-black/5"
+      >
+        <div className="flex flex-col items-center gap-2">
+          <span className="[writing-mode:vertical-lr] text-[11px] font-bold tracking-[0.3em] uppercase">
+            Enquire Now
+          </span>
+        </div>
+      </motion.button>
 
       {/* ── Hero banner */}
       <div
@@ -263,6 +290,19 @@ const CategoryPage = () => {
             onClose={() => setLightboxIndex(null)}
             onNavigate={(i) => setLightboxIndex(i)}
             inquireyForm={false}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Enquiry Lightbox ── */}
+      <AnimatePresence>
+        {enquiryLightboxIndex !== null && (
+          <ImageLightbox
+            images={enquiryProducts}
+            currentIndex={enquiryLightboxIndex}
+            onClose={closeEnquiryLightbox}
+            onNavigate={(i) => setEnquiryLightboxIndex(i)}
+            inquireyForm={true}
           />
         )}
       </AnimatePresence>
