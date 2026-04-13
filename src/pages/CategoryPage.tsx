@@ -29,9 +29,9 @@ const categoryData: Record<string, CategoryData> = {};
   if (!meta) return;
 
   const slides = getCollectionSlides(gender);
-  
-  const products: Product[] = slides.flatMap(slide => 
-    slide.subcategories.flatMap(sub => 
+
+  const products: Product[] = slides.flatMap(slide =>
+    slide.subcategories.flatMap(sub =>
       sub.images.map(img => ({
         image: img,
         subcategory: slide.title // Matches old CategoryPage behavior where subcategory = "Jackets", "Coats"
@@ -143,19 +143,25 @@ const CategoryPage = () => {
       <Navbar />
 
       {/* ── Hero banner */}
-      <div className={`bg-gradient-to-br ${data.accent} text-white px-6 py-20 md:py-24 text-center`}>
+      <div
+        className={`bg-gradient-to-br ${data.accent} text-white px-6 min-h-[35vh] flex items-center justify-center`}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
+          className="text-center"
         >
           <p className="text-[10px] uppercase tracking-[0.45em] opacity-50 mb-4 font-semibold">
             Urban Grand
           </p>
+
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             {data.title}
           </h1>
+
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-5 mx-auto" />
+
           <p className="mt-4 max-w-xl mx-auto text-sm opacity-60 leading-relaxed">
             {data.tagline}
           </p>
@@ -187,8 +193,8 @@ const CategoryPage = () => {
                 key={sub}
                 onClick={() => setSelectedSubcategory(sub)}
                 className={`px-5 py-1.5 text-[11px] font-semibold tracking-[0.15em] uppercase rounded-md transition-all whitespace-nowrap ${selectedSubcategory === sub
-                    ? "bg-foreground text-background"
-                    : "text-muted-medium hover:text-foreground"
+                  ? "bg-foreground text-background"
+                  : "text-muted-medium hover:text-foreground"
                   }`}
               >
                 {sub}

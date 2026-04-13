@@ -76,46 +76,31 @@ const ExplorePage = () => {
         {/* <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-background via-transparent to-transparent" /> */}
 
         {/* Hero Content */}
-        <div className="relative z-10 h-full flex flex-col justify-content py-[15%] md:py-[10%] sm:py-[25%] pb-15 px-8 md:px-16 max-w-7xl mx-auto w-full">
+        <div className="relative z-10 min-h-[50vh] flex items-center justify-center px-8 md:px-16 max-w-7xl mx-auto w-full">
           <motion.div
             key={`content-${gender}`}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center w-full max-w-3xl mx-auto"
           >
             <p className="text-[10px] tracking-[0.45em] uppercase text-white/55 font-semibold mb-3">
               Urban Grand
             </p>
+
             <h1 className="font-display text-5xl md:text-7xl font-bold text-white leading-tight">
               {genderData.title}
             </h1>
+
             <div className="h-[2px] bg-[hsl(38,60%,55%)] w-16 mt-4 mb-4 mx-auto" />
+
             <p className="text-white/60 text-sm md:text-base max-w-lg leading-relaxed mx-auto">
               {genderData.tag} — {genderData.description}
             </p>
           </motion.div>
         </div>
 
-        {/* Gender switcher tabs on hero */}
-        <div className="absolute bottom-0 right-8 md:right-16 z-10 flex items-end gap-1 pb-0">
-          {genderOrder.map((g) => {
-            const isActive = g === gender;
-            return (
-              <Link
-                key={g}
-                to={`/explore/${g}`}
-                className={`px-5 py-2.5 text-[11px] font-bold tracking-[0.18em] uppercase
-                            transition-all duration-300 rounded-t-md
-                            ${isActive
-                    ? "bg-background text-foreground shadow-sm"
-                    : "bg-black/40 backdrop-blur-sm text-white/65 hover:text-white hover:bg-black/60"
-                  }`}
-              >
-                {g}
-              </Link>
-            );
-          })}
-        </div>
+
       </div>
 
       {/* ── Section header ────────────────────────────────────────────── */}
