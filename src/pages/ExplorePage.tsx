@@ -100,7 +100,6 @@ const ExplorePage = () => {
           </motion.div>
         </div>
 
-
       </div>
 
       {/* ── Section header ────────────────────────────────────────────── */}
