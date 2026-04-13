@@ -160,14 +160,16 @@ const CategoryPage = () => {
         onClick={() => openEnquiryLightbox(filteredProducts, 0)}
         className="fixed right-0 top-1/3 -translate-y-1/2 z-[80] 
                    bg-[#f7eac3] text-black 
-                   py-14 px-3 md:py-12 md:px-3 sm:py-10 sm:px-2
+                   py-4 px-3 md:py-12 md:px-3 sm:py-4 sm:px-2
                     rounded-l-xl shadow-2xl transition-all duration-300
                    hover:pr-4 group border border-black/100"
       >
-        <div className="flex flex-col items-center gap-2">
-          <span className="[writing-mode:vertical-lr] text-[11px] font-bold tracking-[0.3em] uppercase">
-            Enquire Now
-          </span>
+        <div className="flex flex-col items-center leading-[1.1] ">
+          {"ENQUIRE NOW".split("").map((char, i) => (
+            <span key={i} className={`text-[12px] font-bold uppercase ${char === " " ? "my-1" : ""}`}>
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))}
         </div>
       </motion.button>
 
