@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Subcategory, CollectionSlide } from "@/data/ourCollection";
@@ -26,11 +26,38 @@ type Props = {
 const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [activeSubcategory, setActiveSubcategory] = useState<string>(
+    categorySlide.subcategories[0]?.label || ""
+  );
 
   // Build a Product[] filtered to this slide's subcategory for the lightbox
   const enquiryProducts: Product[] = categorySlide.subcategories.flatMap((sub) =>
     sub.images.map((img) => ({ image: img, subcategory: categorySlide.title }))
   );
+
+  // Calculate starting index for each subcategory in the flat slides array
+  const getSubcategoryStartIndex = (subcategoryIndex: number) => {
+    let startIndex = 0;
+    for (let i = 0; i < subcategoryIndex; i++) {
+      startIndex += categorySlide.subcategories[i].images.length;
+    }
+    return startIndex;
+  };
+
+  // Function to navigate to a specific subcategory
+  const navigateToSubcategory = (subcategoryLabel: string) => {
+    // Find the subcategory index
+    const subcategoryIndex = categorySlide.subcategories.findIndex(
+      (sub) => sub.label === subcategoryLabel
+    );
+
+    if (subcategoryIndex !== -1) {
+      const startIndex = getSubcategoryStartIndex(subcategoryIndex);
+      setActiveSlideIndex(startIndex);
+      setActiveSubcategory(subcategoryLabel);
+    }
+  };
 
   // Even indices: image on right (text left) — same as imageRight:true in CollectionSection
   const imageRight = (index + 1) % 2 === 0;
@@ -85,6 +112,22 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
               {categorySlide.description}
             </p>
 
+            {/* Subcategory buttons */}
+            <div className="flex flex-wrap gap-3 mt-2">
+              {categorySlide.subcategories.map((subcategory, subIndex) => (
+                <button
+                  key={subcategory.label}
+                  onClick={() => navigateToSubcategory(subcategory.label)}
+                  className={`px-4 py-2 text-xs font-medium uppercase tracking-wider border rounded-md transition-all duration-300 ${activeSubcategory === subcategory.label
+                    ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                    : "border-black/20 dark:border-white/30 hover:bg-black/5 dark:hover:bg-white/10"
+                    }`}
+                >
+                  {subcategory.label}
+                </button>
+              ))}
+            </div>
+
             {/* Image count hint */}
             <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
               {categorySlide.subcategories.reduce((acc, sub) => acc + sub.images.length, 0)}{" "}
@@ -129,6 +172,11 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
               subcategories={categorySlide.subcategories}
               gender={gender}
               imageRight={imageRight}
+              initialSlideIndex={activeSlideIndex}
+              onActiveSlideChange={(slideIndex, subcategoryLabel) => {
+                setActiveSlideIndex(slideIndex);
+                setActiveSubcategory(subcategoryLabel);
+              }}
             />
           </motion.div>
         </div>
