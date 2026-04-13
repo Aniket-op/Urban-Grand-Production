@@ -160,7 +160,7 @@ const CategoryPage = () => {
         onClick={() => openEnquiryLightbox(filteredProducts, 0)}
         className="fixed right-0 top-1/3 -translate-y-1/2 z-[80] 
                    bg-[#f7eac3] text-black 
-                   py-4 px-3 md:py-12 md:px-3 sm:py-4 sm:px-2
+                   py-4 px-3 md:py-6 md:px-3 sm:py-4 sm:px-2
                     rounded-l-xl shadow-2xl transition-all duration-300
                    hover:pr-4 group border border-black/100"
       >
