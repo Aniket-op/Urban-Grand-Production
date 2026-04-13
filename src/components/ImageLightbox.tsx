@@ -145,6 +145,17 @@ const ImageLightbox = ({
 
   const product = images[currentIndex];
 
+  // Autoplay carousel
+  useEffect(() => {
+    if (scale > 1) return; // Pause autoplay when zoomed in
+
+    const timer = setInterval(() => {
+      onNavigate((currentIndex + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [currentIndex, images.length, onNavigate, scale]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
