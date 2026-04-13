@@ -34,7 +34,8 @@ const categoryData: Record<string, CategoryData> = {};
     slide.subcategories.flatMap(sub =>
       sub.images.map(img => ({
         image: img,
-        subcategory: slide.title // Matches old CategoryPage behavior where subcategory = "Jackets", "Coats"
+        category: slide.title,
+        subcategory: sub.label
       }))
     )
   );
@@ -105,14 +106,14 @@ const CategoryPage = () => {
   useEffect(() => {
     if (!gender || !categoryData[gender]) return;
 
-    // Find matching subcategory if provided in URL
+    // Find matching category if provided in URL (param is named subcategory in routes)
     if (subcategory) {
       const data = categoryData[gender];
-      const availableSubs = ["All", ...Array.from(new Set(data.products.map(p => p.subcategory)))];
+      const availableCats = ["All", ...Array.from(new Set(data.products.map(p => p.category)))];
 
       const search = subcategory.toLowerCase();
       // Look for exact match or pluralization match
-      const match = availableSubs.find(s =>
+      const match = availableCats.find(s =>
         s.toLowerCase() === search ||
         s.toLowerCase() === `${search}s` ||
         `${s.toLowerCase()}s` === search
@@ -133,10 +134,10 @@ const CategoryPage = () => {
   // other gender links
   const others = Object.keys(categoryData).filter((k) => k !== gender);
 
-  const subcategories = [...Array.from(new Set(data.products.map(p => p.subcategory)))];
+  const categories = ["All", ...Array.from(new Set(data.products.map(p => p.category)))];
   const filteredProducts = selectedSubcategory === "All"
     ? data.products
-    : data.products.filter(p => p.subcategory === selectedSubcategory);
+    : data.products.filter(p => p.category === selectedSubcategory);
 
   return (
     <div className="min-h-screen bg-background flex flex-col pt-20">
@@ -186,7 +187,7 @@ const CategoryPage = () => {
         </div> */}
         <div>
           <div className="max-w-7xl mx-auto w-full px-6 flex items-center gap-1 h-12 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {subcategories.map(sub => (
+            {categories.map(sub => (
               <button
                 key={sub}
                 onClick={() => setSelectedSubcategory(sub)}

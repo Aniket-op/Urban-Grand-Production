@@ -33,7 +33,11 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
 
   // Build a Product[] filtered to this slide's subcategory for the lightbox
   const enquiryProducts: Product[] = categorySlide.subcategories.flatMap((sub) =>
-    sub.images.map((img) => ({ image: img, subcategory: categorySlide.title }))
+    sub.images.map((img) => ({
+      image: img,
+      category: categorySlide.title,
+      subcategory: sub.label,
+    }))
   );
 
   // Calculate starting index for each subcategory in the flat slides array
