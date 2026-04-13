@@ -109,7 +109,7 @@ const CategoryPage = () => {
     // Find matching category if provided in URL (param is named subcategory in routes)
     if (subcategory) {
       const data = categoryData[gender];
-      const availableCats = ["All", ...Array.from(new Set(data.products.map(p => p.category)))];
+      const availableCats = [...Array.from(new Set(data.products.map(p => p.category)))];
 
       const search = subcategory.toLowerCase();
       // Look for exact match or pluralization match
@@ -134,7 +134,7 @@ const CategoryPage = () => {
   // other gender links
   const others = Object.keys(categoryData).filter((k) => k !== gender);
 
-  const categories = ["All", ...Array.from(new Set(data.products.map(p => p.category)))];
+  const categories = [...Array.from(new Set(data.products.map(p => p.category)))];
   const filteredProducts = selectedSubcategory === "All"
     ? data.products
     : data.products.filter(p => p.category === selectedSubcategory);
