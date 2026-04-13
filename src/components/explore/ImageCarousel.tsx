@@ -7,6 +7,8 @@ type Props = {
   subcategories: Subcategory[];
   gender: string;
   imageRight: boolean;
+  initialSlideIndex?: number;
+  onActiveSlideChange?: (slideIndex: number, subcategoryLabel: string) => void;
 };
 
 const AUTO_ADVANCE_MS = 3800;
@@ -21,14 +23,14 @@ const PAUSE_AFTER_INTERACTION_MS = 10000;
  * - SubcategoryOverlay with the label-slide-up premium hover animation
  * - Scale zoom on hover (same as CollectionSection)
  */
-const ImageCarousel = ({ subcategories, gender, imageRight }: Props) => {
+const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 0, onActiveSlideChange }: Props) => {
   const flatSlides = useMemo(() => {
     return subcategories.flatMap((sub) =>
       sub.images.map((img) => ({ src: img, label: sub.label }))
     );
   }, [subcategories]);
 
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(initialSlideIndex);
   const [isHovered, setIsHovered] = useState(false);
   const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPausedRef = useRef(false);
@@ -48,6 +50,20 @@ const ImageCarousel = ({ subcategories, gender, imageRight }: Props) => {
 
   const prev = useCallback(() => goTo(active - 1), [active, goTo]);
   const next = useCallback(() => goTo(active + 1), [active, goTo]);
+
+  // Update active slide when initialSlideIndex changes
+  useEffect(() => {
+    if (initialSlideIndex >= 0 && initialSlideIndex < flatSlides.length) {
+      setActive(initialSlideIndex);
+    }
+  }, [initialSlideIndex, flatSlides.length]);
+
+  // Notify parent about active slide changes
+  useEffect(() => {
+    if (onActiveSlideChange && flatSlides[active]) {
+      onActiveSlideChange(active, flatSlides[active].label);
+    }
+  }, [active, flatSlides, onActiveSlideChange]);
 
   // Auto-advance
   useEffect(() => {
