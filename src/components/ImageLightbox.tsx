@@ -16,6 +16,7 @@ import EnquiryForm from "@/components/EnquiryForm";
 // ── Shared product type ──────────────────────────────────────────────────────
 export type Product = {
   image: string;
+  category: string;
   subcategory: string;
 };
 
