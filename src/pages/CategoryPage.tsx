@@ -159,9 +159,10 @@ const CategoryPage = () => {
         transition={{ delay: 1.5 }}
         onClick={() => openEnquiryLightbox(filteredProducts, 0)}
         className="fixed right-0 top-1/3 -translate-y-1/2 z-[80] 
-                   bg-black dark:bg-white text-white dark:text-black 
-                   py-16 px-3 rounded-l-xl shadow-2xl transition-all duration-300
-                   hover:pr-4 group border border-white/10 dark:border-black/5"
+                   bg-[#f7eac3] text-black 
+                   py-14 px-3 md:py-12 md:px-3 sm:py-10 sm:px-2
+                    rounded-l-xl shadow-2xl transition-all duration-300
+                   hover:pr-4 group border border-black/100"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="[writing-mode:vertical-lr] text-[11px] font-bold tracking-[0.3em] uppercase">
