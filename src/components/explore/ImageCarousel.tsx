@@ -7,38 +7,55 @@ type Props = {
   subcategories: Subcategory[];
   gender: string;
   imageRight: boolean;
-  initialSlideIndex?: number;
-  onActiveSlideChange?: (slideIndex: number, subcategoryLabel: string) => void;
+
+  // ✅ NEW CONTROLLED STATE
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
 };
 
 const AUTO_ADVANCE_MS = 3800;
 const PAUSE_AFTER_INTERACTION_MS = 10000;
 
-/**
- * ImageCarousel
- *
- * Displays a set of images for a single subcategory with:
- * - Auto-advancing slides (pauses on hover or after manual interaction)
- * - Dot navigation + left/right arrow buttons (shown on hover)
- * - SubcategoryOverlay with the label-slide-up premium hover animation
- * - Scale zoom on hover (same as CollectionSection)
- */
-const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 0, onActiveSlideChange }: Props) => {
+const ImageCarousel = ({
+  subcategories,
+  gender,
+  imageRight,
+  activeIndex,
+  setActiveIndex,
+}: Props) => {
+
   const flatSlides = useMemo(() => {
     return subcategories.flatMap((sub) =>
       sub.images.map((img) => ({ src: img, label: sub.label }))
     );
   }, [subcategories]);
 
-  const [active, setActive] = useState(initialSlideIndex);
+  const [active, setActive] = useState(activeIndex);
   const [isHovered, setIsHovered] = useState(false);
+
   const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPausedRef = useRef(false);
 
+  // ✅ SYNC FROM PARENT (NO LOOP)
+  useEffect(() => {
+    if (activeIndex !== active) {
+      setActive(activeIndex);
+    }
+  }, [activeIndex]);
+
+  // ✅ SYNC BACK TO PARENT (SAFE)
+  useEffect(() => {
+    if (active !== activeIndex) {
+      setActiveIndex(active);
+    }
+  }, [active]);
+
   const goTo = useCallback(
     (idx: number) => {
-      setActive((idx + flatSlides.length) % flatSlides.length);
-      // Pause auto-advance for a bit after manual interaction
+      const newIndex = (idx + flatSlides.length) % flatSlides.length;
+      setActive(newIndex);
+
+      // pause auto slide
       isPausedRef.current = true;
       if (pauseTimer.current) clearTimeout(pauseTimer.current);
       pauseTimer.current = setTimeout(() => {
@@ -51,32 +68,20 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
   const prev = useCallback(() => goTo(active - 1), [active, goTo]);
   const next = useCallback(() => goTo(active + 1), [active, goTo]);
 
-  // Update active slide when initialSlideIndex changes
-  useEffect(() => {
-    if (initialSlideIndex >= 0 && initialSlideIndex < flatSlides.length) {
-      setActive(initialSlideIndex);
-    }
-  }, [initialSlideIndex, flatSlides.length]);
-
-  // Notify parent about active slide changes
-  useEffect(() => {
-    if (onActiveSlideChange && flatSlides[active]) {
-      onActiveSlideChange(active, flatSlides[active].label);
-    }
-  }, [active, flatSlides, onActiveSlideChange]);
-
-  // Auto-advance
+  // ✅ AUTO SLIDE
   useEffect(() => {
     if (flatSlides.length <= 1) return;
+
     const interval = setInterval(() => {
       if (!isHovered && !isPausedRef.current) {
         setActive((a) => (a + 1) % flatSlides.length);
       }
     }, AUTO_ADVANCE_MS);
+
     return () => clearInterval(interval);
   }, [flatSlides.length, isHovered]);
 
-  // Cleanup pause timer on unmount
+  // cleanup
   useEffect(() => {
     return () => {
       if (pauseTimer.current) clearTimeout(pauseTimer.current);
@@ -94,7 +99,7 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* ── Images ────────────────────────────────────────────────────── */}
+      {/* Images */}
       <div className="relative w-full h-[72vh] md:h-[78vh] overflow-hidden">
         {flatSlides.map((slide, i) => (
           <img
@@ -102,14 +107,13 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
             src={slide.src}
             alt={`${slide.label} ${i + 1}`}
             className={`absolute inset-0 w-full h-full object-cover
-                        transition-all duration-700 ease-elegant
-                        group-hover:scale-[1.04]
-                        ${i === active ? "opacity-100 z-[1]" : "opacity-0 z-0"}`}
+            transition-all duration-700
+            ${i === active ? "opacity-100 z-[1]" : "opacity-0 z-0"}`}
           />
         ))}
       </div>
 
-      {/* ── Overlay: gradient + label (SubcategoryOverlay) ────────────── */}
+      {/* Overlay */}
       <SubcategoryOverlay
         label={flatSlides[active]?.label || ""}
         gender={gender}
@@ -118,7 +122,7 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
         imageRight={imageRight}
       />
 
-      {/* ── Arrow navigation (visible on hover when >1 image) ─────────── */}
+      {/* Arrows */}
       {flatSlides.length > 1 && (
         <>
           <button
@@ -126,35 +130,26 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
               e.stopPropagation();
               prev();
             }}
-            aria-label="Previous image"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-40
-                       w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm
-                       flex items-center justify-center text-white/70
-                       hover:text-white hover:bg-black/65 transition-all duration-300
-                       opacity-0 group-hover:opacity-100"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-40 opacity-0 group-hover:opacity-100"
           >
             <ChevronLeft size={18} />
           </button>
+
           <button
             onClick={(e) => {
               e.stopPropagation();
               next();
             }}
-            aria-label="Next image"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-40
-                       w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm
-                       flex items-center justify-center text-white/70
-                       hover:text-white hover:bg-black/65 transition-all duration-300
-                       opacity-0 group-hover:opacity-100"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-40 opacity-0 group-hover:opacity-100"
           >
             <ChevronRight size={18} />
           </button>
         </>
       )}
 
-      {/* ── Dot indicators ────────────────────────────────────────────── */}
+      {/* Dots */}
       {flatSlides.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 flex gap-1.5">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
           {flatSlides.map((_, i) => (
             <button
               key={i}
@@ -162,13 +157,10 @@ const ImageCarousel = ({ subcategories, gender, imageRight, initialSlideIndex = 
                 e.stopPropagation();
                 goTo(i);
               }}
-              aria-label={`Go to image ${i + 1}`}
-              className={`rounded-full transition-all duration-400
-                          ${
-                            i === active
-                              ? "w-5 h-1.5 bg-[hsl(38,60%,55%)]"
-                              : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
-                          }`}
+              className={`rounded-full ${i === active
+                  ? "w-5 h-1.5 bg-[hsl(38,60%,55%)]"
+                  : "w-1.5 h-1.5 bg-white/40"
+                }`}
             />
           ))}
         </div>

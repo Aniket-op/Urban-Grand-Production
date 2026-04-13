@@ -172,10 +172,22 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
               subcategories={categorySlide.subcategories}
               gender={gender}
               imageRight={imageRight}
-              initialSlideIndex={activeSlideIndex}
-              onActiveSlideChange={(slideIndex, subcategoryLabel) => {
+              activeIndex={activeSlideIndex}
+              setActiveIndex={(slideIndex) => {
                 setActiveSlideIndex(slideIndex);
-                setActiveSubcategory(subcategoryLabel);
+                // Find which subcategory this slide belongs to
+                let currentPosition = 0;
+                const targetSubcategory = categorySlide.subcategories.find((sub) => {
+                  const subcategoryLength = sub.images.length;
+                  if (slideIndex >= currentPosition && slideIndex < currentPosition + subcategoryLength) {
+                    return true;
+                  }
+                  currentPosition += subcategoryLength;
+                  return false;
+                });
+                if (targetSubcategory) {
+                  setActiveSubcategory(targetSubcategory.label);
+                }
               }}
             />
           </motion.div>
