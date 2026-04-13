@@ -157,7 +157,7 @@ const CategoryPage = () => {
           </p>
 
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            {data.title}
+            {selectedSubcategory}
           </h1>
 
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-5 mx-auto" />
