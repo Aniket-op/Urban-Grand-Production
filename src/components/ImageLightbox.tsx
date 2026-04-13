@@ -26,11 +26,13 @@ const ImageLightbox = ({
   currentIndex,
   onClose,
   onNavigate,
+  inquireyForm = true
 }: {
   images: Product[];
   currentIndex: number;
   onClose: () => void;
   onNavigate: (index: number) => void;
+  inquireyForm?: boolean;
 }) => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -276,7 +278,7 @@ const ImageLightbox = ({
       </div>
 
       {/* Right side: Enquiry form */}
-      {/* <div className="w-full md:w-[400px] lg:w-[480px] bg-background flex flex-col h-[65vh] md:h-full border-l border-border/20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-20 flex-shrink-0">
+      {inquireyForm && <div className="w-full md:w-[400px] lg:w-[480px] bg-background flex flex-col h-[65vh] md:h-full border-l border-border/20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-20 flex-shrink-0">
         <div className="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-border/20 flex-shrink-0 bg-background">
           <div>
             <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground font-semibold mb-1">
@@ -295,7 +297,7 @@ const ImageLightbox = ({
         <div className="flex-1 overflow-y-auto w-full bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-border">
           <EnquiryForm />
         </div>
-      </div> */}
+      </div>}
     </motion.div>
   );
 };

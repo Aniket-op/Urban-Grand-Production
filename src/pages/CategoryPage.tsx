@@ -262,6 +262,7 @@ const CategoryPage = () => {
             currentIndex={lightboxIndex}
             onClose={() => setLightboxIndex(null)}
             onNavigate={(i) => setLightboxIndex(i)}
+            inquireyForm={false}
           />
         )}
       </AnimatePresence>
