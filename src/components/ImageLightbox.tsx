@@ -195,6 +195,13 @@ const ImageLightbox = ({
             >
               <X size={20} />
             </button>
+            {!inquireyForm && (<button
+              onClick={onClose}
+              className="p-2.5 hover:bg-soft rounded-full transition-elegant text-muted-medium hover:text-background flex-shrink-0 hidden bg-white md:block"
+              aria-label="Close modal"
+            >
+              <X size={20} />
+            </button>)}
           </div>
         </div>
 
