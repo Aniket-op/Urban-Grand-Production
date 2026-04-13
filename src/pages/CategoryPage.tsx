@@ -133,7 +133,7 @@ const CategoryPage = () => {
   // other gender links
   const others = Object.keys(categoryData).filter((k) => k !== gender);
 
-  const subcategories = ["All", ...Array.from(new Set(data.products.map(p => p.subcategory)))];
+  const subcategories = [...Array.from(new Set(data.products.map(p => p.subcategory)))];
   const filteredProducts = selectedSubcategory === "All"
     ? data.products
     : data.products.filter(p => p.subcategory === selectedSubcategory);
@@ -170,8 +170,7 @@ const CategoryPage = () => {
 
       {/* ── Category tabs */}
       <div className="sticky top-20 z-40 bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm flex flex-col">
-        {/* Main Categories */}
-        <div className="max-w-7xl mx-auto w-full px-6 flex items-center gap-1 h-12 overflow-x-auto">
+        {/* <div className="max-w-7xl mx-auto w-full px-6 flex items-center gap-1 h-12 overflow-x-auto">
           {Object.entries(categoryData).map(([key, cat]) => (
             <Link
               key={key}
@@ -184,8 +183,7 @@ const CategoryPage = () => {
               {cat.title.split("'")[0]}
             </Link>
           ))}
-        </div>
-        {/* Subcategories Filter */}
+        </div> */}
         <div>
           <div className="max-w-7xl mx-auto w-full px-6 flex items-center gap-1 h-12 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {subcategories.map(sub => (
@@ -239,22 +237,18 @@ const CategoryPage = () => {
         )}
 
         {/* Browse other categories */}
-        {others.length > 0 && (
-          <div className="mt-16 text-center border-t border-border/30 pt-12 flex items-center justify-center gap-4 flex-wrap">
-            <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
-              Browse
-            </span>
-            {others.map((key) => (
-              <Link
-                key={key}
-                to={`/category/${key}`}
-                className="text-[11px] uppercase tracking-widest font-semibold text-foreground/70 hover:text-foreground underline-offset-4 hover:underline transition-colors"
-              >
-                {categoryData[key].title.split("'")[0]}
-              </Link>
-            ))}
-          </div>
-        )}
+        <div className="mt-16 text-center border-t border-border/30 pt-12 flex items-center justify-center gap-4 flex-wrap">
+          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
+            Browse
+          </span>
+          <Link
+            to={`/explore/${gender}`}
+            className="text-[11px] uppercase tracking-widest font-semibold text-foreground/70 hover:text-foreground underline-offset-4 hover:underline transition-colors"
+          >
+            Back to Categories
+          </Link>
+        </div>
+
       </main>
 
       <Footer />

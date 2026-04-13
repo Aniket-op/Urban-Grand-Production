@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Subcategory, CollectionSlide } from "@/data/ourCollection";
 import type { Product } from "@/components/ImageLightbox";
@@ -111,6 +111,26 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
             <p className="text-[15px] text-muted-medium dark:text-zinc-300 max-w-[420px] leading-relaxed">
               {categorySlide.description}
             </p>
+            {/* Active subcategory label */}
+            {/* <div className="px-4 sm:px-6 md:px-8 lg:px-0">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSubcategory}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="border-l-2 border-foreground/15 pl-5"
+                >
+                  <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground mb-1">
+                    Currently Viewing
+                  </p>
+                  <p className="font-display text-xl font-semibold text-foreground">
+                    {activeSubcategory}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div> */}
 
             {/* Subcategory buttons */}
             <div className="flex flex-wrap gap-3 mt-2">
