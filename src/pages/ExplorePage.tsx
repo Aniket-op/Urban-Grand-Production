@@ -53,7 +53,7 @@ const ExplorePage = () => {
       <Navbar />
 
       {/* ── Hero Banner ──────────────────────────────────────────────── */}
-      <div className="relative w-full h-[42vh] md:h-[42vh] overflow-hidden !text-center">
+      <div className="relative w-full min-h-[350px] md:min-h-[400px] h-[45vh] lg:h-[42vh] flex flex-col items-center justify-center overflow-hidden !text-center pt-[88px]">
         {/* Background image */}
         <AnimatePresence mode="wait">
           <motion.img
@@ -68,15 +68,8 @@ const ExplorePage = () => {
           />
         </AnimatePresence>
 
-        {/* Gradient overlay */}
-        <div
-          className={`absolute inset-0 bg-gradient-to-r ${heroGradients[gender]}`}
-        />
-        {/* Bottom fade to page background */}
-        {/* <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-background via-transparent to-transparent" /> */}
-
         {/* Hero Content */}
-        <div className="relative z-10 min-h-[50vh] flex items-center justify-center px-8 md:px-16 max-w-7xl mx-auto w-full">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16 py-12 flex flex-col items-center justify-center">
           <motion.div
             key={`content-${gender}`}
             initial={{ opacity: 0, y: 24 }}
@@ -99,7 +92,6 @@ const ExplorePage = () => {
             </p>
           </motion.div>
         </div>
-
       </div>
 
       {/* ── Section header ────────────────────────────────────────────── */}
