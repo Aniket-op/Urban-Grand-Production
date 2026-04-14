@@ -140,6 +140,15 @@ const CollectionSlideComponent = ({
                 </div>
               </div>
             </div>
+
+            {/* Decorative accent line */}
+            <motion.div
+              initial={{ scaleY: 0 }}
+              animate={inView ? { scaleY: 1 } : {}}
+              transition={{ duration: 3, delay: 0.6 }}
+              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] origin-top rounded-full hidden lg:block ${slide.imageRight ? "-right-4" : "-left-4"
+                }`}
+            />
           </motion.div>
         </div>
       </div>
