@@ -269,9 +269,9 @@ const CategoryPage = () => {
 
         {/* Browse other categories */}
         <div className="mt-16 text-center border-t border-border/30 pt-12 flex items-center justify-center gap-4 flex-wrap">
-          <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
+          {/* <span className="text-[11px] uppercase tracking-widest text-muted-foreground">
             Browse
-          </span>
+          </span> */}
           <Link
             to={`/explore/${gender}`}
             className="text-[11px] uppercase tracking-widest font-semibold text-foreground/70 hover:text-foreground underline-offset-4 hover:underline transition-colors"

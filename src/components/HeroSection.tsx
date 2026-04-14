@@ -44,7 +44,7 @@ const HeroSection = () => {
 
       {/* Text content */}
       <div className="absolute inset-0 flex items-center">
-        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 md:px-12 md:max-w-[55%] md:ml-[4%] md:mr-auto">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 md:px-12 md:max-w-[55%] md:ml-[0.001%] md:mr-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
