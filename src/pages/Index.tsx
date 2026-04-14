@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
 
       {/* Overlay Navbar — scroll-morph behavior only on homepage */}
       <Navbar />
