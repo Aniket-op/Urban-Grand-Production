@@ -34,12 +34,12 @@ const WhoWeAre = () => {
             <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg pointer-events-none" />
           </div>
 
-          {/* Decorative accent line */}
+          {/* Decorative accent line and glow */}
           <motion.div
             initial={{ scaleY: 0 }}
             animate={inView ? { scaleY: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="absolute -left-4 top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] origin-top rounded-full hidden lg:block"
+            className="absolute -left-2 sm:-left-3 lg:-left-4 top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] shadow-[0_0_15px_rgba(212,175,55,0.7)] origin-top rounded-full z-10"
           />
         </motion.div>
 

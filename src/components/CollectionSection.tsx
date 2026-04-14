@@ -141,12 +141,12 @@ const CollectionSlideComponent = ({
               </div>
             </div>
 
-            {/* Decorative accent line */}
+            {/* Decorative accent line and glow */}
             <motion.div
               initial={{ scaleY: 0 }}
               animate={inView ? { scaleY: 1 } : {}}
               transition={{ duration: 3, delay: 0.6 }}
-              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] origin-top rounded-full hidden lg:block ${slide.imageRight ? "-right-4" : "-left-4"
+              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] shadow-[0_0_15px_rgba(212,175,55,0.7)] origin-top rounded-full z-10 ${slide.imageRight ? "-right-2 sm:-right-3 md:-right-4" : "-left-2 sm:-left-3 md:-left-4"
                 }`}
             />
           </motion.div>
