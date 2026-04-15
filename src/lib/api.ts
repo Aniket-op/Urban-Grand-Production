@@ -5,7 +5,8 @@
  */
 
 // Base URL — reads from Vite env, falls back to localhost:5000
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://urban-grand-production-api.onrender.com/api";
+const API_BASE_URL = "https://urban-grand-production-api.onrender.com/api";
 
 /** Shape of every API response */
 export interface ApiResponse<T = unknown> {
