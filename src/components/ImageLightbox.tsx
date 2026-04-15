@@ -13,6 +13,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, User, UserX } from "lucide-react";
 import EnquiryForm from "@/components/EnquiryForm";
 import type { UserData } from "@/components/EnquiryForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 // ── Shared product type ──────────────────────────────────────────────────────
 export type Product = {
@@ -42,19 +44,33 @@ const ImageLightbox = ({
   const [userType, setUserType] = useState<"user" | "guest">("guest");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mock current user data — replace with real auth context when available
-  const currentUser: UserData | null = useMemo(() => ({
-    fullName: "Sangita Roy",
-    companyName: "BanavatNest Pvt. Ltd.",
-    emailAddress: "SangitaRoy@banavatNest.com",
-    contactNumber: "+91 99999 99999",
-  }), []);
+  const { isAuthenticated, user } = useAuth();
+
+  const currentUser: UserData | null = useMemo(() => {
+    if (isAuthenticated && user) {
+      return {
+        fullName: user.fullName || "",
+        companyName: user.companyName || "",
+        emailAddress: user.emailAddress || "",
+        contactNumber: user.contactNumber || "",
+      };
+    }
+    return null;
+  }, [isAuthenticated, user]);
 
   const hasUserData = currentUser !== null;
 
-  // Derive form props based on userType
-  const formUserData = userType === "user" && hasUserData ? currentUser : undefined;
-  const formDisabled = userType === "user" && hasUserData;
+  useEffect(() => {
+    if (isAuthenticated) {
+      setUserType("user");
+    } else {
+      setUserType("guest");
+    }
+  }, [isAuthenticated]);
+
+  // Derive form props based on userType and auth
+  const formUserData = isAuthenticated && userType === "user" && hasUserData ? currentUser : undefined;
+  const formDisabled = isAuthenticated && userType === "user" && hasUserData;
 
   const resetView = useCallback(() => {
     setScale(1);
@@ -330,49 +346,76 @@ const ImageLightbox = ({
         </div>
 
         {/* User / Guest Toggle */}
-        <div className="px-6 lg:px-8 pt-4 pb-2 flex-shrink-0 bg-background">
-          <div className="flex items-center gap-2 p-1 bg-muted/30 rounded-xl">
-            <button
-              id="user-type-user"
-              onClick={() => hasUserData && setUserType("user")}
-              disabled={!hasUserData}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "user"
-                ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
-                : hasUserData
-                  ? "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  : "text-muted-foreground/40 cursor-not-allowed"
-                }`}
-              aria-label="Continue as registered user"
-            >
-              <User size={14} />
-              User
-            </button>
-            <button
-              id="user-type-guest"
-              onClick={() => setUserType("guest")}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "guest"
-                ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-              aria-label="Continue as guest"
-            >
-              <UserX size={14} />
-              Guest
-            </button>
+        {!isAuthenticated && (
+          <div className="px-6 lg:px-8 pt-4 pb-2 flex-shrink-0 bg-background">
+            <div className="flex items-center gap-2 p-1 bg-muted/30 rounded-xl">
+              <button
+                id="user-type-user"
+                onClick={() => setUserType("user")}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "user"
+                  ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                aria-label="Continue as registered user"
+              >
+                <User size={14} />
+                User
+              </button>
+              <button
+                id="user-type-guest"
+                onClick={() => setUserType("guest")}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-[0.1em] uppercase transition-all duration-300 ${userType === "guest"
+                  ? "bg-[hsl(38,60%,50%)] text-white shadow-md shadow-[hsl(38,60%,50%)]/25"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                aria-label="Continue as guest"
+              >
+                <UserX size={14} />
+                Guest
+              </button>
+            </div>
           </div>
-          {userType === "user" && hasUserData && (
-            <p className="text-[9px] text-[hsl(38,60%,50%)] tracking-[0.15em] uppercase mt-2 text-center font-medium">
-              Auto-filled with your account details
-            </p>
-          )}
-        </div>
+        )}
 
         <div className="flex-1 overflow-y-auto w-full bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-border">
-          <EnquiryForm
-            key={userType}
-            userData={formUserData ?? undefined}
-            disabled={formDisabled}
-          />
+          {!isAuthenticated && userType === "user" ? (
+             <div className="flex flex-col items-center justify-center h-full text-center space-y-4 py-12 px-6">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-2">
+                  <User size={32} className="text-muted-foreground" />
+                </div>
+                <h4 className="font-display text-xl font-bold">Sign In Required</h4>
+                <p className="text-sm text-muted-foreground">
+                  Please log in to your account to send an enquiry with your registered details.
+                </p>
+                <Link
+                  to="/login"
+                  className="mt-4 px-8 py-3 bg-[hsl(38,60%,50%)] text-white font-bold tracking-widest text-xs uppercase hover:bg-[hsl(38,60%,40%)] transition-colors inline-block rounded-md shadow-md shadow-[hsl(38,60%,50%)]/25"
+                >
+                  Log In Now
+                </Link>
+                <button
+                  onClick={() => setUserType("guest")}
+                  className="text-xs text-muted-foreground underline hover:text-foreground mt-4"
+                >
+                  Or continue as guest
+                </button>
+             </div>
+          ) : (
+            <>
+              {isAuthenticated && (
+                <div className="px-6 lg:px-8 pt-4">
+                  <p className="text-[10px] text-[hsl(38,60%,50%)] tracking-[0.15em] uppercase text-center font-medium bg-muted/30 py-2 rounded-lg">
+                    Auto-filled with your account details
+                  </p>
+                </div>
+              )}
+              <EnquiryForm
+                key={userType}
+                userData={formUserData ?? undefined}
+                disabled={formDisabled}
+              />
+            </>
+          )}
         </div>
       </div>}
     </motion.div>
