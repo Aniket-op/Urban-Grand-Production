@@ -33,10 +33,13 @@ app.use(helmet());
 const allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:5173",
+  "https://urban-grand-production.vercel.app"
 ];
 
 if (process.env.CLIENT_URL) {
-  allowedOrigins.push(...process.env.CLIENT_URL.split(',').map(url => url.trim()));
+  // Add env url, stripping trailing slash if present
+  const urls = process.env.CLIENT_URL.split(',').map(url => url.trim().replace(/\/$/, ""));
+  allowedOrigins.push(...urls);
 }
 
 // CORS — allow requests from the frontend
