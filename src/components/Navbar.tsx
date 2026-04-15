@@ -1,6 +1,8 @@
-import { ChevronDown, Menu, X, Sun, Moon, Globe, LogIn, Mail, Phone, User } from "lucide-react";
+import { ChevronDown, Menu, X, Sun, Moon, Globe, LogIn, Mail, Phone, User, LogOut } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import logoUrl from "@/assets/logos/logo.png";
 import brochurePdf from "@/assets/PANCHSHEEL-PROFILE-LATEST.pdf";
 
@@ -51,11 +53,15 @@ const languages = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const [loginOpen, setLoginOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation(); // current route
+  const location = useLocation();
+  const navigate = useNavigate();
   const navRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLAnchorElement>(null);
+
+  // Auth state
+  const { user, isAuthenticated, logout } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   // Detect scroll to toggle hero/scrolled state
   useEffect(() => {
@@ -65,22 +71,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Theme
-  // const [theme, setTheme] = useState(() => {
-  //   if (typeof window !== "undefined") return localStorage.getItem("theme") || "light";
-  //   return "light";
-  // });
-
-  // useEffect(() => {
-  //   const root = window.document.documentElement;
-  //   root.classList.remove("light", "dark");
-  //   root.classList.add(theme);
-  //   localStorage.setItem("theme", theme);
-  // }, [theme]);
-
-  // const toggleTheme = () =>
-  //   setTheme((p) => (p === "light" ? "dark" : "light"));
-
   // Language
   const [langOpen, setLangOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState(languages[0]);
@@ -89,6 +79,14 @@ const Navbar = () => {
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    setMobileOpen(false);
+    toast.success("Logged out successfully.");
+    navigate("/");
+  };
 
   return (
     <>
@@ -242,23 +240,53 @@ const Navbar = () => {
 
           <div className="w-px h-4 bg-foreground/15 mx-1" />
 
-          {/* <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md hover:bg-muted/50 transition-elegant text-foreground/70 hover:text-foreground"
-            aria-label="Toggle theme"
-            title={`Theme: ${theme}`}
-          >
-            {theme === "light" ? <Sun size={16} /> : <Moon size={16} />}
-          </button> */}
+          {/* ── Auth Button (Login / User Menu) ── */}
+          {isAuthenticated && user ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setUserMenuOpen(true)}
+              onMouseLeave={() => setUserMenuOpen(false)}
+            >
+              <button className="flex items-center flex-col px-4 lg:px-2 py-2 rounded-md border border-[hsl(38,60%,50%)]/30 text-[11px] font-semibold tracking-[0.1em] uppercase text-foreground/70 hover:text-foreground hover:border-[hsl(38,60%,50%)]/60 hover:bg-[hsl(38,60%,50%,0.05)] transition-elegant">
+                <div className="w-6 h-6 rounded-full bg-[hsl(38,60%,50%,0.15)] flex items-center justify-center text-[9px] font-bold text-[hsl(38,60%,50%)]">
+                  {user.fullName.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-[9px] mt-0.5 max-w-[60px] truncate">{user.fullName.split(" ")[0]}</span>
+              </button>
 
-          {/* Login Button */}
-          <button
-            onClick={() => setLoginOpen(true)}
-            className=" flex items-center flex-col px-4 lg:px-2 py-2 rounded-md border border-foreground/20 text-[11px] font-semibold tracking-[0.1em] uppercase text-foreground/70 hover:text-foreground hover:border-foreground/40 hover:bg-muted/30 transition-elegant"
-          >
-            <User size={25} />
-            <span>Login</span>
-          </button>
+              {/* User dropdown */}
+              <div
+                className={`absolute top-full right-0 mt-2 w-48 bg-background border border-border/60 shadow-lg shadow-black/[0.06] rounded-md transition-all duration-300 py-1.5 ${userMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
+              >
+                <div className="px-4 py-2.5 border-b border-border/30">
+                  <p className="text-[11px] font-semibold text-foreground truncate">{user.fullName}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{user.emailAddress}</p>
+                </div>
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 px-4 py-2.5 text-[12px] text-foreground/70 hover:text-foreground hover:bg-muted/30 transition-colors"
+                >
+                  <User size={14} />
+                  My Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-[12px] text-red-500/70 hover:text-red-500 hover:bg-red-50/50 transition-colors border-t border-border/30"
+                >
+                  <LogOut size={14} />
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center flex-col px-4 lg:px-2 py-2 rounded-md border border-foreground/20 text-[11px] font-semibold tracking-[0.1em] uppercase text-foreground/70 hover:text-foreground hover:border-foreground/40 hover:bg-muted/30 transition-elegant"
+            >
+              <User size={25} />
+              <span>Login</span>
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger — always visible on mobile, but only when scrolled on hero page */}
@@ -356,7 +384,7 @@ const Navbar = () => {
             })}
           </div>
 
-          {/* Mobile bottom: Language + Theme + Login */}
+          {/* Mobile bottom: Language + Auth */}
           <div className="flex-shrink-0 px-6 py-6 border-t border-border/30 space-y-5">
             {/* Language chips */}
             <div>
@@ -379,87 +407,49 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              {/* <button
-                onClick={toggleTheme}
-                className="flex items-center gap-2 p-2 rounded-md hover:bg-muted/50 transition-elegant text-foreground/80 hover:text-foreground font-semibold text-sm"
-              >
-                {theme === "light" ? (
-                  <><Moon size={18} /> Dark Mode</>
-                ) : (
-                  <><Sun size={18} /> Light Mode</>
-                )}
-              </button> */}
-
-              <button
-                onClick={() => { setLoginOpen(true); setMobileOpen(false); }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-md bg-foreground text-background text-xs font-semibold tracking-wide hover:opacity-85 transition-elegant"
-              >
-                <User size={13} />
-                Login
-              </button>
+              {isAuthenticated && user ? (
+                <div className="flex items-center gap-3 w-full">
+                  <Link
+                    to="/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 flex-1 px-4 py-2.5 rounded-md bg-[hsl(38,60%,50%,0.1)] text-xs font-semibold tracking-wide hover:bg-[hsl(38,60%,50%,0.2)] transition-elegant"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-[hsl(38,60%,50%,0.2)] flex items-center justify-center text-[10px] font-bold text-[hsl(38,60%,50%)]">
+                      {user.fullName.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="truncate">{user.fullName}</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-md border border-red-300/30 text-xs font-semibold tracking-wide text-red-500/80 hover:text-red-500 hover:border-red-400/50 transition-elegant"
+                  >
+                    <LogOut size={13} />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 w-full">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 flex-1 px-5 py-2.5 rounded-md bg-foreground text-background text-xs font-semibold tracking-wide hover:opacity-85 transition-elegant"
+                  >
+                    <User size={13} />
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 flex-1 px-5 py-2.5 rounded-md border border-foreground/20 text-xs font-semibold tracking-wide hover:bg-muted/30 transition-elegant"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </nav>
-
-      {/* ── LOGIN MODAL ──────────────────────────────────────────────────── */}
-      {loginOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[70]"
-            onClick={() => setLoginOpen(false)}
-          />
-          <div className="force-light fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[71] w-[calc(100%-2rem)] max-w-md bg-background border border-color-[hsl(38,60%,50%)] rounded-lg p-8 sm:p-10">
-            <button
-              onClick={() => setLoginOpen(false)}
-              className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 hover:bg-muted/50 rounded-md transition-elegant text-foreground/70"
-              aria-label="Close login"
-            >
-              <X size={18} />
-            </button>
-            <div className="text-center mb-8">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground font-semibold mb-2">
-                Welcome Back
-              </p>
-              <h2 className="font-display text-3xl font-bold">Sign In</h2>
-            </div>
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-2 font-semibold">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  className="w-full bg-background border border-border px-4 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-foreground/30 transition-colors rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-2 font-semibold">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  className="w-full bg-background border border-border px-4 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-foreground/30 transition-colors rounded-md"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-foreground text-background py-4 text-xs font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-elegant rounded-md"
-              >
-                Sign In
-              </button>
-              <p className="text-center text-xs text-muted-foreground">
-                Don't have an account?{" "}
-                <button type="button" className="underline hover:text-foreground transition-colors">
-                  Register
-                </button>
-              </p>
-            </form>
-          </div>
-        </>
-      )}
     </>
   );
 };

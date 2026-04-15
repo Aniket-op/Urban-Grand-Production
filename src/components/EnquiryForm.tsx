@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
 import { categories, WHATSAPP_NUMBER, type Product } from "@/data/products";
-import { MessageCircle, Send } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { submitEnquiry as submitEnquiryApi } from "@/lib/api";
+import { MessageCircle, Send, Loader2 } from "lucide-react";
+import type { ApiResponse } from "@/lib/api";
 
 export interface UserData {
     fullName: string;
@@ -22,31 +25,47 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
     const urlCategory = searchParams.get("category") ?? "";
     const urlSubcategory = searchParams.get("subcategory") ?? "";
 
+    // Auth context — auto-fill when logged in
+    const { user, isAuthenticated } = useAuth();
+
+    // Determine effective user data: logged-in user takes priority, then prop
+    const effectiveUser: UserData | undefined = isAuthenticated && user
+        ? {
+            fullName: user.fullName,
+            companyName: user.companyName || undefined,
+            emailAddress: user.emailAddress,
+            contactNumber: user.contactNumber,
+        }
+        : userData;
+
     const [formData, setFormData] = useState({
-        fullName: userData?.fullName ?? "",
-        companyName: userData?.companyName ?? "",
+        fullName: effectiveUser?.fullName ?? "",
+        companyName: effectiveUser?.companyName ?? "",
         category: prefilledProduct
             ? prefilledProduct.category === "sale" || prefilledProduct.category === "new-arrivals"
                 ? "other"
                 : prefilledProduct.category
             : urlCategory,
-        contactNumber: userData?.contactNumber ?? "",
-        emailAddress: userData?.emailAddress ?? "",
+        contactNumber: effectiveUser?.contactNumber ?? "",
+        emailAddress: effectiveUser?.emailAddress ?? "",
         details: prefilledProduct
             ? `I am interested in the following product:\n\nName: ${prefilledProduct.name}\nPrice: ₹${prefilledProduct.price.toLocaleString("en-IN")}\n\nAdditional Details:\n`
             : "",
     });
 
-    // Sync form data when userData prop changes (User/Guest toggle)
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Sync form data when auth user changes (login/logout)
     useEffect(() => {
+        const source = effectiveUser;
         setFormData((prev) => ({
             ...prev,
-            fullName: userData?.fullName ?? "",
-            companyName: userData?.companyName ?? "",
-            contactNumber: userData?.contactNumber ?? "",
-            emailAddress: userData?.emailAddress ?? "",
+            fullName: source?.fullName ?? "",
+            companyName: source?.companyName ?? "",
+            contactNumber: source?.contactNumber ?? "",
+            emailAddress: source?.emailAddress ?? "",
         }));
-    }, [userData]);
+    }, [user, userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (prefilledProduct) {
@@ -98,7 +117,7 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         return newErrors;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const formErrors = validateForm();
         if (Object.keys(formErrors).length > 0) {
@@ -106,9 +125,31 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
             toast.error("Please fill in all required fields correctly.");
             return;
         }
-        console.log("Enquiry Form Submitted:", formData);
-        toast.success("Enquiry submitted successfully. We will get back to you soon!");
-        setFormData({ fullName: "", companyName: "", category: "", contactNumber: "", emailAddress: "", details: "" });
+
+        // If user is authenticated, submit via API
+        if (isAuthenticated) {
+            setIsSubmitting(true);
+            try {
+                // Build the full enquiry text with category context
+                const enquiryText = formData.category
+                    ? `[Category: ${formData.category}]\n\n${formData.details}`
+                    : formData.details;
+
+                await submitEnquiryApi(enquiryText);
+                toast.success("Enquiry submitted successfully! We will get back to you soon.");
+                setFormData((prev) => ({ ...prev, details: "", category: "" }));
+            } catch (err) {
+                const error = err as ApiResponse;
+                toast.error(error.message || "Failed to submit enquiry. Please try again.");
+            } finally {
+                setIsSubmitting(false);
+            }
+        } else {
+            // Guest mode — log and show success (WhatsApp is the primary guest channel)
+            console.log("Enquiry Form Submitted (Guest):", formData);
+            toast.success("Enquiry submitted successfully. We will get back to you soon!");
+            setFormData({ fullName: "", companyName: "", category: "", contactNumber: "", emailAddress: "", details: "" });
+        }
     };
 
     const handleWhatsAppSubmit = (e: React.FormEvent) => {
@@ -124,7 +165,10 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         toast.success("Redirecting to WhatsApp...");
     };
 
-    const inputClass = (field: string, isDisabled: boolean = disabled) =>
+    // Fields are disabled when user is logged in (auto-filled from profile) or explicitly disabled via prop
+    const isUserFieldDisabled = disabled || (isAuthenticated && !!user);
+
+    const inputClass = (field: string, isDisabled: boolean = isUserFieldDisabled) =>
         `w-full bg-transparent border-0 border-b-2 ${errors[field] ? "border-red-500" : "border-border"} px-1 py-3 text-sm focus:outline-none focus:ring-0 focus:border-[hsl(38,60%,50%)] hover:border-foreground/30 transition-colors rounded-none placeholder:text-muted-foreground/50 ${isDisabled ? "opacity-60 cursor-not-allowed text-muted-foreground" : ""}`;
 
     return (
@@ -142,30 +186,40 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
                 <p className="text-sm text-muted-medium leading-relaxed max-w-md">
                     Corporate gifting, wedding trousseau, or wholesale orders? Fill in the details below and our concierge team will reach out to you.
                 </p>
+
+                {/* Auth status indicator */}
+                {isAuthenticated && user && (
+                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[hsl(38,60%,50%,0.1)] border border-[hsl(38,60%,50%,0.2)]">
+                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        <span className="text-[10px] font-semibold tracking-wider uppercase text-[hsl(38,60%,50%)]">
+                            Logged in as {user.fullName.split(" ")[0]}
+                        </span>
+                    </div>
+                )}
             </div>
 
             <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Full Name *</label>
-                        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={inputClass("fullName")} placeholder="John Doe" disabled={disabled} />
+                        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className={inputClass("fullName")} placeholder="John Doe" disabled={isUserFieldDisabled} />
                         {errors.fullName && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.fullName}</p>}
                     </div>
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Company / Firm Name</label>
-                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={inputClass("companyName")} placeholder="Optional" disabled={disabled} />
+                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} className={inputClass("companyName")} placeholder="Optional" disabled={isUserFieldDisabled} />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Email Address *</label>
-                        <input type="email" name="emailAddress" value={formData.emailAddress} onChange={handleChange} className={inputClass("emailAddress")} placeholder="you@example.com" disabled={disabled} />
+                        <input type="email" name="emailAddress" value={formData.emailAddress} onChange={handleChange} className={inputClass("emailAddress")} placeholder="you@example.com" disabled={isUserFieldDisabled} />
                         {errors.emailAddress && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.emailAddress}</p>}
                     </div>
                     <div className="relative">
                         <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-1 font-bold">Contact Number *</label>
-                        <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className={inputClass("contactNumber")} placeholder="+91 98765 43210" disabled={disabled} />
+                        <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className={inputClass("contactNumber")} placeholder="+91 98765 43210" disabled={isUserFieldDisabled} />
                         {errors.contactNumber && <p className="absolute -bottom-5 left-0 text-red-500 text-[10px]">{errors.contactNumber}</p>}
                     </div>
                 </div>
@@ -177,17 +231,28 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
                 </div>
 
                 <div className="pt-6">
-                    <button type="submit" onClick={handleSubmit} className="group relative w-full overflow-hidden bg-foreground text-background hover:text-white px-8 py-5 text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase transition-all duration-300">
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className="group relative w-full overflow-hidden bg-foreground text-background hover:text-white px-8 py-5 text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                         <span className="relative z-10 flex items-center justify-center gap-3">
-                            <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-                            Submit Enquiry
+                            {isSubmitting ? (
+                                <Loader2 size={16} className="animate-spin" />
+                            ) : (
+                                <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                            )}
+                            {isSubmitting ? "Submitting..." : "Submit Enquiry"}
                         </span>
                         <div className="absolute inset-0 bg-[hsl(38,60%,50%)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                     </button>
                 </div>
 
                 <p className="text-center text-[9px] text-muted-foreground tracking-[0.1em] uppercase pt-4 opacity-70">
-                    All fields marked * are required. We respect your privacy.
+                    {isAuthenticated
+                        ? "Your contact details are auto-filled from your profile."
+                        : "All fields marked * are required. We respect your privacy."}
                 </p>
             </form>
         </div>
