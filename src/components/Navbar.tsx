@@ -161,7 +161,7 @@ const Navbar = () => {
                   <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
                 </button>
 
-                <div className="absolute top-[60px] left-1/2 -translate-x-1/2 w-56 bg-background border border-border/60 shadow-lg shadow-black/[0.06] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 py-1.5">
+                <div className="absolute top-[60px] left-1/2 -translate-x-1/2 w-56 bg-background border border-border/60 ui-shadow-soft rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 py-1.5">
                   {item.subcategories.map((sub) =>
                     sub.download ? (
                       <a
@@ -221,7 +221,7 @@ const Navbar = () => {
             </button>
 
             <div
-              className={`absolute top-full right-0 mt-4 w-44 bg-background border border-border/60 shadow-lg shadow-black/[0.06] rounded-md transition-all duration-300 py-1 ${langOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
+              className={`absolute top-full right-0 mt-4 w-44 bg-background border border-border/60 ui-shadow-soft rounded-md transition-all duration-300 py-1 ${langOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
             >
               {languages.map((lang) => (
                 <button
@@ -256,7 +256,7 @@ const Navbar = () => {
 
               {/* User dropdown */}
               <div
-                className={`absolute top-full right-0 mt-2 w-48 bg-background border border-border/60 shadow-lg shadow-black/[0.06] rounded-md transition-all duration-300 py-1.5 ${userMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
+                className={`absolute top-full right-0 mt-2 w-48 bg-background border border-border/60 ui-shadow-soft rounded-md transition-all duration-300 py-1.5 ${userMenuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"}`}
               >
                 <div className="px-4 py-2.5 border-b border-border/30">
                   <p className="text-[11px] font-semibold text-foreground truncate">{user.fullName}</p>

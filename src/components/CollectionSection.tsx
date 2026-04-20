@@ -68,14 +68,9 @@ const CollectionSlideComponent = ({
             transition={{ duration: 1.2 }}
             className="relative w-full md:w-[52%] flex-shrink-0"
           >
-            {/* IMAGE CARD */}
             <div
-              className="relative overflow-hidden rounded-lg w-full group cursor-pointer"
-              style={{
-                boxShadow: slide.imageRight
-                  ? "-15px 15px 25px -5px rgba(0,0,0,0.35)"
-                  : "15px 15px 25px -5px rgba(0,0,0,0.35)",
-              }}
+              className={`relative overflow-hidden rounded-lg w-full group cursor-pointer ${slide.imageRight ? "cardboard-shadow-left" : "cardboard-shadow-right"
+                }`}
             >
               <img
                 src={heroImages[slide.id]}
@@ -110,7 +105,7 @@ const CollectionSlideComponent = ({
                   <p className="text-white/80 text-[10px] tracking-[0.35em] uppercase font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                     Urban Grand
                   </p>
-                  <h3 className="font-display text-white text-3xl font-bold tracking-tight drop-shadow-md">
+                  <h3 className="font-display text-white text-3xl font-bold tracking-tight drop-shadow-sm">
                     {slide.title}
                   </h3>
                   {/* Line Animation below heading */}
@@ -146,7 +141,7 @@ const CollectionSlideComponent = ({
               initial={{ scaleY: 0 }}
               animate={inView ? { scaleY: 1 } : {}}
               transition={{ duration: 3, delay: 0.6 }}
-              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] shadow-[0_0_15px_rgba(212,175,55,0.7)] origin-top rounded-full z-10 ${slide.imageRight ? "-right-2 sm:-right-3 md:-right-4" : "-left-2 sm:-left-3 md:-left-4"
+              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] glow-accent-shadow origin-top rounded-full z-10 ${slide.imageRight ? "-right-2 sm:-right-3 md:-right-4" : "-left-2 sm:-left-3 md:-left-4"
                 }`}
             />
           </motion.div>

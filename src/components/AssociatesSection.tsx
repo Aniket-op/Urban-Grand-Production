@@ -63,7 +63,7 @@ const AssociatesSection = () => {
           {[...associateImages, ...associateImages].map((img, index) => (
             <div
               key={index}
-              className="group flex flex-col justify-center items-center w-[140px] sm:w-[180px] md:w-[220px] h-[90px] sm:h-[110px] rounded-lg bg-white dark:bg-zinc-800/80 border border-border/60 overflow-hidden shrink-0 shadow-sm hover:shadow-md transition-all duration-300"
+              className="group flex flex-col justify-center items-center w-[140px] sm:w-[180px] md:w-[220px] h-[90px] sm:h-[110px] rounded-lg bg-white dark:bg-zinc-800/80 border border-border/60 overflow-hidden shrink-0 cardboard-shadow-flat transition-all duration-300"
             >
               <img
                 src={img}

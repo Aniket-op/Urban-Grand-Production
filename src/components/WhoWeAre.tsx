@@ -19,12 +19,9 @@ const WhoWeAre = () => {
           initial={{ opacity: 0, x: -40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative group"
-          style={{
-            boxShadow: "15px 15px 25px -5px rgba(0,0,0,0.35)",
-          }}
+          className="relative group cardboard-shadow-right"
         >
-          <div className="relative overflow-hidden rounded-lg shadow-xl shadow-black/[0.08]">
+          <div className="relative overflow-hidden rounded-lg">
             <img
               src={legacyImg}
               alt="Urban Grand Heritage"
@@ -39,7 +36,7 @@ const WhoWeAre = () => {
             initial={{ scaleY: 0 }}
             animate={inView ? { scaleY: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="absolute -left-2 sm:-left-3 lg:-left-4 top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] shadow-[0_0_15px_rgba(212,175,55,0.7)] origin-top rounded-full z-10"
+            className="absolute -left-2 sm:-left-3 lg:-left-4 top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] glow-accent-shadow origin-top rounded-full z-10"
           />
         </motion.div>
 

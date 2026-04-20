@@ -238,6 +238,80 @@
   .animate-fade-in-right {
     animation: fadeInRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+
+  /* ── Cardboard shadow utilities ── */
+  .cardboard-shadow-right {
+    box-shadow: 12px 12px 30px -5px rgb(0 0 0 / 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    display: block;
+  }
+
+  .cardboard-shadow-right:hover {
+    box-shadow: 18px 18px 45px -5px rgb(0 0 0 / 0.25) !important;
+    transform: translateY(-8px) !important;
+  }
+
+  .dark .cardboard-shadow-right {
+    box-shadow: 12px 12px 30px -5px rgb(0 0 0 / 0.4) !important;
+  }
+
+  .dark .cardboard-shadow-right:hover {
+    box-shadow: 18px 18px 45px -5px rgb(0 0 0 / 0.6) !important;
+  }
+
+  .cardboard-shadow-left {
+    box-shadow: -12px 12px 30px -5px rgb(0 0 0 / 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    display: block;
+  }
+
+  .cardboard-shadow-left:hover {
+    box-shadow: -18px 18px 45px -5px rgb(0 0 0 / 0.25) !important;
+    transform: translateY(-8px) !important;
+  }
+
+  .dark .cardboard-shadow-left {
+    box-shadow: -12px 12px 30px -5px rgb(0 0 0 / 0.4) !important;
+  }
+
+  .dark .cardboard-shadow-left:hover {
+    box-shadow: -18px 18px 45px -5px rgb(0 0 0 / 0.6) !important;
+  }
+
+  .cardboard-shadow-flat {
+    box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15) !important;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    display: block;
+  }
+
+  .cardboard-shadow-flat:hover {
+    box-shadow: 0 20px 45px -10px rgb(0 0 0 / 0.2) !important;
+    transform: translateY(-8px) !important;
+  }
+
+  .dark .cardboard-shadow-flat {
+    box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.25);
+  }
+
+  .dark .cardboard-shadow-flat:hover {
+    box-shadow: 0 20px 45px -10px rgb(0 0 0 / 0.6) !important;
+  }
+
+  .glow-accent-shadow {
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+  }
+
+  .dark .glow-accent-shadow {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+
+  .ui-shadow-soft {
+    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 6px -1px rgb(0 0 0 / 0.04);
+  }
+
+  .dark .ui-shadow-soft {
+    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.25);
+  }
 }
 
 /* ── Keyframe animations ── */
