@@ -93,8 +93,8 @@ const Navbar = () => {
       {/* ── NAV BAR ──────────────────────────────────────────────────────── */}
       <nav
         ref={navRef}
-        className={`force-light h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
-          ? "top-0 bg-[#f7eac3] shadow-sm"
+        className={`h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
+          ? "top-0 bg-[#f7eac3] dark:bg-zinc-900/95 dark:backdrop-blur-md shadow-sm"
           : "top-3 bg-transparent"
           }`}
       >
@@ -125,7 +125,7 @@ const Navbar = () => {
             className="rounded-sm mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
             style={{ height: '57px', width: '57px' }}
           />
-          <span className={`font-heading text-xl font-bold tracking-[0.08em] leading-none transition-colors duration-500 text-black`}>
+          <span className={`font-heading text-xl font-bold tracking-[0.08em] leading-none transition-colors duration-500 text-black dark:text-white`}>
             URBAN GRAND
           </span>
         </Link>
@@ -303,7 +303,7 @@ const Navbar = () => {
 
         {/* ── MOBILE FULLSCREEN MENU ──────────────────────────────────── */}
         <div
-          className={`force-light fixed inset-0 top-0 left-0 w-full h-full bg-background/[0.98] backdrop-blur-xl z-[60] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.22_1_0.36_1)] md:hidden ${mobileOpen
+          className={`fixed inset-0 top-0 left-0 w-full h-full bg-background/[0.98] backdrop-blur-xl z-[60] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.22_1_0.36_1)] md:hidden ${mobileOpen
             ? "opacity-100 pointer-events-auto translate-x-0"
             : "opacity-0 pointer-events-none translate-x-full"
             }`}
@@ -312,7 +312,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between px-5 h-[72px] border-b border-border/30 flex-shrink-0">
             <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5">
               <img src={logoUrl} alt="Urban Grand Logo" className="h-[72px] w-[72px] rounded-sm mix-blend-multiply" />
-              <span className="font-heading text-[17px] font-bold tracking-[0.08em] text-black">URBAN GRAND</span>
+              <span className="font-heading text-[17px] font-bold tracking-[0.08em] text-black dark:text-white">URBAN GRAND</span>
             </Link>
             <button
               onClick={() => setMobileOpen(false)}
