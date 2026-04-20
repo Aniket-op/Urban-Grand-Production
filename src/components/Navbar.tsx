@@ -125,7 +125,7 @@ const Navbar = () => {
             className="rounded-sm mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
             style={{ height: '57px', width: '57px' }}
           />
-          <span className={`font-heading text-[16px] sm:text-[16px] font-bold tracking-[0.08em] leading-none transition-colors duration-500 text-black`}>
+          <span className={`font-heading text-xl font-bold tracking-[0.08em] leading-none transition-colors duration-500 text-black`}>
             URBAN GRAND
           </span>
         </Link>
