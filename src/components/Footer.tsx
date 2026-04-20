@@ -53,8 +53,8 @@ const Footer = () => {
               <ul className="space-y-3.5">
                 {platformLinks.map((item) => (
                   <li key={item.label}>
-                    <Link to={item.to} className="flex items-center text-[13px] font-medium text-zinc-800  hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group">
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 dark:bg-zinc-400 mr-3 flex-shrink-0 group-hover:bg-[hsl(38,60%,50%)] dark:group-hover:bg-[hsl(38,60%,50%)] transition-colors" />
+                    <Link to={item.to} className="flex items-center text-[13px] font-medium text-zinc-800 hover:text-zinc-900 transition-colors group">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 mr-3 flex-shrink-0 group-hover:bg-[hsl(38,60%,50%)] transition-colors" />
                       {item.label}
                     </Link>
                   </li>
@@ -69,8 +69,8 @@ const Footer = () => {
               <ul className="space-y-3.5">
                 {companyLinks.map((item) => (
                   <li key={item.label}>
-                    <Link to={item.to} className="flex items-center text-[13px] font-medium text-zinc-800  hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group">
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 dark:bg-zinc-400 mr-3 flex-shrink-0 group-hover:bg-[hsl(38,60%,50%)] dark:group-hover:bg-[hsl(38,60%,50%)] transition-colors" />
+                    <Link to={item.to} className="flex items-center text-[13px] font-medium text-zinc-800 hover:text-zinc-900 transition-colors group">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 mr-3 flex-shrink-0 group-hover:bg-[hsl(38,60%,50%)] transition-colors" />
                       {item.label}
                     </Link>
                   </li>
@@ -84,7 +84,7 @@ const Footer = () => {
               <div className="h-[2px] w-8 bg-[hsl(38,60%,50%)]/60" />
               <ul className="space-y-3.5 text-[13px] font-medium text-zinc-800">
                 <li>
-                  <a href="mailto:URBANGRAND78@GMAIL.COM" className="flex items-center hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lowercase">
+                  <a href="mailto:URBANGRAND78@GMAIL.COM" className="flex items-center hover:text-zinc-900 transition-colors lowercase">
                     <Mail size={15} className="text-zinc-700  mr-3 flex-shrink-0" />
                     URBANGRAND78@GMAIL.COM
                   </a>
@@ -100,7 +100,7 @@ const Footer = () => {
                   </div>
                 </li>
                 <li className="pt-1">
-                  <Link to="/map" className="flex items-start text-zinc-800  hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+                  <Link to="/map" className="flex items-start text-zinc-800 hover:text-zinc-900 transition-colors">
                     <MapPin size={15} className="text-zinc-700  mr-3 flex-shrink-0 mt-0.5" />
                     <span className="leading-relaxed">213/15-C, NEW KUNDAN PURI,<br />CIVIL LINES, LUDHIANA-141001 PUNJAB</span>
                   </Link>
@@ -111,7 +111,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto border-t border-[hsl(38,60%,50%,0.6)] dark:border-[hsl(38,60%,50%,0.6)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto border-t border-[hsl(38,60%,50%,0.6)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[11px] text-zinc-700 font-bold">
             © {new Date().getFullYear()} Panchsheel Knitwears. All rights reserved.
           </p>
