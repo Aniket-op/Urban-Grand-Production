@@ -66,7 +66,7 @@ const CollectionSlideComponent = ({
             initial={{ opacity: 0, x: slide.imageRight ? 60 : -60 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: slide.imageRight ? 60 : -60 }}
             transition={{ duration: 1.2 }}
-            className="relative w-full md:w-[52%] flex-shrink-0"
+            className="relative w-full md:w-1/2 flex-shrink-0"
           >
             <div
               className={`relative overflow-hidden rounded-lg w-full group cursor-pointer ${slide.imageRight ? "cardboard-shadow-left" : "cardboard-shadow-right"

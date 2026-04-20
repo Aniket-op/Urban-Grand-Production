@@ -190,7 +190,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
                 : { opacity: 0, x: imgSlideX }
             }
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full md:w-[52%] flex-shrink-0"
+            className="relative w-full md:w-1/2 flex-shrink-0"
           >
             <ImageCarousel
               subcategories={categorySlide.subcategories}
