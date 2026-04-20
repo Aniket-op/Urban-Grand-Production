@@ -13,13 +13,13 @@ const WhoWeAre = () => {
       id="who-we-are"
       className="w-full pt-6 sm:pt-10 md:pt-14 pb-4 sm:pb-6 md:pb-8 bg-background dark:bg-zinc-900 transition-colors duration-500 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-2 sm:px-3 md:px-4 lg:px-6 grid grid-cols-1 md:grid-cols-2 sm:gap-16 md:gap-24 items-center">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 items-center">
         {/* Left — Image */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative group cardboard-shadow-right"
+          className="relative group w-full cardboard-shadow-right"
         >
           <div className="relative overflow-hidden rounded-lg">
             <img
@@ -45,6 +45,7 @@ const WhoWeAre = () => {
           initial={{ opacity: 0, x: 40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="pl-0 md:pl-12 lg:pl-16 pt-8 md:pt-0"
         >
           <motion.p
             initial={{ opacity: 0 }}

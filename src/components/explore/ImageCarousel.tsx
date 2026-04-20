@@ -100,7 +100,7 @@ const ImageCarousel = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Images */}
-      <div className="relative w-full h-[72vh] md:h-[78vh] overflow-hidden">
+      <div className="relative w-full h-[80vh] overflow-hidden">
         {flatSlides.map((slide, i) => (
           <img
             key={i}

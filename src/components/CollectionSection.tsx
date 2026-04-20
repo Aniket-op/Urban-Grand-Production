@@ -29,15 +29,14 @@ const CollectionSlideComponent = ({
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col ${slide.imageRight ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-8 items-center`}
+          className="grid grid-cols-1 md:grid-cols-2 items-center"
         >
           {/* ── Content Column ───────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: slide.imageRight ? -60 : 60 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: slide.imageRight ? -60 : 60 }}
             transition={{ duration: 1.2, delay: 0.3 }}
-            className="flex flex-col justify-center gap-7 flex-1"
+            className={`flex flex-col justify-center gap-7 w-full pt-8 md:pt-0 ${slide.imageRight ? "md:order-first md:pr-12 lg:pr-16" : "md:order-last md:pl-12 lg:pl-16"}`}
           >
             <div>
               <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-4">
@@ -66,7 +65,7 @@ const CollectionSlideComponent = ({
             initial={{ opacity: 0, x: slide.imageRight ? 60 : -60 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: slide.imageRight ? 60 : -60 }}
             transition={{ duration: 1.2 }}
-            className="relative w-full md:w-1/2 flex-shrink-0"
+            className={`relative w-full flex-shrink-0 ${slide.imageRight ? "md:order-last" : "md:order-first"}`}
           >
             <div
               className={`relative overflow-hidden rounded-lg w-full group cursor-pointer ${slide.imageRight ? "cardboard-shadow-left" : "cardboard-shadow-right"

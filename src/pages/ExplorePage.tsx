@@ -36,14 +36,14 @@ const ExplorePage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [gender]);
 
+  const { products, lightboxIndex, openLightbox, closeLightbox, setLightboxIndex } =
+    useEnquiryLightbox();
+
   const genderData = gender ? genderMetadata[gender] : null;
 
   if (!gender || !genderData) {
     return <Navigate to="/explore/men" replace />;
   }
-
-  const { products, lightboxIndex, openLightbox, closeLightbox, setLightboxIndex } =
-    useEnquiryLightbox();
 
   const categorySlides = getCollectionSlides(gender);
   const others = genderOrder.filter((g) => g !== gender);
@@ -139,7 +139,7 @@ const ExplorePage = () => {
       </AnimatePresence>
 
       {/* ── Browse Other Genders ──────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto w-full px-6 py-16 text-center border-t border-border/30">
+      <div className="max-w-7xl mx-auto px-6 py-16 text-center border-t border-border/30">
         <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-6">
           Also Explore
         </p>

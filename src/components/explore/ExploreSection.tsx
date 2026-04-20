@@ -77,8 +77,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
-          className={`flex flex-col ${imageRight ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-20 items-center`}
+          className="grid grid-cols-1 md:grid-cols-2 items-center"
         >
           {/* ── Text Column ─────────────────────────────────────────── */}
           <motion.div
@@ -89,7 +88,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
                 : { opacity: 0, x: textSlideX }
             }
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col justify-center gap-6 flex-1"
+            className={`flex flex-col justify-center gap-6 w-full pt-8 md:pt-0 ${imageRight ? "md:order-first md:pr-12 lg:pr-16" : "md:order-last md:pl-12 lg:pl-16"}`}
           >
             {/* Accent dot + tag row */}
             <div className="flex items-center gap-3">
@@ -115,26 +114,6 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
             <p className="text-[15px] text-muted-medium dark:text-zinc-300 max-w-[420px] leading-relaxed">
               {categorySlide.description}
             </p>
-            {/* Active subcategory label */}
-            {/* <div className="px-4 sm:px-6 md:px-8 lg:px-0">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeSubcategory}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="border-l-2 border-foreground/15 pl-5"
-                >
-                  <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground mb-1">
-                    Currently Viewing
-                  </p>
-                  <p className="font-display text-xl font-semibold text-foreground">
-                    {activeSubcategory}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-            </div> */}
 
             {/* Subcategory buttons */}
             <div className="flex flex-wrap gap-3 mt-2">
@@ -172,7 +151,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
               <Link
                 to={`/category/${gender}/${categorySlide.id}`}
                 className="inline-flex items-center gap-2 bg-transparent dark:bg-transparent
-                           text-black dark:text-white px-6 py-3 text-[11px] uppercase
+                           text-black dark:bg-transparent dark:text-white px-6 py-3 text-[11px] uppercase
                            tracking-widest rounded-md hover:bg-black/5 dark:hover:bg-white/10 w-fit
                            transition-all duration-300 ease-elegant border border-black/20 dark:border-white/30"
               >
@@ -190,7 +169,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
                 : { opacity: 0, x: imgSlideX }
             }
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full md:w-1/2 flex-shrink-0"
+            className={`relative w-full flex-shrink-0 ${imageRight ? "md:order-last" : "md:order-first"}`}
           >
             <ImageCarousel
               subcategories={categorySlide.subcategories}
