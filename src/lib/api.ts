@@ -5,8 +5,7 @@
  */
 
 // Base URL — reads from Vite env, falls back to localhost:5000
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://urban-grand-production-api.onrender.com/api";
-const API_BASE_URL = "https://urban-grand-production-api.onrender.com/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 /** Shape of every API response */
 export interface ApiResponse<T = unknown> {
@@ -25,6 +24,7 @@ export interface ApiUser {
   emailAddress: string;
   contactNumber: string;
   enquiry: string;
+  isAdmin?: boolean;
   createdAt: string;
   updatedAt?: string;
 }
@@ -117,8 +117,35 @@ export const updateProfile = (data: {
   });
 
 /** Submit or update an enquiry (requires JWT) */
-export const submitEnquiry = (enquiry: string) =>
+export const submitEnquiry = (data: { enquiry: string, fullName?: string, emailAddress?: string, contactNumber?: string, companyName?: string }) =>
   apiRequest("/enquiry", {
     method: "POST",
-    body: JSON.stringify({ enquiry }),
+    body: JSON.stringify(data),
+  });
+
+/** Fetch all enquiries (requires Admin JWT) */
+export const getAllEnquiries = (page: number = 1, limit: number = 20) => 
+  apiRequest<{ count: number; total: number; enquiries: ApiUser[] }>(`/enquiry?page=${page}&limit=${limit}`);
+
+/** Delete an enquiry (requires Admin JWT) */
+export const deleteEnquiry = (id: string) =>
+  apiRequest(`/enquiry/${id}`, {
+    method: "DELETE",
+  });
+
+/** Fetch all users (requires Admin JWT) */
+export const getAllUsers = (page: number = 1, limit: number = 50) =>
+  apiRequest<{ count: number; total: number; users: ApiUser[] }>(`/user/all?page=${page}&limit=${limit}`);
+
+/** Update a user (requires Admin JWT) */
+export const updateUserAdmin = (id: string, data: Partial<ApiUser>) =>
+  apiRequest(`/user/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+/** Delete a user (requires Admin JWT) */
+export const deleteUserAdmin = (id: string) =>
+  apiRequest(`/user/${id}`, {
+    method: "DELETE",
   });

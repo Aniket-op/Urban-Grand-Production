@@ -119,9 +119,33 @@ app.use((err, req, res, next) => {
   });
 });
 
+// ── Seed Admin User ──────────────────────────────────────────────────
+const User = require("./models/User");
+
+const seedAdminUser = async () => {
+  try {
+    const adminExists = await User.findOne({ emailAddress: "admin@urbangrand.com" });
+    if (!adminExists) {
+      const admin = new User({
+        fullName: "System Admin",
+        emailAddress: "admin@urbangrand.com",
+        contactNumber: "0000000000",
+        password: "admin123",
+        isAdmin: true,
+      });
+      await admin.save();
+      console.log("Seeded default admin user: admin@urbangrand.com");
+    }
+  } catch (error) {
+    console.error("Error seeding admin user:", error);
+  }
+};
+
 // ── Start Server ─────────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await seedAdminUser();
   console.log(`\n🚀 Urban Grand API Server running on http://localhost:${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`   CORS origin: ${process.env.CLIENT_URL || "http://localhost:5173"}\n`);
 });
+

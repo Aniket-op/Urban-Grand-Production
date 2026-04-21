@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema(
       default: "",
       maxlength: [2000, "Enquiry cannot exceed 2000 characters"],
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     password: {
       type: String,
       required: [true, "Password is required"],

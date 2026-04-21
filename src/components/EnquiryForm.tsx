@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
 import { categories, WHATSAPP_NUMBER, type Product } from "@/data/products";
 import { MessageCircle, Send } from "lucide-react";
+import { submitEnquiry } from "@/lib/api";
 
 export interface UserData {
     fullName: string;
@@ -98,7 +99,7 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         return newErrors;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const formErrors = validateForm();
         if (Object.keys(formErrors).length > 0) {
@@ -106,9 +107,20 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
             toast.error("Please fill in all required fields correctly.");
             return;
         }
-        console.log("Enquiry Form Submitted:", formData);
-        toast.success("Enquiry submitted successfully. We will get back to you soon!");
-        setFormData({ fullName: "", companyName: "", category: "", contactNumber: "", emailAddress: "", details: "" });
+        
+        try {
+            await submitEnquiry({
+                enquiry: `Category: ${formData.category}\n\n${formData.details}`,
+                fullName: formData.fullName,
+                emailAddress: formData.emailAddress,
+                contactNumber: formData.contactNumber,
+                companyName: formData.companyName,
+            });
+            toast.success("Enquiry submitted successfully. We will get back to you soon!");
+            setFormData({ fullName: "", companyName: "", category: "", contactNumber: "", emailAddress: "", details: "" });
+        } catch (error: any) {
+            toast.error(error.message || "Failed to submit enquiry. Please try again later.");
+        }
     };
 
     const handleWhatsAppSubmit = (e: React.FormEvent) => {

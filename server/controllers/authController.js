@@ -56,6 +56,7 @@ const register = async (req, res) => {
         emailAddress: user.emailAddress,
         contactNumber: user.contactNumber,
         enquiry: user.enquiry,
+        isAdmin: user.isAdmin,
         createdAt: user.createdAt,
       },
     });
@@ -123,6 +124,7 @@ const login = async (req, res) => {
         emailAddress: user.emailAddress,
         contactNumber: user.contactNumber,
         enquiry: user.enquiry,
+        isAdmin: user.isAdmin,
         createdAt: user.createdAt,
       },
     });
@@ -154,6 +156,7 @@ const getProfile = async (req, res) => {
         emailAddress: user.emailAddress,
         contactNumber: user.contactNumber,
         enquiry: user.enquiry,
+        isAdmin: user.isAdmin,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
