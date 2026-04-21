@@ -63,21 +63,20 @@ const Login = () => {
   };
 
   const inputClass = (field: string) =>
-    `w-full bg-transparent border ${
-      errors[field] ? "border-red-400" : "border-border"
+    `w-full bg-white border ${errors[field] ? "border-red-400" : "border-border/60"
     } px-4 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(38,60%,50%)]/50 focus:border-[hsl(38,60%,50%)] hover:border-foreground/30 transition-all duration-300 rounded-md placeholder:text-muted-foreground/50`;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col pt-20">
+    <div className="force-light min-h-screen bg-[#FAF9F6] flex flex-col pt-20">
       <Navbar />
 
       <div className="flex-1 flex items-center justify-center px-4 py-16 sm:py-24">
         {/* Decorative background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-[hsl(38,60%,50%,0.03)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent to-[hsl(38,60%,50%,0.08)] pointer-events-none" />
 
         <div className="relative w-full max-w-md">
           {/* Card */}
-          <div className="bg-background border border-border/60 rounded-xl p-8 sm:p-10 shadow-lg shadow-black/[0.03]">
+          <div className="bg-white border border-border/40 rounded-xl p-8 sm:p-10 shadow-xl shadow-[hsl(38,60%,50%,0.05)]">
             {/* Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[hsl(38,60%,50%,0.1)] mb-5">

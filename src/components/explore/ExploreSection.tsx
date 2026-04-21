@@ -9,7 +9,7 @@ type Props = {
   categorySlide: CollectionSlide;
   gender: string;
   index: number; // determines zig-zag side
-  /** Called when the user clicks “Enquiry Now”. Receives the pre-filtered
+  /** Called when the user clicks “Enquire now”. Receives the pre-filtered
    *  product list for this slide's subcategory so the lightbox only shows
    *  relevant images. */
   onEnquiryClick: (products: Product[], startIndex?: number) => void;
@@ -146,7 +146,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
                            tracking-widest rounded-md hover:opacity-75 w-fit
                            transition-all duration-300 ease-elegant cursor-pointer"
               >
-                Enquiry Now →
+                Enquire now →
               </button>
               <Link
                 to={`/category/${gender}/${categorySlide.id}`}
