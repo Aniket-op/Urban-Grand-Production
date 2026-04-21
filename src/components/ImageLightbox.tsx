@@ -183,7 +183,7 @@ const ImageLightbox = ({
 
     const timer = setInterval(() => {
       onNavigate((currentIndex + 1) % images.length);
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [currentIndex, images.length, onNavigate, scale]);
@@ -379,27 +379,27 @@ const ImageLightbox = ({
 
         <div className="flex-1 overflow-y-auto w-full bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-border">
           {!isAuthenticated && userType === "user" ? (
-             <div className="flex flex-col items-center justify-center h-full text-center space-y-4 py-12 px-6">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-2">
-                  <User size={32} className="text-muted-foreground" />
-                </div>
-                <h4 className="font-display text-xl font-bold">Sign In Required</h4>
-                <p className="text-sm text-muted-foreground">
-                  Please log in to your account to send an enquiry with your registered details.
-                </p>
-                <Link
-                  to="/login"
-                  className="mt-4 px-8 py-3 bg-[hsl(38,60%,50%)] text-white font-bold tracking-widest text-xs uppercase hover:bg-[hsl(38,60%,40%)] transition-colors inline-block rounded-md shadow-md shadow-[hsl(38,60%,50%)]/25"
-                >
-                  Log In Now
-                </Link>
-                <button
-                  onClick={() => setUserType("guest")}
-                  className="text-xs text-muted-foreground underline hover:text-foreground mt-4"
-                >
-                  Or continue as guest
-                </button>
-             </div>
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 py-12 px-6">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-2">
+                <User size={32} className="text-muted-foreground" />
+              </div>
+              <h4 className="font-display text-xl font-bold">Sign In Required</h4>
+              <p className="text-sm text-muted-foreground">
+                Please log in to your account to send an enquiry with your registered details.
+              </p>
+              <Link
+                to="/login"
+                className="mt-4 px-8 py-3 bg-[hsl(38,60%,50%)] text-white font-bold tracking-widest text-xs uppercase hover:bg-[hsl(38,60%,40%)] transition-colors inline-block rounded-md shadow-md shadow-[hsl(38,60%,50%)]/25"
+              >
+                Log In Now
+              </Link>
+              <button
+                onClick={() => setUserType("guest")}
+                className="text-xs text-muted-foreground underline hover:text-foreground mt-4"
+              >
+                Or continue as guest
+              </button>
+            </div>
           ) : (
             <>
               {isAuthenticated && (
