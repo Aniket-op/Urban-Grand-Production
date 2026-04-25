@@ -63,8 +63,8 @@ const Login = () => {
   };
 
   const inputClass = (field: string) =>
-    `w-full bg-white border ${errors[field] ? "border-red-400" : "border-border/60"
-    } px-4 py-3.5 text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(38,60%,50%)]/50 focus:border-[hsl(38,60%,50%)] hover:border-foreground/30 transition-all duration-300 rounded-md placeholder:text-muted-foreground/50`;
+    `w-full bg-white border ${errors[field] ? "border-red-400" : "border-gray-300"
+    } px-4 py-3.5 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-[hsl(38,60%,50%)]/50 focus:border-[hsl(38,60%,50%)] hover:border-gray-400 transition-all duration-300 rounded-md placeholder:text-gray-400`;
 
   return (
     <div className="force-light min-h-screen bg-[#FAF9F6] flex flex-col pt-20">
@@ -76,7 +76,7 @@ const Login = () => {
 
         <div className="relative w-full max-w-md">
           {/* Card */}
-          <div className="bg-white border border-border/40 rounded-xl p-8 sm:p-10 shadow-xl shadow-[hsl(38,60%,50%,0.05)]">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 sm:p-10 shadow-xl shadow-[hsl(38,60%,50%,0.05)]">
             {/* Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[hsl(38,60%,50%,0.1)] mb-5">
@@ -85,10 +85,10 @@ const Login = () => {
               <p className="text-[10px] uppercase tracking-[0.35em] text-[hsl(38,60%,50%)] font-bold mb-2">
                 Welcome Back
               </p>
-              <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">
+              <h1 className="font-display text-3xl font-bold text-gray-900 tracking-tight">
                 Sign In
               </h1>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-sm text-gray-500 mt-2">
                 Enter your credentials to access your account
               </p>
             </div>
@@ -96,7 +96,7 @@ const Login = () => {
             {/* Form */}
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-2 font-bold">
+                <label className="block text-[10px] tracking-[0.2em] uppercase text-gray-800 mb-2 font-bold">
                   Email Address *
                 </label>
                 <input
@@ -114,7 +114,7 @@ const Login = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] tracking-[0.2em] uppercase text-foreground mb-2 font-bold">
+                <label className="block text-[10px] tracking-[0.2em] uppercase text-gray-800 mb-2 font-bold">
                   Password *
                 </label>
                 <div className="relative">
@@ -130,7 +130,7 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -145,7 +145,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative w-full overflow-hidden bg-foreground text-background hover:text-white px-8 py-4 text-[11px] font-bold tracking-[0.25em] uppercase transition-all duration-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="group relative w-full overflow-hidden bg-gray-900 text-white hover:text-white px-8 py-4 text-[11px] font-bold tracking-[0.25em] uppercase transition-all duration-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-3">
                     {isLoading ? (
@@ -161,7 +161,7 @@ const Login = () => {
             </form>
 
             {/* Footer link */}
-            <p className="text-center text-sm text-muted-foreground mt-6">
+            <p className="text-center text-sm text-gray-500 mt-6">
               Don't have an account?{" "}
               <Link
                 to="/register"
