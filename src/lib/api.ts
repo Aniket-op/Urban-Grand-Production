@@ -16,15 +16,30 @@ export interface ApiResponse<T = unknown> {
   user?: T;
 }
 
-/** User object returned from the backend */
+/** User object returned from the backend (auth/profile data only) */
 export interface ApiUser {
   _id: string;
   fullName: string;
   companyName: string;
   emailAddress: string;
   contactNumber: string;
-  enquiry: string;
   isAdmin?: boolean;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+/** A single enquiry document from the Enquiry collection */
+export interface ApiEnquiry {
+  _id: string;
+  fullName: string;
+  companyName?: string;
+  emailAddress: string;
+  contactNumber: string;
+  enquiry: string;
+  productName?: string;
+  category?: string;
+  subcategory?: string;
+  userId?: string | null;
   createdAt: string;
   updatedAt?: string;
 }
@@ -117,15 +132,24 @@ export const updateProfile = (data: {
   });
 
 /** Submit or update an enquiry (requires JWT) */
-export const submitEnquiry = (data: { enquiry: string, fullName?: string, emailAddress?: string, contactNumber?: string, companyName?: string }) =>
+export const submitEnquiry = (data: {
+  enquiry: string;
+  fullName?: string;
+  emailAddress?: string;
+  contactNumber?: string;
+  companyName?: string;
+  productName?: string;
+  category?: string;
+  subcategory?: string;
+}) =>
   apiRequest("/enquiry", {
     method: "POST",
     body: JSON.stringify(data),
   });
 
 /** Fetch all enquiries (requires Admin JWT) */
-export const getAllEnquiries = (page: number = 1, limit: number = 20) => 
-  apiRequest<{ count: number; total: number; enquiries: ApiUser[] }>(`/enquiry?page=${page}&limit=${limit}`);
+export const getAllEnquiries = (page: number = 1, limit: number = 20) =>
+  apiRequest<{ count: number; total: number; enquiries: ApiEnquiry[] }>(`/enquiry?page=${page}&limit=${limit}`);
 
 /** Delete an enquiry (requires Admin JWT) */
 export const deleteEnquiry = (id: string) =>

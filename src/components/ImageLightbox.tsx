@@ -413,6 +413,8 @@ const ImageLightbox = ({
                 key={userType}
                 userData={formUserData ?? undefined}
                 disabled={formDisabled}
+                prefilledCategory={product.category}
+                prefilledSubcategory={product.subcategory}
               />
             </>
           )}

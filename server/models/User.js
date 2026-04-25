@@ -4,8 +4,9 @@ const bcrypt = require("bcryptjs");
 /**
  * User Schema
  * ─────────────────────────────────────────
- * Stores user registration data, profile info,
- * and their latest enquiry text.
+ * Stores user registration and auth data only.
+ * Enquiries are stored in a separate Enquiry
+ * collection (one user → many enquiries).
  */
 const userSchema = new mongoose.Schema(
   {
@@ -32,11 +33,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Contact number is required"],
       trim: true,
-    },
-    enquiry: {
-      type: String,
-      default: "",
-      maxlength: [2000, "Enquiry cannot exceed 2000 characters"],
     },
     isAdmin: {
       type: Boolean,

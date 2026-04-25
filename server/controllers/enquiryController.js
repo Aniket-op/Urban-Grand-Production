@@ -1,8 +1,9 @@
 const { validationResult } = require("express-validator");
+const Enquiry = require("../models/Enquiry");
 const User = require("../models/User");
 
 /**
- * @desc    Submit or update an enquiry
+ * @desc    Submit a new enquiry (one user can submit many)
  * @route   POST /api/enquiry
  * @access  Public
  */
@@ -20,55 +21,62 @@ const submitEnquiry = async (req, res) => {
     });
   }
 
-  const { enquiry, emailAddress, fullName, contactNumber, companyName } = req.body;
+  const {
+    enquiry,
+    emailAddress,
+    fullName,
+    contactNumber,
+    companyName,
+    productName,
+    category,
+    subcategory,
+  } = req.body;
+
+  // Basic required-field check for guest submissions
+  if (!emailAddress || !fullName || !contactNumber) {
+    return res.status(400).json({
+      success: false,
+      message: "Email, Full Name, and Contact Number are required",
+    });
+  }
 
   try {
-    // If not logged in, we check if email exists.
-    let user;
-    if (emailAddress) {
-      user = await User.findOne({ emailAddress });
-    } else if (req.user) {
-      user = await User.findById(req.user._id);
+    // If a registered user is logged in, resolve their userId
+    let userId = null;
+    if (req.user) {
+      userId = req.user._id;
+    } else if (emailAddress) {
+      const existingUser = await User.findOne({ emailAddress });
+      if (existingUser) userId = existingUser._id;
     }
 
-    if (user) {
-      // Update existing user
-      user.enquiry = enquiry;
-      
-      // Update other details if provided
-      if (fullName) user.fullName = fullName;
-      if (contactNumber) user.contactNumber = contactNumber;
-      if (companyName) user.companyName = companyName;
-      
-      await user.save();
-    } else {
-      // Create a guest user (requires dummy password since schema forces it)
-      if (!emailAddress || !fullName || !contactNumber) {
-        return res.status(400).json({
-          success: false,
-          message: "Email, Full Name, and Contact Number are required for new enquiries",
-        });
-      }
-      user = await User.create({
-        fullName,
-        emailAddress,
-        contactNumber,
-        companyName: companyName || "",
-        enquiry,
-        password: "GuestPassword123!", // dummy password for guest users
-      });
-    }
+    // Always create a new Enquiry document — no overwriting
+    const newEnquiry = await Enquiry.create({
+      fullName,
+      emailAddress,
+      contactNumber,
+      companyName: companyName || "",
+      enquiry,
+      productName: productName || "",
+      category: category || "",
+      subcategory: subcategory || "",
+      userId,
+    });
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Enquiry submitted successfully",
-      user: {
-        _id: user._id,
-        fullName: user.fullName,
-        companyName: user.companyName,
-        emailAddress: user.emailAddress,
-        contactNumber: user.contactNumber,
-        enquiry: user.enquiry,
+      enquiry: {
+        _id: newEnquiry._id,
+        fullName: newEnquiry.fullName,
+        companyName: newEnquiry.companyName,
+        emailAddress: newEnquiry.emailAddress,
+        contactNumber: newEnquiry.contactNumber,
+        enquiry: newEnquiry.enquiry,
+        productName: newEnquiry.productName,
+        category: newEnquiry.category,
+        subcategory: newEnquiry.subcategory,
+        createdAt: newEnquiry.createdAt,
       },
     });
   } catch (error) {
@@ -81,7 +89,7 @@ const submitEnquiry = async (req, res) => {
 };
 
 /**
- * @desc    Get all enquiries (admin only)
+ * @desc    Get all enquiries (admin only) — newest first, paginated
  * @route   GET /api/enquiry
  * @access  Private/Admin
  */
@@ -91,27 +99,23 @@ const getAllEnquiries = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 20;
     const startIndex = (page - 1) * limit;
 
-    const query = { enquiry: { $exists: true, $ne: "" } };
-    
-    const count = await User.countDocuments(query);
-    
-    // Find users who have an enquiry that is not empty
-    const usersWithEnquiries = await User.find(query)
-      .select("-password")
-      .sort({ updatedAt: -1 })
+    const count = await Enquiry.countDocuments();
+
+    const enquiries = await Enquiry.find()
+      .sort({ createdAt: -1 })
       .skip(startIndex)
       .limit(limit);
 
     res.status(200).json({
       success: true,
-      count: usersWithEnquiries.length,
+      count: enquiries.length,
       total: count,
       pagination: {
         page,
         limit,
-        totalPages: Math.ceil(count / limit)
+        totalPages: Math.ceil(count / limit),
       },
-      enquiries: usersWithEnquiries,
+      enquiries,
     });
   } catch (error) {
     console.error("Fetch enquiries error:", error);
@@ -123,27 +127,24 @@ const getAllEnquiries = async (req, res) => {
 };
 
 /**
- * @desc    Delete an enquiry (clears the enquiry field for the user)
+ * @desc    Delete an enquiry by its ID
  * @route   DELETE /api/enquiry/:id
  * @access  Private/Admin
  */
 const deleteEnquiry = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    
-    if (!user) {
+    const enquiry = await Enquiry.findByIdAndDelete(req.params.id);
+
+    if (!enquiry) {
       return res.status(404).json({
         success: false,
-        message: "Enquiry/User not found"
+        message: "Enquiry not found",
       });
     }
 
-    user.enquiry = "";
-    await user.save();
-
     res.status(200).json({
       success: true,
-      message: "Enquiry removed successfully"
+      message: "Enquiry deleted successfully",
     });
   } catch (error) {
     console.error("Delete enquiry error:", error);

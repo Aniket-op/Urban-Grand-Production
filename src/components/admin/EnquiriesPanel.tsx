@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { MessageSquareText, Trash2, Mail, Phone, Calendar } from "lucide-react";
-import { getAllEnquiries, deleteEnquiry, ApiUser } from "@/lib/api";
+import { MessageSquareText, Trash2, Mail, Phone, Calendar, Package } from "lucide-react";
+import { getAllEnquiries, deleteEnquiry, ApiEnquiry } from "@/lib/api";
 import {
   Table,
   TableBody,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 
 export const EnquiriesPanel = () => {
-  const [enquiries, setEnquiries] = useState<ApiUser[]>([]);
+  const [enquiries, setEnquiries] = useState<ApiEnquiry[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -73,6 +73,7 @@ export const EnquiriesPanel = () => {
                 <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs py-4">Date</TableHead>
                 <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs">Sender</TableHead>
                 <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs">Contact</TableHead>
+                <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs">Product</TableHead>
                 <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs w-1/3">Message</TableHead>
                 <TableHead className="text-white/60 font-bold uppercase tracking-wider text-xs text-right">Actions</TableHead>
               </TableRow>
@@ -80,7 +81,7 @@ export const EnquiriesPanel = () => {
             <TableBody>
               {enquiries.length === 0 ? (
                 <TableRow className="border-white/10">
-                  <TableCell colSpan={5} className="py-12 text-center text-white/50">
+                  <TableCell colSpan={6} className="py-12 text-center text-white/50">
                     No enquiries found.
                   </TableCell>
                 </TableRow>
@@ -90,7 +91,7 @@ export const EnquiriesPanel = () => {
                     <TableCell className="text-white/80 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <Calendar size={14} className="text-white/40" />
-                        {new Date(enq.updatedAt || enq.createdAt || Date.now()).toLocaleDateString()}
+                        {new Date(enq.createdAt || Date.now()).toLocaleDateString()}
                       </div>
                     </TableCell>
                     <TableCell className="text-white">
@@ -100,12 +101,37 @@ export const EnquiriesPanel = () => {
                     <TableCell className="text-white/80 whitespace-nowrap space-y-1">
                       <div className="flex items-center gap-2">
                         <Mail size={14} className="text-white/40" />
-                        <a href={`mailto:${enq.emailAddress}`} className="hover:text-[hsl(38,60%,50%)]">{enq.emailAddress}</a>
+                        <a href={`mailto:${enq.emailAddress}`} className="hover:text-[hsl(38,60%,50%)]"> {enq.emailAddress}</a>
                       </div>
                       <div className="flex items-center gap-2">
                         <Phone size={14} className="text-white/40" />
-                        <a href={`tel:${enq.contactNumber}`} className="hover:text-[hsl(38,60%,50%)]">{enq.contactNumber}</a>
+                        <a href={`tel:${enq.contactNumber}`} className="hover:text-[hsl(38,60%,50%)]"> {enq.contactNumber}</a>
                       </div>
+                    </TableCell>
+                    {/* Product context column */}
+                    <TableCell className="text-white/80 whitespace-nowrap">
+                      {(enq.productName || enq.category || enq.subcategory) ? (
+                        <div className="space-y-1.5 min-w-[140px]">
+                          {enq.productName && (
+                            <div className="flex items-center gap-1.5">
+                              <Package size={13} className="text-[hsl(38,60%,50%)] shrink-0" />
+                              <span className="text-xs font-semibold text-white/90 truncate max-w-[160px]">{enq.productName}</span>
+                            </div>
+                          )}
+                          {enq.category && (
+                            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[hsl(38,60%,50%)]/20 text-[hsl(38,60%,70%)] border border-[hsl(38,60%,50%)]/30">
+                              {enq.category}
+                            </span>
+                          )}
+                          {enq.subcategory && (
+                            <span className="ml-1 inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/60 border border-white/20">
+                              {enq.subcategory}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-white/25 text-xs italic">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <div className="bg-black/20 p-3 rounded-lg text-sm text-white/80 line-clamp-2 min-w-[200px] group-hover:line-clamp-none transition-all">

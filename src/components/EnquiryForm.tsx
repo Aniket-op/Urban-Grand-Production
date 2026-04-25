@@ -14,23 +14,37 @@ export interface UserData {
 
 interface EnquiryFormProps {
     prefilledProduct?: Product;
+    /** Direct category/subcategory override (used by ImageLightbox) */
+    prefilledCategory?: string;
+    prefilledSubcategory?: string;
     userData?: UserData;
     disabled?: boolean;
 }
 
-const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFormProps) => {
+const EnquiryForm = ({ prefilledProduct, prefilledCategory, prefilledSubcategory, userData, disabled = false }: EnquiryFormProps) => {
     const [searchParams] = useSearchParams();
     const urlCategory = searchParams.get("category") ?? "";
     const urlSubcategory = searchParams.get("subcategory") ?? "";
 
+    // Resolve initial category/subcategory — prefilledCategory/Subcategory props take priority
+    // (set by ImageLightbox), then fall back to prefilledProduct, then URL params.
+    const resolveCategory = () => {
+        if (prefilledCategory) return prefilledCategory;
+        if (prefilledProduct) {
+            return prefilledProduct.category === "sale" || prefilledProduct.category === "new-arrivals"
+                ? "other"
+                : prefilledProduct.category;
+        }
+        return urlCategory;
+    };
+    const resolveSubcategory = () => prefilledSubcategory ?? urlSubcategory;
+
     const [formData, setFormData] = useState({
         fullName: userData?.fullName ?? "",
         companyName: userData?.companyName ?? "",
-        category: prefilledProduct
-            ? prefilledProduct.category === "sale" || prefilledProduct.category === "new-arrivals"
-                ? "other"
-                : prefilledProduct.category
-            : urlCategory,
+        productName: prefilledProduct?.name ?? "",
+        category: resolveCategory(),
+        subcategory: resolveSubcategory(),
         contactNumber: userData?.contactNumber ?? "",
         emailAddress: userData?.emailAddress ?? "",
         details: prefilledProduct
@@ -53,6 +67,7 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         if (prefilledProduct) {
             setFormData((prev) => ({
                 ...prev,
+                productName: prefilledProduct.name,
                 category:
                     prefilledProduct.category === "sale" || prefilledProduct.category === "new-arrivals"
                         ? "other"
@@ -62,9 +77,22 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         }
     }, [prefilledProduct]);
 
+    // Sync prefilledCategory/Subcategory props — fires when the user navigates
+    // to a different image inside the lightbox (both props are the current product).
+    useEffect(() => {
+        if (prefilledCategory !== undefined || prefilledSubcategory !== undefined) {
+            setFormData((prev) => ({
+                ...prev,
+                category: prefilledCategory ?? prev.category,
+                subcategory: prefilledSubcategory ?? prev.subcategory,
+            }));
+        }
+    }, [prefilledCategory, prefilledSubcategory]);
+
     // Sync URL ?category= and ?subcategory= params whenever they change
     useEffect(() => {
-        if (!prefilledProduct && (urlCategory || urlSubcategory)) {
+        // Only apply URL params if no explicit overrides are set
+        if (!prefilledProduct && !prefilledCategory && (urlCategory || urlSubcategory)) {
             let prefilledDetails = "";
             const catName = urlCategory ? urlCategory.charAt(0).toUpperCase() + urlCategory.slice(1) : "";
 
@@ -77,10 +105,11 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
             setFormData((prev) => ({
                 ...prev,
                 category: urlCategory || prev.category,
+                subcategory: urlSubcategory || prev.subcategory,
                 details: prefilledDetails || prev.details
             }));
         }
-    }, [urlCategory, urlSubcategory, prefilledProduct]);
+    }, [urlCategory, urlSubcategory, prefilledProduct, prefilledCategory]);
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -110,14 +139,17 @@ const EnquiryForm = ({ prefilledProduct, userData, disabled = false }: EnquiryFo
         
         try {
             await submitEnquiry({
-                enquiry: `Category: ${formData.category}\n\n${formData.details}`,
+                enquiry: formData.details,
                 fullName: formData.fullName,
                 emailAddress: formData.emailAddress,
                 contactNumber: formData.contactNumber,
                 companyName: formData.companyName,
+                productName: formData.productName,
+                category: formData.category,
+                subcategory: formData.subcategory,
             });
             toast.success("Enquiry submitted successfully. We will get back to you soon!");
-            setFormData({ fullName: "", companyName: "", category: "", contactNumber: "", emailAddress: "", details: "" });
+            setFormData({ fullName: "", companyName: "", productName: "", category: "", subcategory: "", contactNumber: "", emailAddress: "", details: "" });
         } catch (error: any) {
             toast.error(error.message || "Failed to submit enquiry. Please try again later.");
         }
