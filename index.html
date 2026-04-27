@@ -18,13 +18,12 @@
   <!-- Preconnect to Google Fonts for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-</head>
 
-<body>
   <script>
     (function () {
       function updateTheme() {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
@@ -34,6 +33,10 @@
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
     })();
   </script>
+</head>
+
+<body>
+
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
