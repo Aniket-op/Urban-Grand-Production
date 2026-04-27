@@ -57,7 +57,7 @@ const AssociatesSection = () => {
       </div>
 
       {/* Infinite Carousel */}
-      <div className="relative w-full flex overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-24 before:bg-gradient-to-r before:from-[hsl(215,18%,96%)] dark:before:from-[hsl(220,18%,8%)] before:to-transparent before:content-[''] after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-24 after:bg-gradient-to-l after:from-[hsl(215,18%,96%)] dark:after:from-[hsl(220,18%,8%)] after:to-transparent after:content-['']">
+      <div className="relative w-full flex overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-24 before:bg-gradient-to-r before:from-[#FAF9F6] dark:before:from-[hsl(220,18%,8%)] before:to-transparent before:content-[''] after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-24 after:bg-gradient-to-l after:from-[#FAF9F6] dark:after:from-[hsl(220,18%,8%)] after:to-transparent after:content-['']">
         {/* We use two sets of images to create a seamless infinite loop */}
         <div className="flex w-max animate-scroll gap-6 sm:gap-10 lg:gap-14 px-4 hover:[animation-play-state:paused]">
           {[...associateImages, ...associateImages].map((img, index) => (

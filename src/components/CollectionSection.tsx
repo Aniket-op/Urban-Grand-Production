@@ -25,7 +25,7 @@ const CollectionSlideComponent = ({
   return (
     <div
       ref={ref}
-      className={`w-full py-8 transition-colors duration-500 ${isAlt ? "bg-[#FAF9F6] dark:bg-zinc-800/40" : "bg-white dark:bg-zinc-900"}`}
+      className="w-full py-8 transition-colors duration-500 bg-[#FAF9F6] dark:bg-zinc-800/40"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
