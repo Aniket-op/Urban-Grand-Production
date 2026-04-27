@@ -57,7 +57,7 @@ const AboutCategory = () => {
           <span className="text-[10px] uppercase tracking-[0.3em] text-muted-soft font-semibold border-b-2 border-[hsl(38,60%,50%)]/50 pb-2 inline-block">
             About Panchsheel Knitwears
           </span>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground tracking-tight">
+          <h1 className="font-display font-bold leading-tight text-foreground tracking-tight">
             {data.title}
           </h1>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mx-auto mt-2" />
@@ -79,12 +79,12 @@ const AboutCategory = () => {
                   {heading && (
                     <div className={`flex items-center gap-4 border-b border-border/40 pb-3 ${hideImage ? 'mx-auto' : 'self-start'}`}>
                       {logo && <img src={logo} alt={`${heading} logo`} className="h-[80px] w-auto object-contain mix-blend-multiply dark:mix-blend-normal rounded-md" />}
-                      <h3 className="text-2xl font-display font-semibold text-foreground">
+                      <h3 className="font-display font-semibold text-foreground">
                         {heading}
                       </h3>
                     </div>
                   )}
-                  <p className={`text-base md:text-lg lg:text-xl text-muted-medium leading-relaxed ${hideImage ? 'text-center' : 'text-justify'}`}>
+                  <p className={`text-muted-medium leading-relaxed ${hideImage ? 'text-center' : 'text-justify'}`}>
                     {content}
                   </p>
                 </div>

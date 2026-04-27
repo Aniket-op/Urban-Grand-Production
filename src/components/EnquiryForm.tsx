@@ -180,7 +180,7 @@ const EnquiryForm = ({ prefilledProduct, prefilledCategory, prefilledSubcategory
                         Get In Touch
                     </p>
                 </div>
-                <h2 className="font-display text-4xl sm:text-5xl font-bold text-foreground tracking-tight mb-4">
+                <h2 className="font-display font-bold text-foreground tracking-tight mb-4">
                     Bulk & Custom
                 </h2>
                 <p className="text-sm text-muted-medium leading-relaxed max-w-md">

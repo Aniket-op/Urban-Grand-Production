@@ -59,7 +59,7 @@ const OurStory = () => {
 
       {/* Pull quote */}
       <div className="bg-soft py-16 px-6 text-center subtle-border border-y">
-        <blockquote className="font-display text-2xl sm:text-3xl font-light text-foreground max-w-3xl mx-auto leading-relaxed italic">
+        <blockquote className="font-display font-light text-foreground max-w-3xl mx-auto leading-relaxed italic">
           "We did not start AURA to build a fashion company. We started it to prove that beauty and conscience are not opposites."
         </blockquote>
         <p className="mt-4 text-xs uppercase tracking-widest text-muted-soft">— Founders, AURA Fashion Group</p>
@@ -82,7 +82,7 @@ const OurStory = () => {
               >
                 {/* Content side */}
                 <div className={`flex-1 pl-14 sm:pl-0 ${i % 2 === 0 ? "sm:text-right sm:pr-12" : "sm:pl-12"}`}>
-                  <span className="font-display text-3xl font-bold text-foreground/15 block">{m.year}</span>
+                  <span className="font-display font-bold text-foreground/15 block">{m.year}</span>
                   <h3 className="mt-1 mb-2 text-foreground">{m.title}</h3>
                   <p className="">{m.body}</p>
                 </div>

@@ -37,7 +37,7 @@ const AssociatesSection = () => {
           <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-2">
             Trusted Partners
           </p>
-          <h2 className="text-center font-display text-4xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground dark:text-white">
+          <h2 className="text-center font-display font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground dark:text-white">
             Our Associates
           </h2>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-3 mx-auto" />
@@ -49,7 +49,7 @@ const AssociatesSection = () => {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center max-w-3xl mx-auto mb-6"
         >
-          <p className="text-base text-muted-medium dark:text-zinc-300 leading-relaxed text-justify">
+          <p className="text-muted-medium dark:text-zinc-300 leading-relaxed text-justify">
             We partner with brands that value quality, consistency, and growth. We go beyond manufacturing —
           </p>
           <p className="text-base text-muted-medium dark:text-zinc-300 leading-relaxed mt-2 text-justify">We become an extension of your brand, delivering products that align with your vision, market positioning and customer expectations.</p>

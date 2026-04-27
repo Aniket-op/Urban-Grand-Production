@@ -23,7 +23,7 @@ const MapPage = () => {
           <p className="text-[10px] text-foreground uppercase tracking-[0.4em] opacity-50 mb-4 font-medium">
             Find Us
           </p>
-          <h1 className="text-foreground font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+          <h1 className="text-foreground font-display font-bold leading-tight">
             Our Location
           </h1>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-6 mx-auto" />

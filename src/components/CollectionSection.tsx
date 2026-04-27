@@ -43,11 +43,11 @@ const CollectionSlideComponent = ({
                 {slide.tag}
               </p>
 
-              <h2 className="font-display text-4xl font-bold dark:text-white">{slide.title}</h2>
+              <h2 className="font-display font-bold dark:text-white">{slide.title}</h2>
 
               <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />
 
-              <p className="text-lg text-muted-medium dark:text-zinc-300 max-w-[480px]">
+              <p className="text-muted-medium dark:text-zinc-300 max-w-[480px]">
                 {slide.description}
               </p>
             </div>
@@ -161,11 +161,11 @@ const CollectionSection = () => {
           Our Range
         </p>
 
-        <h2 className="font-display text-5xl font-bold dark:text-white">Our Collection</h2>
+        <h2 className="font-display font-bold dark:text-white">Our Collection</h2>
 
         <div className="h-[2px] w-16 bg-[hsl(38,60%,50%)] mx-auto mt-3" />
 
-        <p className="mt-3 max-w-2xl mx-auto text-lg text-muted-foreground dark:text-zinc-400">
+        <p className="mt-3 max-w-2xl mx-auto text-muted-foreground dark:text-zinc-400">
           Explore our premium range of knitwear designed for men, women, and
           children.
         </p>

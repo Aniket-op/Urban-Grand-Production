@@ -40,7 +40,7 @@ const BrandsSection = () => {
         visible={!!hovered}
       />
 
-      <h2 className="text-2xl uppercase tracking-[0.35em] text-muted-soft mb-8 font-semibold">
+      <h2 className="uppercase tracking-[0.35em] text-muted-soft mb-8 font-semibold">
         Our Brands
       </h2>
       <div className="flex flex-col gap-4">

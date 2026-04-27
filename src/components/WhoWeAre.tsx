@@ -60,7 +60,7 @@ const WhoWeAre = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.05] tracking-[-0.01em] text-foreground dark:text-white mb-2"
+            className="font-display font-bold leading-tight tracking-tight text-foreground dark:text-white mb-2"
           >
             Who We Are
           </motion.h2>
@@ -79,17 +79,17 @@ const WhoWeAre = () => {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="space-y-5 text-justify"
           >
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
+            <p className="text-muted-medium dark:text-zinc-300">
               Urban Grand is the premium fashion label of{" "}
               <span className="font-semibold text-foreground dark:text-white">Panchsheel Knitwears</span> — a legacy
               built over decades of precision craftsmanship and an unwavering commitment to quality.
             </p>
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
+            <p className="text-muted-medium dark:text-zinc-300">
               From the looms of Ludhiana to wardrobes across India, we design knitwear that tells a
               story — where tradition meets modern silhouette. Every stitch reflects the care of
               skilled artisans and the vision of a brand that has always put quality first.
             </p>
-            <p className="text-base sm:text-lg md:text-xl text-muted-medium dark:text-zinc-300 leading-relaxed">
+            <p className="text-muted-medium dark:text-zinc-300">
               We cater to men, women, and children — offering timeless cuts, premium yarns, and
               seasonal collections that define contemporary Indian fashion.
             </p>

@@ -50,7 +50,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
-            <h1 className="font-display sm:text-4xl md:text-5xl lg:text-[4rem] font-bold leading-[1] sm:leading-[0.95] tracking-[-0.02em] text-white">
+            <h1 className="font-display font-bold leading-tight tracking-tight text-white">
               Driven by Quality,
               <br />
               Defined by Precision
