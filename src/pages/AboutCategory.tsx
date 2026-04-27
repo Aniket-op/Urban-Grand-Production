@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import { Download } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { aboutContent } from "@/data/aboutContent";
@@ -17,20 +18,127 @@ const ImageCarousel = ({ images, title, idx, isCertificate = false }: { images: 
   }, [images.length, idx]);
 
   return (
-    <div className={`relative w-full max-w-md overflow-hidden rounded-xl shadow-xl shadow-black/[0.08] group/carousel ${isCertificate ? 'aspect-[3/4] bg-white' : 'aspect-[4/3] md:aspect-[3/2] lg:aspect-[4/3]'}`}>
-      <div className="absolute inset-0 bg-black/5 z-10 pointer-events-none" />
+    <div className={`relative w-full overflow-hidden bg-black/5 ${isCertificate ? 'h-[60vh] md:h-[70vh] bg-white' : 'h-[50vh] md:h-[60vh] lg:h-[75vh]'}`}>
       {images.map((img, i) => (
         <img
           key={i}
           src={img}
           alt={`${title} section ${idx + 1} image ${i + 1}`}
-          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCertificate ? 'object-contain p-2' : 'object-cover'} ${i === currentIndex ? 'opacity-100 block' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${isCertificate ? 'object-contain p-4' : 'object-cover group-hover:scale-[1.04]'} ${i === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
         />
       ))}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+      <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
         {images.map((_, i) => (
           <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'bg-black/70 scale-125' : 'bg-black/30'} ${!isCertificate && (i === currentIndex ? '!bg-white' : '!bg-white/50')}`} />
         ))}
+      </div>
+    </div>
+  );
+};
+
+const SectionRow = ({
+  heading,
+  content,
+  hideImage,
+  customImage,
+  logo,
+  idx,
+  section,
+  title,
+  images
+}: any) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const isEven = idx % 2 === 0;
+  const imageRight = isEven; // Even rows: Image on right.
+
+  const currentImages = customImage || images;
+
+  if (hideImage) {
+    return (
+      <div ref={ref} className={`w-full py-16 md:py-24 transition-colors duration-500 ${!imageRight ? "bg-[#FAF9F6] dark:bg-zinc-800/40" : ""}`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 1.2 }}
+            className="flex flex-col items-center text-center justify-center space-y-6 w-full lg:w-8/12 mx-auto"
+          >
+            {heading && (
+              <div className="flex flex-col items-center gap-4">
+                {logo && <img src={logo} alt={`${heading} logo`} className="h-[80px] w-auto object-contain mix-blend-multiply dark:mix-blend-normal rounded-md" />}
+                <h2 className="font-display font-bold text-3xl md:text-4xl dark:text-white">
+                  {heading}
+                </h2>
+                <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-2" />
+              </div>
+            )}
+            <p className="text-muted-medium dark:text-zinc-300 leading-relaxed text-lg">
+              {content}
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={`w-full py-16 md:py-24 transition-colors duration-500 ${!imageRight ? "bg-[#FAF9F6] dark:bg-zinc-800/40" : ""}`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 lg:gap-16">
+          
+          {/* ── Content Column ───────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, x: imageRight ? -60 : 60 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: imageRight ? -60 : 60 }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className={`flex flex-col justify-center gap-7 w-full pt-8 md:pt-0 ${imageRight ? "md:order-first md:pr-8 lg:pr-16" : "md:order-last md:pl-8 lg:pl-16"}`}
+          >
+            <div>
+              {logo && (
+                <img src={logo} alt={`${heading} logo`} className="h-[60px] w-auto object-contain mix-blend-multiply dark:mix-blend-normal rounded-md mb-6" />
+              )}
+
+              {heading && (
+                <h2 className="font-display font-bold text-3xl md:text-4xl dark:text-white">
+                  {heading}
+                </h2>
+              )}
+
+              {heading && <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 my-5" />}
+
+              <p className="text-muted-medium dark:text-zinc-300 leading-relaxed text-lg">
+                {content}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* ── Image Column ─────────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, x: imageRight ? 60 : -60 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: imageRight ? 60 : -60 }}
+            transition={{ duration: 1.2 }}
+            className={`relative w-full flex-shrink-0 ${imageRight ? "md:order-last" : "md:order-first"}`}
+          >
+            <div
+              className={`relative overflow-hidden rounded-lg w-full group cursor-pointer ${imageRight ? "cardboard-shadow-left" : "cardboard-shadow-right"}`}
+            >
+              <ImageCarousel images={currentImages} title={heading || title} idx={idx} isCertificate={section === 'company-credentials'} />
+            </div>
+
+            {/* Decorative accent line and glow */}
+            <motion.div
+              initial={{ scaleY: 0 }}
+              animate={inView ? { scaleY: 1 } : {}}
+              transition={{ duration: 3, delay: 0.6 }}
+              className={`absolute top-8 bottom-8 w-[3px] bg-[hsl(38,60%,50%)] glow-accent-shadow origin-top rounded-full z-10 ${imageRight ? "-right-2 sm:-right-3 md:-right-4" : "-left-2 sm:-left-3 md:-left-4"}`}
+            />
+          </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -50,68 +158,44 @@ const AboutCategory = () => {
     <div className="min-h-screen bg-background flex flex-col pt-20">
       <Navbar />
 
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-6 py-16 md:py-24 space-y-24 md:space-y-32">
+      <main className="flex-1 w-full pt-16 md:pt-24 pb-0">
 
         {/* Header Section */}
-        <div className="text-center space-y-4 animate-fade-in">
+        <div className="max-w-[1400px] mx-auto px-6 text-center space-y-4 animate-fade-in mb-16 md:mb-24">
           <span className="text-[10px] uppercase tracking-[0.3em] text-muted-soft font-semibold border-b-2 border-[hsl(38,60%,50%)]/50 pb-2 inline-block">
             About Panchsheel Knitwears
           </span>
-          <h1 className="font-display font-bold leading-tight text-foreground tracking-tight">
+          <h1 className="font-display font-bold text-4xl md:text-5xl leading-tight text-foreground tracking-tight">
             {data.title}
           </h1>
-          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mx-auto mt-2" />
+          <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mx-auto mt-4" />
         </div>
 
         {/* Zig-Zag Content Rows */}
-        <div className="flex flex-col gap-20 md:gap-32">
-          {data.description.map(({ heading, content, hideImage, customImage, logo }, idx) => {
-            const isEven = idx % 2 === 0;
-            const hasBg = idx % 2 !== 0;
-
-            return (
-              <div
-                key={idx}
-                className={`flex flex-col ${hideImage ? 'items-center text-center' : isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center justify-center gap-12 lg:gap-24 group ${hasBg ? 'bg-black/[0.03] dark:bg-white/[0.03] p-8 md:p-12 lg:p-16 rounded-[2rem]' : ''}`}
-              >
-                {/* Content Side */}
-                <div className={`w-full ${hideImage ? 'lg:w-8/12 text-center' : 'lg:w-5/12'} flex flex-col justify-center space-y-6 animate-fade-in order-2 lg:order-none`}>
-                  {heading && (
-                    <div className={`flex items-center gap-4 border-b border-border/40 pb-3 ${hideImage ? 'mx-auto' : 'self-start'}`}>
-                      {logo && <img src={logo} alt={`${heading} logo`} className="h-[80px] w-auto object-contain mix-blend-multiply dark:mix-blend-normal rounded-md" />}
-                      <h3 className="font-display font-semibold text-foreground">
-                        {heading}
-                      </h3>
-                    </div>
-                  )}
-                  <p className={`text-muted-medium leading-relaxed ${hideImage ? 'text-center' : 'text-justify'}`}>
-                    {content}
-                  </p>
-                </div>
-
-                {/* Image Side (Carousel or Custom Image) */}
-                {!hideImage && (
-                  <div className="w-full lg:w-5/12 flex justify-center animate-scale-in order-1 lg:order-none">
-                    {customImage ? (
-                      <ImageCarousel images={customImage} title={heading || data.title} idx={idx} isCertificate={section === 'company-credentials'} />
-                    ) : (
-                      <ImageCarousel images={data.images} title={data.title} idx={idx} isCertificate={section === 'company-credentials'} />
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div className="flex flex-col w-full">
+          {data.description.map((row, idx) => (
+            <SectionRow 
+              key={idx}
+              {...row}
+              idx={idx}
+              section={section}
+              title={data.title}
+              images={data.images}
+            />
+          ))}
         </div>
+        
         {section === "our-legacy" && (
-          <a
-            href={brochurePdf}
-            download="PANCHSHEEL_BROCHURE.pdf"
-            className="mt-8 mx-auto flex w-fit items-center gap-2 bg-foreground text-background px-6 py-3.5 rounded-md font-semibold tracking-wide hover:opacity-90 transition-elegant text-sm"
-          >
-            <Download size={18} />
-            Download Brochure
-          </a>
+          <div className="pb-16 md:pb-24 pt-8">
+            <a
+              href={brochurePdf}
+              download="PANCHSHEEL_BROCHURE.pdf"
+              className="mx-auto flex w-fit items-center gap-2 bg-foreground text-background px-6 py-3.5 rounded-md font-semibold tracking-wide hover:opacity-90 transition-elegant text-sm"
+            >
+              <Download size={18} />
+              Download Brochure
+            </a>
+          </div>
         )}
       </main>
 
