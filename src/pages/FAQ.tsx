@@ -34,7 +34,7 @@ const FAQItem = ({ faq, index }: { faq: typeof faqs[0]; index: number }) => {
       >
         <div className="flex items-center gap-4">
           <span className="text-[13px] font-heading font-bold text-muted-soft">{`0${index + 1}`}</span>
-          <h3 className="text-lg font-semibold text-foreground">{faq.question}</h3>
+          <h3 className="text-foreground">{faq.question}</h3>
         </div>
         <ChevronDown
           size={18}
@@ -44,7 +44,7 @@ const FAQItem = ({ faq, index }: { faq: typeof faqs[0]; index: number }) => {
       <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-40" : "max-h-0"}`}>
         <div className="px-6 pb-6 pt-0">
           <div className="pl-10 border-l-2 border-[hsl(38,60%,50%)]/40">
-            <p className="text-muted-medium leading-relaxed">{faq.answer}</p>
+            <p className="">{faq.answer}</p>
           </div>
         </div>
       </div>
@@ -59,14 +59,14 @@ const FAQ = () => {
       
       <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-16 md:py-24 space-y-12">
         <div className="text-center space-y-4">
-          <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold">
+          <p className="text-eyebrow">
             Support
           </p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">
+          <h1 className="text-foreground">
             Frequently Asked Questions
           </h1>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mx-auto mt-2" />
-          <p className="text-muted-medium text-lg max-w-lg mx-auto">
+          <p className="max-w-lg mx-auto">
             Find answers to common questions about our products and services.
           </p>
         </div>

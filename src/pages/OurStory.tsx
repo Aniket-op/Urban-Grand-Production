@@ -47,11 +47,11 @@ const OurStory = () => {
         <img src={heroSlide1} alt="Our Story" className="w-full h-full object-cover object-top" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/55 to-black/85" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6">
-          <p className="text-xs uppercase tracking-[0.5em] opacity-60 mb-4">Since 2008</p>
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-tight">
+          <p className="text-eyebrow mb-4 opacity-60">Since 2008</p>
+          <h1 className="">
             Our <span className="italic font-normal">Story</span>
           </h1>
-          <p className="mt-5 max-w-lg text-sm opacity-70 leading-relaxed">
+          <p className="mt-5 max-w-lg">
             From a single atelier in Mumbai to a global fashion group — this is the story of AURA, told through the people, moments, and decisions that shaped us.
           </p>
         </div>
@@ -67,7 +67,7 @@ const OurStory = () => {
 
       {/* Timeline */}
       <div className="max-w-4xl mx-auto w-full px-6 py-20">
-        <p className="text-xs uppercase tracking-[0.4em] text-muted-soft font-semibold text-center mb-16">
+        <p className="text-eyebrow text-center mb-16">
           Our Journey
         </p>
         <div className="relative">
@@ -83,8 +83,8 @@ const OurStory = () => {
                 {/* Content side */}
                 <div className={`flex-1 pl-14 sm:pl-0 ${i % 2 === 0 ? "sm:text-right sm:pr-12" : "sm:pl-12"}`}>
                   <span className="font-display text-3xl font-bold text-foreground/15 block">{m.year}</span>
-                  <h3 className="font-display text-lg font-bold text-foreground mt-1 mb-2">{m.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{m.body}</p>
+                  <h3 className="mt-1 mb-2 text-foreground">{m.title}</h3>
+                  <p className="">{m.body}</p>
                 </div>
 
                 {/* Dot on the line */}
@@ -102,7 +102,7 @@ const OurStory = () => {
       <div className="relative h-80 overflow-hidden">
         <img src={heroSlide3} alt="AURA Craftsmanship" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white text-center px-6">
-          <h2 className="font-display text-3xl font-bold mb-4">Be Part of the Next Chapter</h2>
+          <h2 className="mb-4">Be Part of the Next Chapter</h2>
           <div className="flex gap-4 flex-wrap justify-center">
             <Link
               to="/contact"

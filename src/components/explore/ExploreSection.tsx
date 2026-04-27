@@ -102,7 +102,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
 
             {/* Category title */}
             <div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight dark:text-white">
+              <h2 className="dark:text-white">
                 {categorySlide.title}
               </h2>
 
@@ -111,7 +111,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
             </div>
 
             {/* Category collection description */}
-            <p className="text-[15px] text-muted-medium dark:text-zinc-300 max-w-[420px] leading-relaxed">
+            <p className="max-w-[420px] dark:text-zinc-300">
               {categorySlide.description}
             </p>
 

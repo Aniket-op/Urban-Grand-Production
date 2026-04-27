@@ -31,10 +31,10 @@ const AboutUs = () => {
 
       {/* Hero banner */}
       <div className="bg-gradient-to-br from-[hsl(220,25%,10%)] to-[hsl(220,20%,18%)] text-zinc-50 px-6 py-24 text-center">
-        <p className="text-[10px] uppercase tracking-[0.4em] opacity-50 mb-4 font-medium">Who We Are</p>
-        <h1 className="font-display text-5xl md:text-6xl font-bold leading-tight">Panchsheel Knitwears</h1>
+        <p className="text-eyebrow mb-4 opacity-50">Who We Are</p>
+        <h1 className="">Panchsheel Knitwears</h1>
         <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-6 mx-auto" />
-        <p className="mt-5 max-w-xl mx-auto text-sm opacity-60 leading-relaxed">
+        <p className="mt-5 max-w-xl mx-auto">
           Craftsmanship, consistency, and customer trust since 1978.
         </p>
       </div>
@@ -45,12 +45,12 @@ const AboutUs = () => {
           <div key={i} className={`flex flex-col md:flex-row gap-10 items-start ${i % 2 === 1 ? "md:flex-row-reverse" : ""} p-8 rounded-xl corporate-card`}>
             <div className="md:w-1/3 shrink-0">
               <span className="text-xs uppercase tracking-[0.35em] text-muted-soft font-semibold">{`0${i + 1}`}</span>
-              <h2 className="font-display text-2xl font-bold mt-2 text-foreground">{s.title}</h2>
+              <h2 className="mt-2 text-foreground">{s.title}</h2>
               <div className="h-[2px] bg-[hsl(38,60%,50%)] w-10 mt-3" />
             </div>
             <div className="flex-1">
               {s.body.split("\n\n").map((para, j) => (
-                <p key={j} className="text-sm text-muted-foreground leading-relaxed mb-4">{para}</p>
+                <p key={j} className="mb-4">{para}</p>
               ))}
             </div>
           </div>

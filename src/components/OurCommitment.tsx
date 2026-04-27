@@ -45,7 +45,7 @@ const OurCommitment = () => {
           <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground dark:text-zinc-400 font-semibold mb-2">
             Why Choose Us
           </p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground dark:text-white">
+          <h2 className="uppercase tracking-[0.06em] sm:tracking-[0.08em] text-foreground dark:text-white">
             Our Commitment
           </h2>
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-3 mx-auto" />
@@ -70,7 +70,7 @@ const OurCommitment = () => {
                 />
               </div>
               <h3 className="font-heading font-semibold text-foreground dark:text-white mb-2 text-[15px]" title={item.title}>{item.title}</h3>
-              <p className="text-sm text-muted-medium dark:text-zinc-300 leading-relaxed">{item.description}</p>
+              <p className="dark:text-zinc-300">{item.description}</p>
             </motion.div>
           ))}
         </div>

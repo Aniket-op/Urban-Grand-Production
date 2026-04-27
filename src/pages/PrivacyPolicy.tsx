@@ -23,14 +23,14 @@ const PrivacyPolicy = () => {
       {/* Hero */}
       <div className="bg-zinc-950 text-zinc-50 px-6 py-20 text-center">
         <p className="text-xs uppercase tracking-[0.4em] opacity-50 mb-4">Legal</p>
-        <h1 className="font-display text-5xl md:text-6xl font-bold">Privacy Policy</h1>
+        <h1 className="">Privacy Policy</h1>
       </div>
 
       {/* Content */}
       <div className="flex-1 max-w-3xl mx-auto w-full px-6 py-16 space-y-12">
         {sections.map((s, i) => (
           <div key={i}>
-            <div className="text-sm text-muted-foreground leading-relaxed space-y-2">
+            <div className="space-y-2">
               {s.content.split("\n").map((para, j) => (
                 <p key={j} className={para.startsWith("•") ? "pl-4" : ""}>{para}</p>
               ))}

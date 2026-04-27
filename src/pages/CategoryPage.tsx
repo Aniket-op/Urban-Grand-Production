@@ -187,13 +187,13 @@ const CategoryPage = () => {
             Urban Grand
           </p>
 
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          <h1 className="">
             {selectedSubcategory}
           </h1>
 
           <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mt-5 mx-auto" />
 
-          <p className="mt-4 max-w-xl mx-auto text-sm opacity-60 leading-relaxed">
+          <p className="mt-4 max-w-xl mx-auto">
             {data.tagline}
           </p>
         </motion.div>

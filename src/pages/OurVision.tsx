@@ -41,10 +41,10 @@ const OurVision = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/80" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6">
           <p className="text-xs uppercase tracking-[0.5em] opacity-60 mb-4">Our Philosophy</p>
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-tight max-w-3xl">
+          <h1 className="max-w-3xl">
             Fashion with a <span className="italic font-normal">Purpose</span>
           </h1>
-          <p className="mt-6 max-w-xl text-base opacity-70 leading-relaxed">
+          <p className="mt-6 max-w-xl">
             We believe that the future of fashion is not faster — it is deeper. More considered. More connected to the hands that make it and the planet that sustains it.
           </p>
           <Link
@@ -65,8 +65,8 @@ const OurVision = () => {
           {pillars.map((p) => (
             <div key={p.number} className="p-8 rounded-2xl subtle-border hover:subtle-border-strong bg-soft hover:bg-background transition-elegant">
               <span className="font-display text-5xl font-bold text-foreground/10 leading-none">{p.number}</span>
-              <h3 className="font-display text-xl font-bold text-foreground mt-3 mb-3">{p.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
+              <h3 className="mt-3 mb-3 text-foreground">{p.title}</h3>
+              <p className="">{p.body}</p>
             </div>
           ))}
         </div>
@@ -83,8 +83,8 @@ const OurVision = () => {
 
       {/* CTA */}
       <div className="bg-zinc-950 text-zinc-50 text-center py-20 px-6">
-        <h2 className="font-display text-4xl font-bold mb-4">Ready to Experience AURA?</h2>
-        <p className="text-sm opacity-60 mb-8 max-w-md mx-auto">
+        <h2 className="mb-4">Ready to Experience AURA?</h2>
+        <p className="mb-8 max-w-md mx-auto">
           Reach out to our team for bulk orders, bespoke commissions, or simply to learn more about our collections.
         </p>
         <Link

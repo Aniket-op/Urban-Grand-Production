@@ -17,7 +17,7 @@ const platformLinks = [
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#f7eac3] text-zinc-800 font-sans">
+    <footer className="force-light w-full bg-[#f7eac3] text-zinc-800 font-sans">
       {/* Decorative gold accent line */}
       <div className="h-[3px] bg-gradient-to-r from-transparent via-[hsl(38,60%,50%)] to-transparent" />
 

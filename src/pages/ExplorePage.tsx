@@ -81,13 +81,13 @@ const ExplorePage = () => {
               Urban Grand
             </p>
 
-            <h1 className="font-display text-5xl md:text-7xl font-bold text-white leading-tight">
+            <h1 className="text-white">
               {genderData.title}
             </h1>
 
             <div className="h-[2px] bg-[hsl(38,60%,55%)] w-16 mt-4 mb-4 mx-auto" />
 
-            <p className="text-white/60 text-sm md:text-base max-w-lg leading-relaxed mx-auto">
+            <p className="text-white/60 max-w-lg mx-auto">
               {genderData.tag} — {genderData.description}
             </p>
           </motion.div>
@@ -101,7 +101,7 @@ const ExplorePage = () => {
             <p className="text-[10px] tracking-[0.4em] uppercase text-muted-foreground font-semibold mb-1">
               {categorySlides.length} Categories
             </p>
-            <h2 className="text-2xl font-bold dark:text-white">
+            <h2 className="dark:text-white">
               Browse the Collection
             </h2>
           </div>
