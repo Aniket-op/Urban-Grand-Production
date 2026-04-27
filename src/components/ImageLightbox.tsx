@@ -177,17 +177,6 @@ const ImageLightbox = ({
 
   const product = images[currentIndex];
 
-  // Autoplay carousel
-  useEffect(() => {
-    if (scale > 1) return; // Pause autoplay when zoomed in
-
-    const timer = setInterval(() => {
-      onNavigate((currentIndex + 1) % images.length);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [currentIndex, images.length, onNavigate, scale]);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -231,20 +220,24 @@ const ImageLightbox = ({
               <ZoomIn size={18} />
             </button>
             <div className="w-px h-5 bg-white/15 mx-1 sm:mx-2" />
+            {/* Mobile close: always on dark overlay, so white styling */}
             <button
               onClick={onClose}
-              className="p-2 sm:p-2.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all md:hidden"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 hover:text-white hover:border-white/40 transition-all duration-200 md:hidden"
               aria-label="Close"
             >
-              <X size={20} />
+              <X size={18} strokeWidth={2.5} />
             </button>
-            {!inquireyForm && (<button
-              onClick={onClose}
-              className="p-2.5 hover:bg-soft rounded-full transition-elegant text-muted-medium hover:text-background flex-shrink-0 hidden bg-white md:block"
-              aria-label="Close modal"
-            >
-              <X size={20} />
-            </button>)}
+            {/* Desktop close: shown only when there's no enquiry form panel */}
+            {!inquireyForm && (
+              <button
+                onClick={onClose}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 hover:text-white hover:border-white/40 transition-all duration-200 hidden md:inline-flex"
+                aria-label="Close modal"
+              >
+                <X size={18} strokeWidth={2.5} />
+              </button>
+            )}
           </div>
         </div>
 
@@ -338,10 +331,10 @@ const ImageLightbox = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2.5 hover:bg-soft rounded-full transition-elegant text-muted-medium hover:text-foreground flex-shrink-0 hidden md:block"
+            className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border hover:border-foreground/30 bg-transparent text-foreground/50 hover:text-foreground hover:bg-muted/60 transition-all duration-200 flex-shrink-0 hidden md:inline-flex"
             aria-label="Close modal"
           >
-            <X size={20} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
