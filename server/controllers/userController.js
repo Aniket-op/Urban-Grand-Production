@@ -211,10 +211,48 @@ const deleteUserAdmin = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Update Admin's own profile (email, password, profilePassword)
+ * @route   PUT /api/user/admin/profile
+ * @access  Private/Admin
+ */
+const updateAdminProfile = async (req, res) => {
+  const { emailAddress, password, profilePassword } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id).select("+password +profilePassword");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin user not found",
+      });
+    }
+
+    if (emailAddress !== undefined) user.emailAddress = emailAddress;
+    if (password) user.password = password; // pre-save hook handles hashing
+    if (profilePassword) user.profilePassword = profilePassword; // pre-save hook handles hashing
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Admin profile updated successfully",
+    });
+  } catch (error) {
+    console.error("Update admin profile error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating admin profile",
+    });
+  }
+};
+
 module.exports = { 
   getUserProfile, 
   updateUserProfile,
   getAllUsers,
   updateUserAdmin,
-  deleteUserAdmin
+  deleteUserAdmin,
+  updateAdminProfile
 };

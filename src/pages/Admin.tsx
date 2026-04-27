@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EnquiriesPanel } from "@/components/admin/EnquiriesPanel";
 import { UsersPanel } from "@/components/admin/UsersPanel";
+import { AdminProfilePanel } from "@/components/admin/AdminProfilePanel";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Admin = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="enquiries" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/5 border border-white/10 p-1 rounded-xl h-14">
+        <TabsList className="grid w-full grid-cols-3 mb-8 bg-white/5 border border-white/10 p-1 rounded-xl h-14">
           <TabsTrigger 
             value="enquiries" 
             className="rounded-lg data-[state=active]:bg-[hsl(38,60%,50%)] data-[state=active]:text-background font-bold tracking-widest uppercase text-xs h-full"
@@ -70,6 +71,12 @@ const Admin = () => {
           >
             User Management
           </TabsTrigger>
+          <TabsTrigger 
+            value="profile" 
+            className="rounded-lg data-[state=active]:bg-[hsl(38,60%,50%)] data-[state=active]:text-background font-bold tracking-widest uppercase text-xs h-full"
+          >
+            Profile
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="enquiries" className="focus-visible:outline-none focus-visible:ring-0">
@@ -78,6 +85,10 @@ const Admin = () => {
 
         <TabsContent value="users" className="focus-visible:outline-none focus-visible:ring-0">
           <UsersPanel />
+        </TabsContent>
+
+        <TabsContent value="profile" className="focus-visible:outline-none focus-visible:ring-0">
+          <AdminProfilePanel />
         </TabsContent>
       </Tabs>
     </div>

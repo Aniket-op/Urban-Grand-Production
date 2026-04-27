@@ -131,6 +131,17 @@ export const updateProfile = (data: {
     body: JSON.stringify(data),
   });
 
+/** Update the Admin's profile (email, password, profile password) */
+export const updateAdminProfile = (data: {
+  emailAddress?: string;
+  password?: string;
+  profilePassword?: string;
+}) =>
+  apiRequest("/user/admin/profile", {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
 /** Submit or update an enquiry (requires JWT) */
 export const submitEnquiry = (data: {
   enquiry: string;
@@ -151,25 +162,28 @@ export const submitEnquiry = (data: {
 export const getAllEnquiries = (page: number = 1, limit: number = 20) =>
   apiRequest<{ count: number; total: number; enquiries: ApiEnquiry[] }>(`/enquiry?page=${page}&limit=${limit}`);
 
-/** Delete an enquiry (requires Admin JWT) */
-export const deleteEnquiry = (id: string) =>
+/** Delete an enquiry (requires Admin JWT & Profile Password) */
+export const deleteEnquiry = (id: string, profilePassword?: string) =>
   apiRequest(`/enquiry/${id}`, {
     method: "DELETE",
+    headers: profilePassword ? { "X-Profile-Password": profilePassword } : undefined,
   });
 
 /** Fetch all users (requires Admin JWT) */
 export const getAllUsers = (page: number = 1, limit: number = 50) =>
   apiRequest<{ count: number; total: number; users: ApiUser[] }>(`/user/all?page=${page}&limit=${limit}`);
 
-/** Update a user (requires Admin JWT) */
-export const updateUserAdmin = (id: string, data: Partial<ApiUser>) =>
+/** Update a user (requires Admin JWT & Profile Password) */
+export const updateUserAdmin = (id: string, data: Partial<ApiUser>, profilePassword?: string) =>
   apiRequest(`/user/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),
+    headers: profilePassword ? { "X-Profile-Password": profilePassword } : undefined,
   });
 
-/** Delete a user (requires Admin JWT) */
-export const deleteUserAdmin = (id: string) =>
+/** Delete a user (requires Admin JWT & Profile Password) */
+export const deleteUserAdmin = (id: string, profilePassword?: string) =>
   apiRequest(`/user/${id}`, {
     method: "DELETE",
+    headers: profilePassword ? { "X-Profile-Password": profilePassword } : undefined,
   });

@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ProfilePasswordModal } from "./ProfilePasswordModal";
 
 export const EnquiriesPanel = () => {
   const [enquiries, setEnquiries] = useState<ApiEnquiry[]>([]);
@@ -38,19 +39,29 @@ export const EnquiriesPanel = () => {
     fetchEnquiries(1);
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this enquiry?")) return;
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [enquiryToDelete, setEnquiryToDelete] = useState<string | null>(null);
+
+  const handleDeleteClick = (id: string) => {
+    setEnquiryToDelete(id);
+    setIsPasswordModalOpen(true);
+  };
+
+  const executeDelete = async (profilePassword: string) => {
+    if (!enquiryToDelete) return;
     try {
-      const res = await deleteEnquiry(id);
+      const res = await deleteEnquiry(enquiryToDelete, profilePassword);
       if (res.success) {
         toast.success("Enquiry deleted successfully");
-        setEnquiries((prev) => prev.filter((enq) => enq._id !== id));
+        setEnquiries((prev) => prev.filter((enq) => enq._id !== enquiryToDelete));
         setTotal((prev) => prev - 1);
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to delete enquiry");
+      throw error;
     }
   };
+
 
   if (isLoading && page === 1) {
     return <div className="p-12 text-center text-white/50">Loading enquiries...</div>;
@@ -140,7 +151,7 @@ export const EnquiriesPanel = () => {
                     </TableCell>
                     <TableCell className="text-right">
                       <button
-                        onClick={() => handleDelete(enq._id)}
+                        onClick={() => handleDeleteClick(enq._id)}
                         className="p-2 text-white/40 hover:text-red-500 transition-colors rounded-lg hover:bg-red-500/10"
                         title="Delete Enquiry"
                       >
@@ -170,6 +181,17 @@ export const EnquiriesPanel = () => {
           </button>
         </div>
       )}
+
+      {/* Profile Password Modal */}
+      <ProfilePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        onConfirm={executeDelete}
+        title="Delete Inquiry"
+        description="Are you sure you want to delete this inquiry? Enter your profile password to confirm."
+        actionText="Delete Inquiry"
+        actionClass="bg-red-500 hover:bg-red-600 text-white"
+      />
     </div>
   );
 };

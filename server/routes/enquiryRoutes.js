@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { submitEnquiry, getAllEnquiries, deleteEnquiry } = require("../controllers/enquiryController");
 const { protect, adminProtect } = require("../middleware/authMiddleware");
+const { requireProfilePassword } = require("../middleware/profileAuthMiddleware");
 const { enquiryValidation } = require("../validators/userValidator");
 
 /**
@@ -14,6 +15,6 @@ const { enquiryValidation } = require("../validators/userValidator");
 
 router.post("/", enquiryValidation, submitEnquiry);
 router.get("/", protect, adminProtect, getAllEnquiries);
-router.delete("/:id", protect, adminProtect, deleteEnquiry);
+router.delete("/:id", protect, adminProtect, requireProfilePassword, deleteEnquiry);
 
 module.exports = router;

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ProfilePasswordModal } from "./ProfilePasswordModal";
 
 export const UsersPanel = () => {
   const [users, setUsers] = useState<ApiUser[]>([]);
@@ -38,6 +39,10 @@ export const UsersPanel = () => {
     companyName: "",
     isAdmin: false,
   });
+
+  // Profile Password Modal State
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<{ type: "delete" | "edit"; payload?: string } | null>(null);
 
   const fetchUsers = async (pageNum: number, append: boolean = false) => {
     try {
@@ -59,17 +64,46 @@ export const UsersPanel = () => {
     fetchUsers(1);
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("CRITICAL WARNING: This will permanently delete the user account entirely. Are you sure?")) return;
-    try {
-      const res = await deleteUserAdmin(id);
-      if (res.success) {
-        toast.success("User deleted successfully");
-        setUsers((prev) => prev.filter((u) => u._id !== id));
-        setTotal((prev) => prev - 1);
+  const handleDeleteClick = (id: string) => {
+    setPendingAction({ type: "delete", payload: id });
+    setIsPasswordModalOpen(true);
+  };
+
+  const handleEditSubmitClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    setPendingAction({ type: "edit" });
+    setIsPasswordModalOpen(true);
+  };
+
+  const executePendingAction = async (profilePassword: string) => {
+    if (!pendingAction) return;
+
+    if (pendingAction.type === "delete") {
+      const id = pendingAction.payload!;
+      try {
+        const res = await deleteUserAdmin(id, profilePassword);
+        if (res.success) {
+          toast.success("User deleted successfully");
+          setUsers((prev) => prev.filter((u) => u._id !== id));
+          setTotal((prev) => prev - 1);
+        }
+      } catch (error: any) {
+        toast.error(error.message || "Failed to delete user");
+        throw error;
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete user");
+    } else if (pendingAction.type === "edit") {
+      try {
+        const res = await updateUserAdmin(editingUser!._id, editForm, profilePassword);
+        if (res.success) {
+          toast.success("User details updated");
+          setUsers((prev) => prev.map((u) => u._id === editingUser!._id ? { ...u, ...editForm } : u));
+          setIsEditDialogOpen(false);
+        }
+      } catch (error: any) {
+        toast.error(error.message || "Failed to update user");
+        throw error;
+      }
     }
   };
 
@@ -83,22 +117,6 @@ export const UsersPanel = () => {
       isAdmin: user.isAdmin || false,
     });
     setIsEditDialogOpen(true);
-  };
-
-  const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingUser) return;
-    
-    try {
-      const res = await updateUserAdmin(editingUser._id, editForm);
-      if (res.success) {
-        toast.success("User details updated");
-        setUsers((prev) => prev.map((u) => u._id === editingUser._id ? { ...u, ...editForm } : u));
-        setIsEditDialogOpen(false);
-      }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update user");
-    }
   };
 
   if (isLoading && page === 1) {
@@ -178,7 +196,7 @@ export const UsersPanel = () => {
                           <Edit size={16} />
                         </button>
                         <button
-                          onClick={() => handleDelete(user._id)}
+                          onClick={() => handleDeleteClick(user._id)}
                           className="p-2 hover:text-red-500 transition-colors rounded-lg hover:bg-red-500/10"
                           title="Delete User"
                         >
@@ -220,7 +238,7 @@ export const UsersPanel = () => {
             </DialogDescription>
           </DialogHeader>
           
-          <form onSubmit={handleEditSubmit} className="space-y-4 py-4">
+          <form onSubmit={handleEditSubmitClick} className="space-y-4 py-4">
             <div className="space-y-2">
               <Label className="text-xs uppercase tracking-widest text-white/60 font-bold">Full Name</Label>
               <input
@@ -297,6 +315,20 @@ export const UsersPanel = () => {
           </form>
         </DialogContent>
       </Dialog>
+      {/* Profile Password Modal */}
+      <ProfilePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        onConfirm={executePendingAction}
+        title={pendingAction?.type === "delete" ? "Delete User" : "Update User"}
+        description={
+          pendingAction?.type === "delete"
+            ? "CRITICAL WARNING: This will permanently delete the user account entirely. This action cannot be undone. Enter your profile password to confirm."
+            : "Enter your profile password to authorize these changes to the user's account."
+        }
+        actionText={pendingAction?.type === "delete" ? "Delete User" : "Save Changes"}
+        actionClass={pendingAction?.type === "delete" ? "bg-red-500 hover:bg-red-600 text-white" : undefined}
+      />
     </div>
   );
 };
