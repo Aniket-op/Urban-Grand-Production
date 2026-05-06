@@ -13,6 +13,7 @@ import Contact from "./pages/Contact.tsx";
 import OurVision from "./pages/OurVision.tsx";
 import OurStory from "./pages/OurStory.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import OurServices from "./pages/OurServices.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
 import Login from "./pages/Login.tsx";
@@ -56,6 +57,7 @@ const App = () => (
             {/* Admin Routes */}
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/ourservices" element={<OurServices />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

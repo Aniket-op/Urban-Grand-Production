@@ -33,6 +33,7 @@ const centerMenuItems: MenuItem[] = [
       { label: "Kids", to: "/explore/kids" },
     ],
   },
+  { label: "Our Services", to: "/ourservices" },
 ];
 
 const allMenuItems: MenuItem[] = [
