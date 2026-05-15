@@ -34,6 +34,7 @@ const centerMenuItems: MenuItem[] = [
     ],
   },
   { label: "Our Services", to: "/ourservices" },
+  { label: "Our Leadership Journey", to: "/leadership-journey" },
 ];
 
 const allMenuItems: MenuItem[] = [
