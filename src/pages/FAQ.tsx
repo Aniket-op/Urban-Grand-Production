@@ -6,20 +6,84 @@ import { useState } from "react";
 
 const faqs = [
   {
-    question: "Do you offer international shipping?",
-    answer: "Currently, we only ship within India but plan to expand internationally soon."
+    question: "What types of garments do you manufacture?",
+    answer: "We manufacture a wide range of apparel including T-shirts, sweatshirts, hoodies, polo shirts, tracksuits, jackets, uniforms, kidswear, ladieswear, and custom fashion garments."
   },
   {
-    question: "What is your return policy?",
-    answer: "We offer a 7-day return policy for unused items in their original packaging."
+    question: "What is your minimum order quantity (MOQ)?",
+    answer: "Our MOQ depends on the product category and customization requirements. Generally, bulk orders start from 100-300 pieces per style."
   },
   {
-    question: "How can I track my order?",
-    answer: "You will receive an email and SMS with a tracking link once your order is dispatched."
+    question: "Do you offer private labeling and custom branding?",
+    answer: "Yes. We provide complete private label manufacturing including woven labels, printed labels, hangtags, packaging, embroidery, and custom branding solutions."
   },
   {
-    question: "Do you do custom sizing or bulk orders?",
-    answer: "Yes, we handle bulk orders. Please use the contact page to get in touch with our sales team for more information."
+    question: "Can you manufacture garments based on our designs?",
+    answer: "Absolutely. We offer OEM and ODM services and can manufacture products according to your designs, tech packs, samples, or specifications."
+  },
+  {
+    question: "Do you provide samples before bulk production?",
+    answer: "Yes. We can develop samples for approval before commencing bulk production to ensure product quality and design accuracy."
+  },
+  {
+    question: "What fabrics do you work with?",
+    answer: "We work with Cotton, Organic Cotton, Polyester, Cotton-Poly blends, Fleece, French Terry, Interlock, Rib, Pique, Jersey, and other specialized fabrics."
+  },
+  {
+    question: "What customization options are available?",
+    answer: "We offer: Screen Printing, DTF Printing, Sublimation Printing, Embroidery, Puff Printing, Silicone Printing, Appliqué Work, and Custom Labels & Packaging."
+  },
+  {
+    question: "What is your production capacity?",
+    answer: "Our manufacturing facility is capable of handling large-scale orders with strict quality control processes and timely delivery schedules."
+  },
+  {
+    question: "How long does production take?",
+    answer: "Production timelines vary based on order quantity and customization requirements. Typical lead times range from 15-45 days after order confirmation."
+  },
+  {
+    question: "Do you export internationally?",
+    answer: "Yes. We serve clients worldwide and can manage export documentation, packaging, and international shipping requirements."
+  },
+  {
+    question: "How do you ensure product quality?",
+    answer: "We maintain strict quality checks at every stage including fabric inspection, cutting, stitching, finishing, and final packing."
+  },
+  {
+    question: "Can you match Pantone colors?",
+    answer: "Yes. We can develop fabrics and prints according to specific Pantone color references."
+  },
+  {
+    question: "What sizes can you manufacture?",
+    answer: "We can produce garments in all standard and custom size ranges, including plus sizes and international size specifications."
+  },
+  {
+    question: "Do you offer sustainable or eco-friendly manufacturing?",
+    answer: "Yes. We can source organic, recycled, and sustainable materials based on client requirements."
+  },
+  {
+    question: "What certifications do you have?",
+    answer: "Certification availability may vary. Please contact us for details regarding compliance, quality, and social responsibility standards."
+  },
+  {
+    question: "What payment terms do you offer?",
+    answer: "Payment terms depend on the order value and client relationship. Typically, an advance payment is required before production begins."
+  },
+  {
+    question: "Can you handle urgent bulk orders?",
+    answer: "Yes. Depending on production capacity and order requirements, we can accommodate expedited production schedules."
+  },
+  {
+    question: "How is pricing determined?",
+    answer: "Pricing depends on: Fabric type, Garment style, Order quantity, Printing/Embroidery requirements, Packaging specifications, and Delivery destination."
+  },
+  {
+    question: "Will my designs remain confidential?",
+    answer: "Yes. We respect client confidentiality and do not share proprietary designs or product specifications."
+  },
+  {
+    question: "How can I request a quotation?",
+    answer: "You can submit your requirements through our inquiry form, email, or WhatsApp. Please include product details, quantity, customization requirements, and delivery location."
   }
 ];
 
@@ -41,7 +105,7 @@ const FAQItem = ({ faq, index }: { faq: typeof faqs[0]; index: number }) => {
           className={`text-muted-foreground transition-transform duration-300 flex-shrink-0 ml-4 ${open ? "rotate-180" : ""}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-40" : "max-h-0"}`}>
+      <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-96" : "max-h-0"}`}>
         <div className="px-6 pb-6 pt-0">
           <div className="pl-10 border-l-2 border-[hsl(38,60%,50%)]/40">
             <p className="">{faq.answer}</p>
@@ -75,6 +139,32 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <FAQItem key={index} faq={faq} index={index} />
           ))}
+        </div>
+
+        <div className="corporate-card rounded-xl p-8 space-y-6">
+          <div className="text-center space-y-2">
+            <p className="text-eyebrow">Partnership</p>
+            <h2 className="text-foreground text-2xl font-heading font-bold">Why Choose Panchsheel Knitwears?</h2>
+            <div className="h-[2px] bg-[hsl(38,60%,50%)] w-14 mx-auto mt-2" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+            {[
+              "Direct Manufacturer",
+              "Competitive Factory Pricing",
+              "Custom Product Development",
+              "Strict Quality Control",
+              "Timely Deliveries",
+              "Private Label Solutions",
+              "Bulk Production Capability",
+              "Experienced Team",
+              "Domestic & International Shipping"
+            ].map((reason, i) => (
+              <div key={i} className="flex items-center gap-3 p-4 rounded-lg bg-muted/10 border border-border/30">
+                <span className="text-[hsl(38,60%,50%)] font-heading font-bold text-sm flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                <p className="text-sm font-medium text-foreground">{reason}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="text-center pt-8 border-t border-border/40">
