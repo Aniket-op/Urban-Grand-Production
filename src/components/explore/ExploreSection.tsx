@@ -32,9 +32,11 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
   );
 
   // Build a Product[] filtered to this slide's subcategory for the lightbox
+  // Each style's allImages are expanded so the enquiry lightbox shows all images of each style
   const enquiryProducts: Product[] = categorySlide.subcategories.flatMap((sub) =>
-    sub.images.map((img) => ({
+    sub.allImages.map((img) => ({
       image: img,
+      allImages: sub.allImages,
       category: categorySlide.title,
       subcategory: sub.label,
     }))
@@ -44,7 +46,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
   const getSubcategoryStartIndex = (subcategoryIndex: number) => {
     let startIndex = 0;
     for (let i = 0; i < subcategoryIndex; i++) {
-      startIndex += categorySlide.subcategories[i].images.length;
+      startIndex += categorySlide.subcategories[i].allImages.length;
     }
     return startIndex;
   };
@@ -133,8 +135,8 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
 
             {/* Image count hint */}
             <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
-              {categorySlide.subcategories.reduce((acc, sub) => acc + sub.images.length, 0)}{" "}
-              {categorySlide.subcategories.reduce((acc, sub) => acc + sub.images.length, 0) === 1 ? "Style" : "Styles"}
+              {categorySlide.subcategories.length}{" "}
+              {categorySlide.subcategories.length === 1 ? "Style" : "Styles"}
             </p>
 
             {/* CTA */}
@@ -181,7 +183,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
                 // Find which subcategory this slide belongs to
                 let currentPosition = 0;
                 const targetSubcategory = categorySlide.subcategories.find((sub) => {
-                  const subcategoryLength = sub.images.length;
+                const subcategoryLength = sub.allImages.length;
                   if (slideIndex >= currentPosition && slideIndex < currentPosition + subcategoryLength) {
                     return true;
                   }

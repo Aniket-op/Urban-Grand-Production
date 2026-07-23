@@ -32,13 +32,12 @@ const categoryData: Record<string, CategoryData> = {};
   const slides = getCollectionSlides(gender);
 
   const products: Product[] = slides.flatMap(slide =>
-    slide.subcategories.flatMap(sub =>
-      sub.images.map(img => ({
-        image: img,
-        category: slide.title,
-        subcategory: sub.label
-      }))
-    )
+    slide.subcategories.map(sub => ({
+      image: sub.primaryImage,
+      allImages: sub.allImages,
+      category: slide.title,
+      subcategory: sub.label
+    }))
   );
 
   categoryData[gender] = {
@@ -98,11 +97,31 @@ const ProductCard = ({
   );
 };
 
+// Helper: expand a product's allImages into Product[] for lightbox display
+const expandProductImages = (product: Product): Product[] =>
+  product.allImages.map(img => ({
+    image: img,
+    allImages: product.allImages,
+    category: product.category,
+    subcategory: product.subcategory
+  }));
+
 // ── Main page
 const CategoryPage = () => {
   const { gender, subcategory } = useParams<{ gender: string; subcategory?: string }>();
+  // Lightbox state: stores the expanded images for the clicked product
+  const [lightboxImages, setLightboxImages] = useState<Product[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
+
+  const openStyleLightbox = (product: Product) => {
+    setLightboxImages(expandProductImages(product));
+    setLightboxIndex(0);
+  };
+
+  const closeStyleLightbox = () => {
+    setLightboxIndex(null);
+  };
 
   const {
     products: enquiryProducts,
@@ -261,7 +280,7 @@ const CategoryPage = () => {
                 key={`${product.subcategory}-${i}`}
                 product={product}
                 index={i}
-                onClick={() => setLightboxIndex(i)}
+                onClick={() => openStyleLightbox(product)}
               />
             ))}
           </div>
@@ -284,13 +303,13 @@ const CategoryPage = () => {
 
       <Footer />
 
-      {/* ── Lightbox ── */}
+      {/* ── Lightbox (shows all images of the clicked style) ── */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <ImageLightbox
-            images={filteredProducts}
+            images={lightboxImages}
             currentIndex={lightboxIndex}
-            onClose={() => setLightboxIndex(null)}
+            onClose={closeStyleLightbox}
             onNavigate={(i) => setLightboxIndex(i)}
             inquireyForm={false}
           />

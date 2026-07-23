@@ -1,7 +1,8 @@
 // ── Core Types ────
 export type Subcategory = {
     label: string;
-    images: string[];
+    primaryImage: string;   // The _1 image (or only image) — used in grid/carousel
+    allImages: string[];    // All images for this style (1, 2, 3...) — used in lightbox/enquiry
 };
 
 export type CollectionSlide = {
@@ -56,18 +57,24 @@ const categoryMetadata: Record<string, { tag: string, description: string, accen
 // ── Load all image assets dynamically ────
 const allAssets = import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,webp,avif}', { eager: true });
 
-// Helper to pre-parse global asset structure map
-// structure: parsedAssets[gender][category][subcategory] = string[]
-const parsedAssets: Record<string, Record<string, Record<string, string[]>>> = {};
+/**
+ * Intermediate structure used during parsing:
+ * rawAssets[gender][category][styleLabel] = { count: number, url: string }[]
+ *
+ * Supports both naming conventions:
+ *   - Legacy:  type_style.ext       → treated as single image (count = 0)
+ *   - New:     type_style_count.ext → grouped by style, sorted by count
+ */
+const rawAssets: Record<string, Record<string, Record<string, { count: number; url: string }[]>>> = {};
 
 Object.entries(allAssets).forEach(([path, module]) => {
-    // path e.g. /src/assets/men/jacket_bomber.jpg
+    // path e.g. /src/assets/men/jacket_bomber_1.jpg
     const parts = path.split('/assets/')[1]?.split('/');
     if (!parts || parts.length < 2) return;
 
     const gender = parts[0].toLowerCase();
     const filenameWithExt = parts[parts.length - 1];
-    
+
     // Ignore hero/homepage images
     if (filenameWithExt.toLowerCase().includes('homepage')) return;
 
@@ -78,17 +85,76 @@ Object.entries(allAssets).forEach(([path, module]) => {
         return;
     }
 
-    const [catRaw, subRaw] = filename.split('_', 2);
-    const category = catRaw.trim().toLowerCase();
-    const subcategoryLabel = subRaw.charAt(0).toUpperCase() + subRaw.slice(1).trim();
+    // Split into segments: could be [type, style] or [type, style, count]
+    const segments = filename.split('_');
+
+    let category: string;
+    let styleLabel: string;
+    let count: number;
+
+    if (segments.length >= 3) {
+        // Check if the last segment is a number (count)
+        const lastSegment = segments[segments.length - 1];
+        const parsedCount = parseInt(lastSegment, 10);
+
+        if (!isNaN(parsedCount)) {
+            // New format: type_style_count.ext (e.g., jacket_bomber_1.jpg)
+            category = segments[0].trim().toLowerCase();
+            // Join middle segments in case style has multiple words (e.g., button-up)
+            const rawStyle = segments.slice(1, -1).join('_').trim();
+            styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
+            count = parsedCount;
+        } else {
+            // Legacy: 3+ segments but last isn't a number — treat as type_style (first 2 segments)
+            category = segments[0].trim().toLowerCase();
+            const rawStyle = segments[1].trim();
+            styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
+            count = 0;
+        }
+    } else {
+        // Legacy format: type_style.ext (exactly 2 segments)
+        category = segments[0].trim().toLowerCase();
+        const rawStyle = segments[1].trim();
+        styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
+        count = 0; // treated as single-image style
+    }
 
     const imageUrl = (module as any).default || module;
 
-    if (!parsedAssets[gender]) parsedAssets[gender] = {};
-    if (!parsedAssets[gender][category]) parsedAssets[gender][category] = {};
-    if (!parsedAssets[gender][category][subcategoryLabel]) parsedAssets[gender][category][subcategoryLabel] = [];
+    if (!rawAssets[gender]) rawAssets[gender] = {};
+    if (!rawAssets[gender][category]) rawAssets[gender][category] = {};
+    if (!rawAssets[gender][category][styleLabel]) rawAssets[gender][category][styleLabel] = [];
 
-    parsedAssets[gender][category][subcategoryLabel].push(imageUrl);
+    rawAssets[gender][category][styleLabel].push({ count, url: imageUrl });
+});
+
+/**
+ * Final parsed structure:
+ * parsedAssets[gender][category][styleLabel] = Subcategory
+ */
+const parsedAssets: Record<string, Record<string, Record<string, Subcategory>>> = {};
+
+Object.entries(rawAssets).forEach(([gender, categories]) => {
+    parsedAssets[gender] = {};
+
+    Object.entries(categories).forEach(([category, styles]) => {
+        parsedAssets[gender][category] = {};
+
+        Object.entries(styles).forEach(([styleLabel, entries]) => {
+            // Sort by count so _1 comes first, _2 second, etc.
+            // Legacy entries (count = 0) stay in insertion order
+            entries.sort((a, b) => a.count - b.count);
+
+            const allImages = entries.map(e => e.url);
+            const primaryImage = allImages[0]; // _1 or the only image
+
+            parsedAssets[gender][category][styleLabel] = {
+                label: styleLabel,
+                primaryImage,
+                allImages,
+            };
+        });
+    });
 });
 
 // ── Export Dynamic Category Slides Generator ────
@@ -101,11 +167,10 @@ export function getCollectionSlides(gender: string): CollectionSlide[] {
     const sortedCategories = Object.keys(categoriesMap).sort();
 
     for (const catId of sortedCategories) {
-        const subsMap = categoriesMap[catId];
-        
+        const stylesMap = categoriesMap[catId];
+
         // Build subcategories array, sorted alphabetically
-        const subcategories: Subcategory[] = Object.entries(subsMap)
-            .map(([label, images]) => ({ label, images }))
+        const subcategories: Subcategory[] = Object.values(stylesMap)
             .sort((a, b) => a.label.localeCompare(b.label));
 
         // Format Title
@@ -140,7 +205,7 @@ export const collections: CollectionSlide[] = ["men", "women", "kids"].map(gende
     // It loops through `slide.subcategories` to show the vertical list of text links.
     // So for the homepage, our "subcategories" string list is just the top-level Categories (e.g. "Jackets")
     const categoryKeys = Object.keys(parsedAssets[genderId] || {}).sort();
-    
+
     return {
         id: genderId,
         title: meta.title,
@@ -150,7 +215,8 @@ export const collections: CollectionSlide[] = ["men", "women", "kids"].map(gende
         accent: meta.accent,
         subcategories: categoryKeys.map(cat => ({
             label: cat.charAt(0).toUpperCase() + cat.slice(1) + (cat.endsWith('s') ? '' : 's'),
-            images: [] // images aren't needed by CollectionSection text links
+            primaryImage: '',  // not needed by CollectionSection text links
+            allImages: [],     // not needed by CollectionSection text links
         }))
     };
 });

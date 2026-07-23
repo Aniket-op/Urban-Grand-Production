@@ -24,10 +24,10 @@ const ImageCarousel = ({
   setActiveIndex,
 }: Props) => {
 
+  // Show only the primary image per style in the carousel
+  // (cycling through different styles, not different angles of one style)
   const flatSlides = useMemo(() => {
-    return subcategories.flatMap((sub) =>
-      sub.images.map((img) => ({ src: img, label: sub.label }))
-    );
+    return subcategories.map((sub) => ({ src: sub.primaryImage, label: sub.label }));
   }, [subcategories]);
 
   const [active, setActive] = useState(activeIndex);

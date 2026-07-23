@@ -13,7 +13,7 @@ const getSlidesForGender = (gender: string) => {
   const validSlides = getCollectionSlides(gender).filter(s => s.subcategories.length > 0);
   return validSlides.slice(0, 4).map(slide => ({
     // Grab the first image from the first subcategory
-    image: slide.subcategories[0].images[0],
+    image: slide.subcategories[0].primaryImage,
     label: meta.title,
     sub: slide.title
   }));

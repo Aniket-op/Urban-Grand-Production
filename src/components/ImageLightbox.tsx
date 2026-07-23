@@ -18,7 +18,8 @@ import { Link } from "react-router-dom";
 
 // ── Shared product type ──────────────────────────────────────────────────────
 export type Product = {
-  image: string;
+  image: string;          // primary image for grid display
+  allImages: string[];    // all images for lightbox display (multi-angle)
   category: string;
   subcategory: string;
 };
