@@ -1,8 +1,15 @@
 // ── Core Types ────
+export type Variant = {
+    id: number;
+    primaryImage: string;
+    allImages: string[];
+};
+
 export type Subcategory = {
     label: string;
-    primaryImage: string;   // The _1 image (or only image) — used in grid/carousel
-    allImages: string[];    // All images for this style (1, 2, 3...) — used in lightbox/enquiry
+    primaryImage: string;   // The _1 image of the first variant (used in grid/carousel)
+    allImages: string[];    // All images of the first variant (used in lightbox/enquiry)
+    variants: Variant[];
 };
 
 export type CollectionSlide = {
@@ -65,7 +72,7 @@ const allAssets = import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,webp,avif}',
  *   - Legacy:  type_style.ext       → treated as single image (count = 0)
  *   - New:     type_style_count.ext → grouped by style, sorted by count
  */
-const rawAssets: Record<string, Record<string, Record<string, { count: number; url: string }[]>>> = {};
+const rawAssets: Record<string, Record<string, Record<string, Record<number, { count: number; url: string }[]>>>> = {};
 
 Object.entries(allAssets).forEach(([path, module]) => {
     // path e.g. /src/assets/men/jacket_bomber_1.jpg
@@ -85,47 +92,46 @@ Object.entries(allAssets).forEach(([path, module]) => {
         return;
     }
 
-    // Split into segments: could be [type, style] or [type, style, count]
     const segments = filename.split('_');
 
     let category: string;
     let styleLabel: string;
-    let count: number;
+    let variantId: number = 1;
+    let count: number = 0;
 
-    if (segments.length >= 3) {
-        // Check if the last segment is a number (count)
-        const lastSegment = segments[segments.length - 1];
-        const parsedCount = parseInt(lastSegment, 10);
+    // Check if it matches 4-segment format (ends with two numbers)
+    const lastIsNum = !isNaN(parseInt(segments[segments.length - 1], 10));
+    const secondLastIsNum = segments.length >= 3 && !isNaN(parseInt(segments[segments.length - 2], 10));
 
-        if (!isNaN(parsedCount)) {
-            // New format: type_style_count.ext (e.g., jacket_bomber_1.jpg)
-            category = segments[0].trim().toLowerCase();
-            // Join middle segments in case style has multiple words (e.g., button-up)
-            const rawStyle = segments.slice(1, -1).join('_').trim();
-            styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
-            count = parsedCount;
-        } else {
-            // Legacy: 3+ segments but last isn't a number — treat as type_style (first 2 segments)
-            category = segments[0].trim().toLowerCase();
-            const rawStyle = segments[1].trim();
-            styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
-            count = 0;
-        }
-    } else {
-        // Legacy format: type_style.ext (exactly 2 segments)
+    if (segments.length >= 4 && lastIsNum && secondLastIsNum) {
+        count = parseInt(segments.pop()!, 10);
+        variantId = parseInt(segments.pop()!, 10);
         category = segments[0].trim().toLowerCase();
-        const rawStyle = segments[1].trim();
+        const rawStyle = segments.slice(1).join('_').trim();
         styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
-        count = 0; // treated as single-image style
+    } else if (segments.length >= 3 && lastIsNum) {
+        count = parseInt(segments.pop()!, 10);
+        category = segments[0].trim().toLowerCase();
+        const rawStyle = segments.slice(1).join('_').trim();
+        styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
+    } else if (segments.length >= 2) {
+        category = segments[0].trim().toLowerCase();
+        const rawStyle = segments.slice(1).join('_').trim();
+        styleLabel = rawStyle.charAt(0).toUpperCase() + rawStyle.slice(1);
+    } else {
+        // Just in case
+        category = segments[0].trim().toLowerCase();
+        styleLabel = category;
     }
 
     const imageUrl = (module as any).default || module;
 
     if (!rawAssets[gender]) rawAssets[gender] = {};
     if (!rawAssets[gender][category]) rawAssets[gender][category] = {};
-    if (!rawAssets[gender][category][styleLabel]) rawAssets[gender][category][styleLabel] = [];
+    if (!rawAssets[gender][category][styleLabel]) rawAssets[gender][category][styleLabel] = {};
+    if (!rawAssets[gender][category][styleLabel][variantId]) rawAssets[gender][category][styleLabel][variantId] = [];
 
-    rawAssets[gender][category][styleLabel].push({ count, url: imageUrl });
+    rawAssets[gender][category][styleLabel][variantId].push({ count, url: imageUrl });
 });
 
 /**
@@ -140,18 +146,33 @@ Object.entries(rawAssets).forEach(([gender, categories]) => {
     Object.entries(categories).forEach(([category, styles]) => {
         parsedAssets[gender][category] = {};
 
-        Object.entries(styles).forEach(([styleLabel, entries]) => {
-            // Sort by count so _1 comes first, _2 second, etc.
-            // Legacy entries (count = 0) stay in insertion order
-            entries.sort((a, b) => a.count - b.count);
+        Object.entries(styles).forEach(([styleLabel, variantsObj]) => {
+            const variants: Variant[] = [];
 
-            const allImages = entries.map(e => e.url);
-            const primaryImage = allImages[0]; // _1 or the only image
+            // Sort variant keys numerically
+            const sortedVariantIds = Object.keys(variantsObj)
+                .map(id => parseInt(id, 10))
+                .sort((a, b) => a - b);
+
+            sortedVariantIds.forEach(vId => {
+                const entries = variantsObj[vId];
+                // Sort by count so _1 comes first, _2 second, etc.
+                entries.sort((a, b) => a.count - b.count);
+                const allImages = entries.map(e => e.url);
+                const primaryImage = allImages[0];
+
+                variants.push({
+                    id: vId,
+                    primaryImage,
+                    allImages
+                });
+            });
 
             parsedAssets[gender][category][styleLabel] = {
                 label: styleLabel,
-                primaryImage,
-                allImages,
+                primaryImage: variants[0]?.primaryImage || '',
+                allImages: variants[0]?.allImages || [],
+                variants,
             };
         });
     });
@@ -217,6 +238,7 @@ export const collections: CollectionSlide[] = ["men", "women", "kids"].map(gende
             label: cat.charAt(0).toUpperCase() + cat.slice(1) + (cat.endsWith('s') ? '' : 's'),
             primaryImage: '',  // not needed by CollectionSection text links
             allImages: [],     // not needed by CollectionSection text links
+            variants: [],
         }))
     };
 });

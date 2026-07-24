@@ -30,5 +30,5 @@ export function useEnquiryLightbox() {
     setLightboxIndex(null);
   }, []);
 
-  return { products, lightboxIndex, openLightbox, closeLightbox, setLightboxIndex };
+  return { products, setProducts, lightboxIndex, openLightbox, closeLightbox, setLightboxIndex };
 }

@@ -33,10 +33,12 @@ const categoryData: Record<string, CategoryData> = {};
 
   const products: Product[] = slides.flatMap(slide =>
     slide.subcategories.map(sub => ({
-      image: sub.primaryImage,
-      allImages: sub.allImages,
+      image: sub.variants[0]?.primaryImage || sub.primaryImage,
+      allImages: sub.variants[0]?.allImages || sub.allImages,
       category: slide.title,
-      subcategory: sub.label
+      subcategory: sub.label,
+      variantId: sub.variants[0]?.id || 1,
+      variants: sub.variants
     }))
   );
 
@@ -103,7 +105,9 @@ const expandProductImages = (product: Product): Product[] =>
     image: img,
     allImages: product.allImages,
     category: product.category,
-    subcategory: product.subcategory
+    subcategory: product.subcategory,
+    variantId: product.variantId,
+    variants: product.variants
   }));
 
 // ── Main page
@@ -113,6 +117,7 @@ const CategoryPage = () => {
   const [lightboxImages, setLightboxImages] = useState<Product[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
+  const [selectedStyle, setSelectedStyle] = useState<string>("All");
 
   const openStyleLightbox = (product: Product) => {
     setLightboxImages(expandProductImages(product));
@@ -125,6 +130,7 @@ const CategoryPage = () => {
 
   const {
     products: enquiryProducts,
+    setProducts: setEnquiryProducts,
     lightboxIndex: enquiryLightboxIndex,
     openLightbox: openEnquiryLightbox,
     closeLightbox: closeEnquiryLightbox,
@@ -153,6 +159,11 @@ const CategoryPage = () => {
     }
   }, [gender, subcategory]);
 
+  // Reset selected style when category changes
+  useEffect(() => {
+    setSelectedStyle("All");
+  }, [selectedSubcategory]);
+
   if (!gender || !categoryData[gender]) {
     return <Navigate to="/" replace />;
   }
@@ -163,9 +174,15 @@ const CategoryPage = () => {
   const others = Object.keys(categoryData).filter((k) => k !== gender);
 
   const categories = [...Array.from(new Set(data.products.map(p => p.category)))];
-  const filteredProducts = selectedSubcategory === "All"
+  const filteredByCategory = selectedSubcategory === "All"
     ? data.products
     : data.products.filter(p => p.category === selectedSubcategory);
+
+  const availableStyles = [...Array.from(new Set(filteredByCategory.map(p => p.subcategory)))];
+
+  const filteredProducts = selectedStyle === "All"
+    ? filteredByCategory
+    : filteredByCategory.filter(p => p.subcategory === selectedStyle);
 
   return (
     <div className="min-h-screen bg-background flex flex-col pt-20 relative">
@@ -250,6 +267,35 @@ const CategoryPage = () => {
             ))}
           </div>
         </div>
+
+        {/* Secondary Style row */}
+        {availableStyles.length > 1 && (
+          <div className="bg-muted/20 border-t border-border/20">
+            <div className="max-w-7xl mx-auto w-full px-6 flex items-center gap-1 h-10 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <button
+                onClick={() => setSelectedStyle("All")}
+                className={`px-4 py-1 text-[10px] font-semibold tracking-[0.1em] uppercase rounded-full transition-all whitespace-nowrap ${selectedStyle === "All"
+                  ? "bg-foreground/10 text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                  }`}
+              >
+                All Styles
+              </button>
+              {availableStyles.map(style => (
+                <button
+                  key={style}
+                  onClick={() => setSelectedStyle(style)}
+                  className={`px-4 py-1 text-[10px] font-semibold tracking-[0.1em] uppercase rounded-full transition-all whitespace-nowrap ${selectedStyle === style
+                    ? "bg-foreground/10 text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                    }`}
+                >
+                  {style}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Product grid */}
@@ -311,6 +357,7 @@ const CategoryPage = () => {
             currentIndex={lightboxIndex}
             onClose={closeStyleLightbox}
             onNavigate={(i) => setLightboxIndex(i)}
+            onSwitchVariant={openStyleLightbox}
             inquireyForm={false}
           />
         )}
@@ -324,6 +371,13 @@ const CategoryPage = () => {
             currentIndex={enquiryLightboxIndex}
             onClose={closeEnquiryLightbox}
             onNavigate={(i) => setEnquiryLightboxIndex(i)}
+            onSwitchVariant={(newProduct) => {
+               if (enquiryLightboxIndex !== null) {
+                 const updatedImages = [...enquiryProducts];
+                 updatedImages[enquiryLightboxIndex] = newProduct;
+                 setEnquiryProducts(updatedImages);
+               }
+            }}
             inquireyForm={true}
           />
         )}

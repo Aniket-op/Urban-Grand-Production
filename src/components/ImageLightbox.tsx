@@ -22,6 +22,12 @@ export type Product = {
   allImages: string[];    // all images for lightbox display (multi-angle)
   category: string;
   subcategory: string;
+  variantId?: number;
+  variants?: {
+    id: number;
+    primaryImage: string;
+    allImages: string[];
+  }[];
 };
 
 // ── ImageLightbox ────────────────────────────────────────────────────────────
@@ -30,12 +36,14 @@ const ImageLightbox = ({
   currentIndex,
   onClose,
   onNavigate,
+  onSwitchVariant,
   inquireyForm = true
 }: {
   images: Product[];
   currentIndex: number;
   onClose: () => void;
   onNavigate: (index: number) => void;
+  onSwitchVariant?: (product: Product) => void;
   inquireyForm?: boolean;
 }) => {
   const [scale, setScale] = useState(1);
@@ -73,6 +81,42 @@ const ImageLightbox = ({
   const formUserData = isAuthenticated && userType === "user" && hasUserData ? currentUser : undefined;
   const formDisabled = isAuthenticated && userType === "user" && hasUserData;
 
+  const product = images[currentIndex];
+  const hasVariants = !inquireyForm && Boolean(product?.variants && product.variants.length > 1);
+  const currentVariantIndex = hasVariants ? product.variants!.findIndex(v => v.id === product.variantId) : -1;
+
+  const handlePrev = useCallback(() => {
+    if (hasVariants && currentVariantIndex > 0 && onSwitchVariant) {
+      const v = product.variants![currentVariantIndex - 1];
+      onSwitchVariant({
+        image: v.primaryImage,
+        allImages: v.allImages,
+        category: product.category,
+        subcategory: product.subcategory,
+        variantId: v.id,
+        variants: product.variants
+      });
+    } else if (!hasVariants && currentIndex > 0) {
+      onNavigate(currentIndex - 1);
+    }
+  }, [hasVariants, currentVariantIndex, onSwitchVariant, product, currentIndex, onNavigate]);
+
+  const handleNext = useCallback(() => {
+    if (hasVariants && currentVariantIndex < product.variants!.length - 1 && onSwitchVariant) {
+      const v = product.variants![currentVariantIndex + 1];
+      onSwitchVariant({
+        image: v.primaryImage,
+        allImages: v.allImages,
+        category: product.category,
+        subcategory: product.subcategory,
+        variantId: v.id,
+        variants: product.variants
+      });
+    } else if (!hasVariants && currentIndex < images.length - 1) {
+      onNavigate(currentIndex + 1);
+    }
+  }, [hasVariants, currentVariantIndex, onSwitchVariant, product, currentIndex, images?.length, onNavigate]);
+
   const resetView = useCallback(() => {
     setScale(1);
     setPosition({ x: 0, y: 0 });
@@ -99,10 +143,10 @@ const ImageLightbox = ({
           onClose();
           break;
         case "ArrowLeft":
-          if (currentIndex > 0) onNavigate(currentIndex - 1);
+          handlePrev();
           break;
         case "ArrowRight":
-          if (currentIndex < images.length - 1) onNavigate(currentIndex + 1);
+          handleNext();
           break;
         case "+":
         case "=":
@@ -119,7 +163,7 @@ const ImageLightbox = ({
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [currentIndex, images.length, onClose, onNavigate]);
+  }, [handlePrev, handleNext, onClose]);
 
   // Scroll to zoom
   const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -175,8 +219,6 @@ const ImageLightbox = ({
       return ns;
     });
   };
-
-  const product = images[currentIndex];
 
   return (
     <motion.div
@@ -242,10 +284,31 @@ const ImageLightbox = ({
           </div>
         </div>
 
-        {/* Image container */}
-        <div
-          ref={containerRef}
-          className="flex-1 relative overflow-hidden select-none"
+        {/* Content wrapper: Thumbnails + Main Image */}
+        <div className="flex-1 flex flex-row min-h-0 relative">
+          
+          {/* Vertical thumbnail strip (Angles) */}
+          {!inquireyForm && (
+            <div className="flex-shrink-0 px-2 sm:px-4 py-4 overflow-y-auto flex flex-col gap-2 z-10 bg-black/20 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-r border-white/5 md:border-transparent">
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => onNavigate(i)}
+                  className={`w-12 h-16 sm:w-16 sm:h-20 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${i === currentIndex
+                    ? "border-white/80 scale-105 ring-1 ring-white/30"
+                    : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
+                    }`}
+                >
+                  <img src={img.image} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Image container */}
+          <div
+            ref={containerRef}
+            className="flex-1 relative overflow-hidden select-none"
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -275,43 +338,109 @@ const ImageLightbox = ({
           </AnimatePresence>
 
           {/* Navigation arrows */}
-          {currentIndex > 0 && (
+          {(!inquireyForm && hasVariants ? currentVariantIndex > 0 : currentIndex > 0) && (
             <button
-              onClick={(e) => { e.stopPropagation(); onNavigate(currentIndex - 1); }}
+              onClick={(e) => { e.stopPropagation(); !inquireyForm && hasVariants ? handlePrev() : onNavigate(currentIndex - 1); }}
               className="absolute left-2 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all z-10"
               aria-label="Previous image"
             >
               <ChevronLeft size={22} />
             </button>
           )}
-          {currentIndex < images.length - 1 && (
+          {(!inquireyForm && hasVariants ? currentVariantIndex < product.variants!.length - 1 : currentIndex < images.length - 1) && (
             <button
-              onClick={(e) => { e.stopPropagation(); onNavigate(currentIndex + 1); }}
+              onClick={(e) => { e.stopPropagation(); !inquireyForm && hasVariants ? handleNext() : onNavigate(currentIndex + 1); }}
               className="absolute right-2 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all z-10"
               aria-label="Next image"
             >
               <ChevronRight size={22} />
             </button>
           )}
-        </div>
 
-        {/* Bottom thumbnail strip */}
-        <div className="flex-shrink-0 px-4 py-3 sm:py-4 overflow-x-auto">
-          <div className="flex gap-2 justify-center">
-            {images.map((img, i) => (
-              <button
-                key={i}
-                onClick={() => onNavigate(i)}
-                className={`h-12 w-10 sm:h-14 sm:w-11 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${i === currentIndex
-                  ? "border-white/80 scale-105 ring-1 ring-white/30"
-                  : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
-                  }`}
-              >
-                <img src={img.image} alt="" className="h-full w-full object-cover" />
-              </button>
-            ))}
+          {/* Floating Variant Switcher for Enquiry Lightbox */}
+          {inquireyForm && product.variants && product.variants.length > 1 && onSwitchVariant && (
+            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex flex-col items-end gap-2 z-[100]">
+              <span className="text-[9px] uppercase tracking-[0.2em] text-white/50 font-semibold bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                Colorways
+              </span>
+              <div className="flex gap-2">
+                {product.variants.map((variant) => (
+                  <button
+                    key={variant.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (variant.id !== product.variantId) {
+                        onSwitchVariant({
+                          image: variant.primaryImage,
+                          allImages: variant.allImages,
+                          category: product.category,
+                          subcategory: product.subcategory,
+                          variantId: variant.id,
+                          variants: product.variants
+                        });
+                      }
+                    }}
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 transition-all duration-200 ${variant.id === product.variantId
+                      ? "border-white/80 scale-110 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                      : "border-white/20 opacity-60 hover:opacity-100 hover:scale-105 hover:border-white/40"
+                      }`}
+                  >
+                    <img src={variant.primaryImage} alt={`Variant ${variant.id}`} className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           </div>
         </div>
+
+        {/* Bottom thumbnail strip (Variants OR Enquiry Products) */}
+        {!inquireyForm && product.variants && product.variants.length > 1 ? (
+          <div className="flex-shrink-0 px-4 py-3 sm:py-4 overflow-x-auto">
+            <div className="flex gap-2 justify-center">
+              {product.variants.map((variant) => (
+                <button
+                  key={variant.id}
+                  onClick={() => {
+                    if (variant.id !== product.variantId && onSwitchVariant) {
+                      onSwitchVariant({
+                        image: variant.primaryImage,
+                        allImages: variant.allImages,
+                        category: product.category,
+                        subcategory: product.subcategory,
+                        variantId: variant.id,
+                        variants: product.variants
+                      });
+                    }
+                  }}
+                  className={`h-12 w-10 sm:h-14 sm:w-11 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${variant.id === product.variantId
+                    ? "border-white/80 scale-105 ring-1 ring-white/30"
+                    : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
+                    }`}
+                >
+                  <img src={variant.primaryImage} alt={`Variant ${variant.id}`} className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : inquireyForm ? (
+          <div className="flex-shrink-0 px-4 py-3 sm:py-4 overflow-x-auto">
+            <div className="flex gap-2 justify-center">
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => onNavigate(i)}
+                  className={`h-12 w-10 sm:h-14 sm:w-11 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${i === currentIndex
+                    ? "border-white/80 scale-105 ring-1 ring-white/30"
+                    : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
+                    }`}
+                >
+                  <img src={img.image} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         {/* Hint text */}
         <div className="text-center pb-3 sm:pb-4 hidden sm:block">
@@ -408,7 +537,7 @@ const ImageLightbox = ({
                 userData={formUserData ?? undefined}
                 disabled={formDisabled}
                 prefilledCategory={product.category}
-                prefilledSubcategory={product.subcategory}
+                prefilledSubcategory={product.variants && product.variants.length > 1 ? `${product.subcategory} (Colorway ${product.variantId})` : product.subcategory}
               />
             </>
           )}
