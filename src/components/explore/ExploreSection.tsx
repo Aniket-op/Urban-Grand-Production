@@ -42,14 +42,9 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
     }))
   );
 
-  // Calculate starting index for each subcategory in the flat slides array
-  const getSubcategoryStartIndex = (subcategoryIndex: number) => {
-    let startIndex = 0;
-    for (let i = 0; i < subcategoryIndex; i++) {
-      startIndex += categorySlide.subcategories[i].allImages.length;
-    }
-    return startIndex;
-  };
+  // Each carousel slide = one subcategory (primaryImage only), so the
+  // start index for a subcategory is simply its position in the array.
+  const getSubcategoryStartIndex = (subcategoryIndex: number) => subcategoryIndex;
 
   // Function to navigate to a specific subcategory
   const navigateToSubcategory = (subcategoryLabel: string) => {
@@ -180,16 +175,8 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
               activeIndex={activeSlideIndex}
               setActiveIndex={(slideIndex) => {
                 setActiveSlideIndex(slideIndex);
-                // Find which subcategory this slide belongs to
-                let currentPosition = 0;
-                const targetSubcategory = categorySlide.subcategories.find((sub) => {
-                const subcategoryLength = sub.allImages.length;
-                  if (slideIndex >= currentPosition && slideIndex < currentPosition + subcategoryLength) {
-                    return true;
-                  }
-                  currentPosition += subcategoryLength;
-                  return false;
-                });
+                // Each slide index maps 1-to-1 with a subcategory
+                const targetSubcategory = categorySlide.subcategories[slideIndex];
                 if (targetSubcategory) {
                   setActiveSubcategory(targetSubcategory.label);
                 }
