@@ -120,8 +120,9 @@ const CategoryPage = () => {
   const [selectedStyle, setSelectedStyle] = useState<string>("All");
 
   const openStyleLightbox = (product: Product) => {
-    setLightboxImages(expandProductImages(product));
-    setLightboxIndex(0);
+    const expanded = expandProductImages(product);
+    setLightboxImages(expanded);
+    setLightboxIndex(expanded.length > 1 ? 1 : 0);
   };
 
   const closeStyleLightbox = () => {

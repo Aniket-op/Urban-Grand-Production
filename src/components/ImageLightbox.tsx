@@ -238,7 +238,9 @@ const ImageLightbox = ({
             </span>
             <span className="text-white/25 text-xs">•</span>
             <span className="text-white/40 text-[10px] sm:text-[11px] uppercase tracking-wider">
-              {currentIndex + 1} / {images.length}
+              {!inquireyForm && images.length > 1
+                ? (currentIndex === 1 ? 1 : currentIndex === 0 ? 2 : currentIndex + 1)
+                : currentIndex + 1} / {images.length}
             </span>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
@@ -290,11 +292,21 @@ const ImageLightbox = ({
           {/* Vertical thumbnail strip (Angles) */}
           {!inquireyForm && (
             <div className="flex-shrink-0 px-2 sm:px-4 py-4 overflow-y-auto flex flex-col gap-2 z-10 bg-black/20 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-r border-white/5 md:border-transparent">
-              {images.map((img, i) => (
+              {images
+                .map((img, i) => ({ img, originalIndex: i }))
+                .sort((a, b) => {
+                  const getRank = (idx: number) => {
+                    if (idx === 1) return 0; // _2 (index 1) goes first
+                    if (idx === 0) return 1; // _1 (index 0) goes second
+                    return idx; // others remain unchanged
+                  };
+                  return getRank(a.originalIndex) - getRank(b.originalIndex);
+                })
+                .map(({ img, originalIndex }) => (
                 <button
-                  key={i}
-                  onClick={() => onNavigate(i)}
-                  className={`w-12 h-16 sm:w-16 sm:h-20 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${i === currentIndex
+                  key={originalIndex}
+                  onClick={() => onNavigate(originalIndex)}
+                  className={`w-12 h-16 sm:w-16 sm:h-20 rounded-md overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${originalIndex === currentIndex
                     ? "border-white/80 scale-105 ring-1 ring-white/30"
                     : "border-white/15 opacity-50 hover:opacity-80 hover:border-white/40"
                     }`}
