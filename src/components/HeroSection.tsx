@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroVideo from "@/assets/video/hero_video.mp4";
+import heroVideo from "@/assets/video/Landing_Video.mp4";
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -45,7 +45,7 @@ const HeroSection = () => {
       {/* Text content */}
       <div className="absolute inset-0 flex items-center">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 md:px-12 md:max-w-[55%] md:ml-[0.001%] md:mr-auto">
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
@@ -55,7 +55,7 @@ const HeroSection = () => {
               <br />
               Defined by Precision
             </h1>
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             initial={{ opacity: 0, y: 15 }}
