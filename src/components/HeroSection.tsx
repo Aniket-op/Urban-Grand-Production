@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroVideo from "@/assets/video/Landing_Video.mp4";
+const HERO_VIDEO_URL = "https://gkgaca1ysprfujnr.public.blob.vercel-storage.com/Landing_Video.mp4";
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -31,7 +31,7 @@ const HeroSection = () => {
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
-        src={heroVideo}
+        src={HERO_VIDEO_URL}
         autoPlay
         loop
         muted
