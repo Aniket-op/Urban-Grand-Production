@@ -157,9 +157,9 @@ const CollectionSection = () => {
     <section className="w-full">
       {/* Header */}
       <div className="text-center py-6 bg-[#FAF9F6] dark:bg-zinc-900 transition-colors duration-500">
-        <p className="text-xs tracking-widest uppercase mb-2 text-muted-foreground dark:text-zinc-400">
+        {/* <p className="text-xs tracking-widest uppercase mb-2 text-muted-foreground dark:text-zinc-400">
           Our Range
-        </p>
+        </p> */}
 
         <h2 className="font-display font-bold dark:text-white">Our Collection</h2>
 

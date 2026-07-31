@@ -19,7 +19,7 @@ const centerMenuItems: MenuItem[] = [
     subcategories: [
       { label: "Our Legacy & Brands", to: "/about/category/our-legacy" },
       { label: "Mission, Vision & Philosophy", to: "/about/category/mission-vision" },
-      { label: "Our Leadership", to: "/about/category/our-leadership" },
+      { label: "Our Leadership", to: "/leadership-journey" },
       { label: "Company Credentials", to: "/about/category/company-credentials" },
       { label: "Brochure", to: brochurePdf, download: true },
     ],
