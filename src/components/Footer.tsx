@@ -35,11 +35,15 @@ const Footer = () => {
             </div>
             {/* Social Icons */}
             <div className="flex gap-3 mt-2">
-              {[Linkedin, Facebook, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="flex items-center bg-[#f7eac3] justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 ">
-                  <Icon size={16} />
-                </a>
-              ))}
+              <a href="https://www.linkedin.com/company/panchsheel-knitwears/" target="_blank" rel="noopener noreferrer" className="flex items-center bg-[#f7eac3] justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 hover:border-zinc-400 transition-colors">
+                <Linkedin size={16} />
+              </a>
+              <a href="https://www.facebook.com/Urbangrand78" target="_blank" rel="noopener noreferrer" className="flex items-center bg-[#f7eac3] justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 hover:border-zinc-400 transition-colors">
+                <Facebook size={16} />
+              </a>
+              <a href="https://www.instagram.com/urbangrand78/" target="_blank" rel="noopener noreferrer" className="flex items-center bg-[#f7eac3] justify-center w-9 h-9 rounded-md bg-zinc-200/60 border border-zinc-300/40 hover:border-zinc-400 transition-colors">
+                <Instagram size={16} />
+              </a>
             </div>
           </div>
 
@@ -84,9 +88,9 @@ const Footer = () => {
               <div className="h-[2px] w-8 bg-[hsl(38,60%,50%)]/60" />
               <ul className="space-y-3.5 text-[13px] font-medium text-zinc-800">
                 <li>
-                  <a href="mailto:URBANGRAND78@GMAIL.COM" className="flex items-center hover:text-zinc-900 transition-colors lowercase">
+                  <a href="mailto:info@urbangrand78.com" className="flex items-center hover:text-zinc-900 transition-colors lowercase">
                     <Mail size={15} className="text-zinc-700  mr-3 flex-shrink-0" />
-                    URBANGRAND78@GMAIL.COM
+                    info@urbangrand78.com
                   </a>
                 </li>
                 <li>

@@ -149,8 +149,8 @@ const MapPage = () => {
                 </div>
                 <h3 className="font-heading font-semibold text-foreground text-[15px]">Email</h3>
               </div>
-              <a href="mailto:urbangrand78@gmail.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors break-all">
-                urbangrand78@gmail.com
+              <a href="mailto:info@urbangrand78.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors break-all">
+                info@urbangrand78.com
               </a>
             </div>
 

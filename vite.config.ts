@@ -10,6 +10,15 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    proxy: {
+      // Proxy Vercel Blob Storage requests to avoid CORS issues in local dev
+      "/blob-media": {
+        target: "https://gkgaca1ysprfujnr.public.blob.vercel-storage.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/blob-media/, ""),
+        secure: true,
+      },
+    },
   },
   plugins: [react()],
   resolve: {

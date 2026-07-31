@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import legacyImg from "@/assets/Our-Legacy-1.png";
+import legacyImg from "@/assets/Our-Legacy-1_new.png";
 
 const WhoWeAre = () => {
   const ref = useRef(null);

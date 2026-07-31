@@ -2,7 +2,12 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
-const HERO_VIDEO_URL = "https://gkgaca1ysprfujnr.public.blob.vercel-storage.com/Landing_Video.mp4";
+// In dev, use the local Vite proxy to avoid CORS issues with Vercel Blob Storage.
+// In production (Vercel), use the direct URL.
+const HERO_VIDEO_URL =
+  import.meta.env.DEV
+    ? "/blob-media/Landing_Video.mp4"
+    : "https://gkgaca1ysprfujnr.public.blob.vercel-storage.com/Landing_Video.mp4";
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -37,6 +42,7 @@ const HeroSection = () => {
         muted
         playsInline
         preload="auto"
+        crossOrigin="anonymous"
       />
 
       {/* Dark mode overlay */}

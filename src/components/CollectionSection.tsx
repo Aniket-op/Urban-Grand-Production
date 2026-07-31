@@ -4,9 +4,9 @@ import { collections } from "@/data/ourCollection";
 import type { CollectionSlide } from "@/data/ourCollection";
 
 // ── Hero images (one per collection) ─────────────────────────────────────────
-import men from "@/assets/men/homePage.jpg";
-import women from "@/assets/women/homePage.jpg";
-import kids from "@/assets/kids/homepage.jpg";
+import men from "@/assets/men_coat_banner.png";
+import women from "@/assets/female_coat_banner.png";
+import kids from "@/assets/kid_coat_banner.png";
 
 const heroImages: Record<string, string> = { men, women, kids };
 

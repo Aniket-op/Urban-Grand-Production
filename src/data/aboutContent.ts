@@ -1,5 +1,5 @@
-import image1 from "@/assets/Our-Legacy-1.png";
-import image2 from "@/assets/Our-Legacy-2.png";
+import image1 from "@/assets/Our-Legacy-1_new.png";
+import image2 from "@/assets/Our-Legacy-2_new.png";
 import image3 from "@/assets/Our-Legacy-4.png";
 import image5 from "@/assets/Our-Legacy-5.png";
 import infra1 from "@/assets/infra1.png";

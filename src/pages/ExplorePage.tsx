@@ -9,9 +9,9 @@ import { useEnquiryLightbox } from "@/hooks/useEnquiryLightbox";
 import { collections, getCollectionSlides, genderMetadata } from "@/data/ourCollection";
 
 // Hero background images (one per gender)
-import menHero from "@/assets/men/homePage.jpg";
-import womenHero from "@/assets/women/homePage.jpg";
-import kidsHero from "@/assets/kids/homepage.jpg";
+import menHero from "@/assets/men_coat_banner.png";
+import womenHero from "@/assets/female_coat_banner.png";
+import kidsHero from "@/assets/kid_coat_banner.png";
 
 const heroImages: Record<string, string> = {
   men: menHero,
