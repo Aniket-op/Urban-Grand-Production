@@ -5,51 +5,58 @@ import { CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// ── Temporary placeholder images from Unsplash (garment / textile themed) ──
-const serviceImages: Record<string, string[]> = {
+// ── Local factory media files ─────────────────────────────────────────────────
+// Each entry is either an image path or a video path (.MOV)
+const serviceMedia: Record<string, string[]> = {
   "garment-manufacturing": [
-    "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=80",
-    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&q=80",
-    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80",
+    "/factory/DSC_4840.JPG",
+    "/factory/DSC_4818.JPG",
+    "/factory/DSC_4669.JPG",
+    "/factory/DSC_4666.JPG",
+    "/factory/DSC_4876.JPG",
   ],
   "private-label": [
-    "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
-    "https://images.unsplash.com/photo-1545291730-faff8ca1d4b0?w=800&q=80",
-    "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=80",
+    "/factory/DSC_4779.JPG",
+    "/factory/DSC_4792.JPG",
+    "/factory/DSC_4796.JPG",
+    "/factory/DSC_4799.JPG",
+    "/factory/DSC_4826.MOV",
   ],
   "oem-odm": [
-    "https://images.unsplash.com/photo-1605289982774-9a6fef564df8?w=800&q=80",
-    "https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?w=800&q=80",
-    "https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?w=800&q=80",
+    "/factory/DSC_4689.JPG",
+    "/factory/DSC_4707.MOV",
+    "/factory/DSC_4748.MOV",
   ],
   "product-development": [
-    "https://images.unsplash.com/photo-1523381294911-8d3cead13475?w=800&q=80",
-    "https://images.unsplash.com/photo-1626456823899-3b2fd87745a3?w=800&q=80",
-    "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=800&q=80",
+    "/factory/DSC_4789.JPG",
+    "/factory/DSC_4695.MOV",
+    "/factory/DSC_4869.JPG",
+    "/factory/DSC_4871.JPG",
   ],
   "fabric-sourcing": [
-    "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80",
-    "https://images.unsplash.com/photo-1586349906319-47f4e68ba013?w=800&q=80",
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+    "/factory/DSC_4860.MOV",
+    "/factory/DSC_4690.JPG",
+    "/factory/DSC_4717.MOV",
   ],
   "quality-assurance": [
-    "https://images.unsplash.com/photo-1574179807066-4a7a8e69e459?w=800&q=80",
-    "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=800&q=80",
-    "https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?w=800&q=80",
+    "/factory/DSC_4752.MOV",
+    "/factory/DSC_4755.MOV",
   ],
   "export-logistics": [
-    "https://images.unsplash.com/photo-1494961104209-3c223057bd26?w=800&q=80",
-    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
-    "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+    "/factory/DSC_4650.MOV",
   ],
   "fashion-brand": [
-    "https://images.unsplash.com/photo-1558618047-3d15a8b3c8b2?w=800&q=80",
-    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
-    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
+    "/factory/DSC_4824.JPG",
+    "/factory/DSC_4817.MOV",
+    "/factory/DSC_4654.JPG",
+    "/factory/DSC_4655.JPG",
   ],
 };
 
-// ── Image Carousel (reused pattern from AboutCategory) ──────────────────────
+const isVideo = (src: string) =>
+  /\.(mov|mp4|webm|ogg)$/i.test(src);
+
+// ── Media Carousel — handles both images and videos ──────────────────────────
 
 const ImageCarousel = ({
   images,
@@ -65,26 +72,43 @@ const ImageCarousel = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 3000 + (idx % 3) * 500);
+    }, 4000 + (idx % 3) * 500);
     return () => clearInterval(timer);
   }, [images.length, idx]);
 
   return (
-    <div className="relative w-full overflow-hidden bg-black/5 h-[50vh] md:h-[60vh] lg:h-[75vh]">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt={`${title} image ${i + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out group-hover:scale-[1.04] ${
-            i === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-          }`}
-        />
-      ))}
+    <div className="relative w-full overflow-hidden bg-black/10 h-[50vh] md:h-[60vh] lg:h-[75vh]">
+      {images.map((src, i) =>
+        isVideo(src) ? (
+          <video
+            key={i}
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+              i === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          />
+        ) : (
+          <img
+            key={i}
+            src={src}
+            alt={`${title} image ${i + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out group-hover:scale-[1.04] ${
+              i === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          />
+        )
+      )}
+      {/* Dot indicators */}
       <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
         {images.map((_, i) => (
-          <div
+          <button
             key={i}
+            onClick={() => setCurrentIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               i === currentIndex ? "bg-white scale-125" : "bg-white/50"
             }`}
@@ -129,7 +153,7 @@ const ServiceRow = ({
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   const imageRight = idx % 2 === 0;
-  const images = serviceImages[imageKey] ?? serviceImages["garment-manufacturing"];
+  const images = serviceMedia[imageKey] ?? serviceMedia["garment-manufacturing"];
 
   return (
     <div
