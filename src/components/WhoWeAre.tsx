@@ -25,7 +25,7 @@ const WhoWeAre = () => {
             <img
               src={legacyImg}
               alt="Urban Grand Heritage"
-              className="w-full h-[80vh] object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              className="w-full h-[50vh] sm:h-[65vh] md:h-[80vh] object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
             />
             {/* Accent border */}
             <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-lg pointer-events-none" />

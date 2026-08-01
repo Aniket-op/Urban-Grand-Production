@@ -72,7 +72,7 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
   return (
     <div
       ref={ref}
-      className={`w-full py-10 transition-colors duration-500
+      className={`w-full py-10 transition-colors duration-500 overflow-hidden
                   ${index % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-[#FAF9F6] dark:bg-zinc-800/40"}`}
     >
       <div className="max-w-7xl mx-auto px-6">

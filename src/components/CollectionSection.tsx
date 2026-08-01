@@ -25,7 +25,7 @@ const CollectionSlideComponent = ({
   return (
     <div
       ref={ref}
-      className="w-full py-8 transition-colors duration-500 bg-[#FAF9F6] dark:bg-zinc-800/40"
+      className="w-full py-8 transition-colors duration-500 bg-[#FAF9F6] dark:bg-zinc-800/40 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
@@ -74,7 +74,7 @@ const CollectionSlideComponent = ({
               <img
                 src={heroImages[slide.id]}
                 alt={slide.title}
-                className="w-full h-[80vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                className="w-full h-[50vh] sm:h-[65vh] md:h-[80vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               />
 
               {/* Hover Dark Overlay (full image cover so top list is readable) */}

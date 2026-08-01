@@ -95,7 +95,7 @@ const Navbar = () => {
       {/* ── NAV BAR ──────────────────────────────────────────────────────── */}
       <nav
         ref={navRef}
-        className={`force-light h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] ${scrolled
+        className={`force-light h-[88px] flex items-center px-4 sm:px-5 lg:px-12 fixed w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.22_1_0.36_1)] max-lg:overflow-hidden ${scrolled
           ? "top-0 bg-[#f7eac3] shadow-sm"
           : "top-3 bg-transparent"
           }`}
@@ -117,8 +117,7 @@ const Navbar = () => {
           style={{
             transform: scrolled
               ? "translateX(0)"
-              : `translateX(calc(50vw - 50% - ${typeof window !== "undefined" && window.innerWidth < 640 ? "16px" : "48px"
-              }))`,
+              : `translateX(min(calc(50vw - 50% - 16px), calc(50vw - 50% - 16px)))`,
           }}
         >
           <img
@@ -134,7 +133,7 @@ const Navbar = () => {
 
         {/* Desktop nav links — centered in navbar */}
         <div
-          className={`hidden md:flex gap-4 lg:gap-7 items-center h-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ${scrolled ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none translate-y-1"
+          className={`hidden lg:flex gap-7 items-center h-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 z-10 ${scrolled ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none translate-y-1"
             }`}
         >
           {centerMenuItems.map((item) => {
@@ -192,7 +191,7 @@ const Navbar = () => {
 
         {/* Desktop right actions — fade in when scrolled */}
         <div
-          className={`hidden md:flex items-center gap-2 lg:gap-3 ml-auto transition-all duration-500 ${scrolled ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none translate-y-1"
+          className={`hidden lg:flex items-center gap-3 ml-auto transition-all duration-500 ${scrolled ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none translate-y-1"
             }`}
         >
           {/* Contact Us link */}
@@ -293,7 +292,7 @@ const Navbar = () => {
 
         {/* Mobile hamburger — always visible on mobile, but only when scrolled on hero page */}
         <button
-          className={`md:hidden p-2 rounded-lg hover:bg-white/10 ml-auto z-10 transition-all duration-500 ${scrolled
+          className={`lg:hidden p-2 rounded-lg hover:bg-white/10 ml-auto z-10 transition-all duration-500 ${scrolled
             ? "opacity-100 pointer-events-auto text-foreground hover:bg-muted/50"
             : "opacity-100 pointer-events-auto text-white"
             }`}
@@ -305,7 +304,7 @@ const Navbar = () => {
 
         {/* ── MOBILE FULLSCREEN MENU ──────────────────────────────────── */}
         <div
-          className={`force-light fixed inset-0 top-0 left-0 w-full h-full bg-background/[0.98] backdrop-blur-xl z-[60] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.22_1_0.36_1)] md:hidden ${mobileOpen
+          className={`force-light fixed inset-0 top-0 left-0 w-full h-full bg-background/[0.98] backdrop-blur-xl z-[60] flex flex-col transition-all duration-500 ease-[cubic-bezier(0.22_1_0.36_1)] lg:hidden ${mobileOpen
             ? "opacity-100 pointer-events-auto translate-x-0"
             : "opacity-0 pointer-events-none translate-x-full"
             }`}
