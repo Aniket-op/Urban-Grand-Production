@@ -32,19 +32,14 @@ const categoryData: Record<string, CategoryData> = {};
   const slides = getCollectionSlides(gender);
 
   const products: Product[] = slides.flatMap(slide =>
-    slide.subcategories.map(sub => {
-      const variantAllImages = sub.variants[0]?.allImages || sub.allImages;
-      // Show _2 image (index 1) as the visible image in enquiry lightbox; fall back to _1 if only one exists
-      const displayImage = variantAllImages[1] ?? variantAllImages[0] ?? sub.variants[0]?.primaryImage ?? sub.primaryImage;
-      return {
-        image: displayImage,
-        allImages: variantAllImages,
-        category: slide.title,
-        subcategory: sub.label,
-        variantId: sub.variants[0]?.id || 1,
-        variants: sub.variants
-      };
-    })
+    slide.subcategories.map(sub => ({
+      image: sub.variants[0]?.primaryImage || sub.primaryImage,  // _1 for grid cards
+      allImages: sub.variants[0]?.allImages || sub.allImages,
+      category: slide.title,
+      subcategory: sub.label,
+      variantId: sub.variants[0]?.id || 1,
+      variants: sub.variants
+    }))
   );
 
   categoryData[gender] = {
@@ -199,7 +194,14 @@ const CategoryPage = () => {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.5 }}
-        onClick={() => openEnquiryLightbox(filteredProducts, 0)}
+        onClick={() => {
+          // Remap image to _2 (allImages[1]) only for the enquiry lightbox
+          const enquiryMapped = filteredProducts.map(p => ({
+            ...p,
+            image: p.allImages[1] ?? p.allImages[0]
+          }));
+          openEnquiryLightbox(enquiryMapped, 0);
+        }}
         className="fixed right-0 top-1/3 -translate-y-1/2 z-[80] 
                    bg-[#f7eac3] text-black 
                    py-4 px-3 md:py-6 md:px-3 sm:py-4 sm:px-2
