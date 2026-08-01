@@ -383,7 +383,7 @@ const ImageLightbox = ({
                       e.stopPropagation();
                       if (variant.id !== product.variantId) {
                         onSwitchVariant({
-                          image: variant.primaryImage,
+                          image: variant.allImages[1] ?? variant.primaryImage,
                           allImages: variant.allImages,
                           category: product.category,
                           subcategory: product.subcategory,
@@ -438,7 +438,7 @@ const ImageLightbox = ({
         ) : inquireyForm ? (
           <div className="flex-shrink-0 px-4 py-3 sm:py-4 overflow-x-auto">
             <div className="flex gap-2 justify-center">
-              {images.map((img, i) => (
+              {images.slice(0, 2).map((img, i) => (
                 <button
                   key={i}
                   onClick={() => onNavigate(i)}
