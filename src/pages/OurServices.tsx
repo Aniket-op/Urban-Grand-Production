@@ -5,51 +5,54 @@ import { CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// ── Local factory media files ─────────────────────────────────────────────────
-// Each entry is either an image path or a video path (.MOV)
+// ── Vercel Blob Storage base URL ──────────────────────────────────────────────
+const BLOB_BASE = "https://gkgaca1ysprfujnr.public.blob.vercel-storage.com";
+
+// ── Factory media files served from Vercel Blob Storage ──────────────────────
+// Each entry is either an image URL or a video URL (.MOV)
 const serviceMedia: Record<string, string[]> = {
   "garment-manufacturing": [
-    "/factory/DSC_4840.JPG",
-    "/factory/DSC_4818.JPG",
-    "/factory/DSC_4669.JPG",
-    "/factory/DSC_4666.JPG",
-    "/factory/DSC_4876.JPG",
+    `${BLOB_BASE}/DSC_4840.JPG`,
+    `${BLOB_BASE}/DSC_4818.JPG`,
+    `${BLOB_BASE}/DSC_4669.JPG`,
+    `${BLOB_BASE}/DSC_4666.JPG`,
+    `${BLOB_BASE}/DSC_4876.JPG`,
   ],
   "private-label": [
-    "/factory/DSC_4779.JPG",
-    "/factory/DSC_4792.JPG",
-    "/factory/DSC_4796.JPG",
-    "/factory/DSC_4799.JPG",
-    "/factory/DSC_4826.MOV",
+    `${BLOB_BASE}/DSC_4779.JPG`,
+    `${BLOB_BASE}/DSC_4792.JPG`,
+    `${BLOB_BASE}/DSC_4796.JPG`,
+    `${BLOB_BASE}/DSC_4799.JPG`,
+    `${BLOB_BASE}/DSC_4826.MOV`,
   ],
   "oem-odm": [
-    "/factory/DSC_4689.JPG",
-    "/factory/DSC_4707.MOV",
-    "/factory/DSC_4748.MOV",
+    `${BLOB_BASE}/DSC_4689.JPG`,
+    `${BLOB_BASE}/DSC_4707.MOV`,
+    `${BLOB_BASE}/DSC_4748.MOV`,
   ],
   "product-development": [
-    "/factory/DSC_4789.JPG",
-    "/factory/DSC_4695.MOV",
-    "/factory/DSC_4869.JPG",
-    "/factory/DSC_4871.JPG",
+    `${BLOB_BASE}/DSC_4789.JPG`,
+    `${BLOB_BASE}/DSC_4695.MOV`,
+    `${BLOB_BASE}/DSC_4869.JPG`,
+    `${BLOB_BASE}/DSC_4871.JPG`,
   ],
   "fabric-sourcing": [
-    "/factory/DSC_4860.MOV",
-    "/factory/DSC_4690.JPG",
-    "/factory/DSC_4717.MOV",
+    `${BLOB_BASE}/DSC_4860.MOV`,
+    `${BLOB_BASE}/DSC_4690.JPG`,
+    `${BLOB_BASE}/DSC_4717.MOV`,
   ],
   "quality-assurance": [
-    "/factory/DSC_4752.MOV",
-    "/factory/DSC_4755.MOV",
+    `${BLOB_BASE}/DSC_4752.MOV`,
+    `${BLOB_BASE}/DSC_4755.MOV`,
   ],
   "export-logistics": [
-    "/factory/DSC_4650.MOV",
+    `${BLOB_BASE}/DSC_4650.MOV`,
   ],
   "fashion-brand": [
-    "/factory/DSC_4824.JPG",
-    "/factory/DSC_4817.MOV",
-    "/factory/DSC_4654.JPG",
-    "/factory/DSC_4655.JPG",
+    `${BLOB_BASE}/DSC_4824.JPG`,
+    `${BLOB_BASE}/DSC_4817.MOV`,
+    `${BLOB_BASE}/DSC_4654.JPG`,
+    `${BLOB_BASE}/DSC_4655.JPG`,
   ],
 };
 
