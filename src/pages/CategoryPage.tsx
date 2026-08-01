@@ -32,14 +32,19 @@ const categoryData: Record<string, CategoryData> = {};
   const slides = getCollectionSlides(gender);
 
   const products: Product[] = slides.flatMap(slide =>
-    slide.subcategories.map(sub => ({
-      image: sub.variants[0]?.primaryImage || sub.primaryImage,
-      allImages: sub.variants[0]?.allImages || sub.allImages,
-      category: slide.title,
-      subcategory: sub.label,
-      variantId: sub.variants[0]?.id || 1,
-      variants: sub.variants
-    }))
+    slide.subcategories.map(sub => {
+      const variantAllImages = sub.variants[0]?.allImages || sub.allImages;
+      // Show _2 image (index 1) as the visible image in enquiry lightbox; fall back to _1 if only one exists
+      const displayImage = variantAllImages[1] ?? variantAllImages[0] ?? sub.variants[0]?.primaryImage ?? sub.primaryImage;
+      return {
+        image: displayImage,
+        allImages: variantAllImages,
+        category: slide.title,
+        subcategory: sub.label,
+        variantId: sub.variants[0]?.id || 1,
+        variants: sub.variants
+      };
+    })
   );
 
   categoryData[gender] = {

@@ -32,15 +32,18 @@ const ExploreSection = ({ categorySlide, gender, index, onEnquiryClick }: Props)
   );
 
   // Build a Product[] filtered to this slide's subcategory for the lightbox
-  // Each style's allImages are expanded so the enquiry lightbox shows all images of each style
-  const enquiryProducts: Product[] = categorySlide.subcategories.flatMap((sub) =>
-    sub.allImages.map((img) => ({
-      image: img,
+  // One product per subcategory — _2 image (index 1) shown as the main visible image;
+  // full allImages still available for the thumbnail strip.
+  const enquiryProducts: Product[] = categorySlide.subcategories.map((sub) => {
+    const displayImage = sub.allImages[1] ?? sub.allImages[0];
+    return {
+      image: displayImage,
       allImages: sub.allImages,
       category: categorySlide.title,
       subcategory: sub.label,
-    }))
-  );
+    };
+  });
+
 
   // Each carousel slide = one subcategory (primaryImage only), so the
   // start index for a subcategory is simply its position in the array.
